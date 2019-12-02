@@ -1,0 +1,72 @@
+.fa-file-contract {
+  font-size: 40px;
+  margin-bottom: 1rem;
+}
+.fa-times-circle {
+  margin-bottom: 1rem;
+}
+.fa-file-csv {
+  font-size: 100px;
+  margin: 20px;
+}
+.drag-drop-title {
+  color: #47525e;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 33px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+.drag-drop-button {
+  text-align: center;
+  margin: auto;
+  margin-top: 25px;
+}
+.drag-drop-button.btn {
+  background-color: red !important;
+}
+.drag-drop-box {
+  background-color: #e5e9f2;
+  width: 300px;
+  text-align: center;
+  margin: auto;
+  padding: 15px;
+  border: 4px dashed #cdcdce;
+}
+.drag-drop-box.draggedOver {
+  background-color: #38414b;
+}
+.drag-drop-box p {
+  color: #47525e;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  text-align: center;
+  margin: 5px;
+}
+.drag-drop-box p.fileName {
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+.drag-drop-box img {
+  margin: 25px;
+}
+.fileContainer {
+  overflow: hidden;
+  position: relative;
+}
+
+.fileContainer [type="file"] {
+  cursor: inherit;
+  display: block;
+  font-size: 999px;
+  filter: alpha(opacity=0);
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}

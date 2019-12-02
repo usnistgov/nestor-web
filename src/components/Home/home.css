@@ -1,0 +1,27 @@
+.title {
+  color: #47525e;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 62px;
+  text-align: center;
+  width: 800px;
+  margin-bottom: 50px;
+}
+.btn-dark {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+.btn-dark a {
+  text-decoration: "none";
+  color: white !important;
+}
+.home-container {
+  background-color: white;
+  width: 100%;
+  flex-basis: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

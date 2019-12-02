@@ -1,0 +1,17 @@
+.dashboard-container {
+    width: 100%;
+    flex-basis: auto;
+    background-color: #e5e9f2;
+    padding: 100px 0px;
+}
+.dashboard-title {
+    margin: auto;
+    color: #47525e;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 62px;
+    text-align: center;
+    width: 800px;
+    margin-bottom: 50px;
+}
+  

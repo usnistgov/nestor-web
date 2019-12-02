@@ -1,0 +1,29 @@
+nav {
+  padding: 0px !important;
+  border-bottom: 1px solid #e5e9f2 !important;
+  flex-shrink: 0;
+}
+.navbar {
+  height: 70px;
+  display: flex !important;
+  align-items: center;
+  margin-bottom: 0px !important;
+}
+nav img {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+nav li a {
+  font-size: 19px;
+  font-weight: 500;
+}
+nav ul {
+  list-style-type: none;
+  padding-left: 0px !important;
+}
+nav ul li {
+  margin-right: 15px;
+}
+.active {
+  font-weight: 600;
+}

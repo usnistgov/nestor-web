@@ -1,0 +1,167 @@
+.tag-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-basis: 100%;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.buttons-section {
+  flex-basis: 10%;
+  display: flex;
+  justify-content: flex-end;
+}
+.buttons-section button {
+  margin-left: 10px;
+  height: 48px;
+}
+.skip {
+  background-color: transparent !important;
+  border: 2px solid #00a6ff !important;
+  color: black !important;
+  margin-top: 20px;
+}
+
+.progress-section {
+  flex-basis: 5%;
+}
+
+.tag-section {
+  flex-basis: 80%;
+  display: flex;
+}
+
+.side-bar {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 5%;
+  align-items: center;
+  padding-top: 20px;
+  border: 1px solid rgba(150, 159, 170, 0.3);
+}
+
+.token-tagging-section {
+  flex-basis: 60%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-evenly;
+}
+.side-bar {
+  flex-basis: 5%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.token-view {
+  flex-basis: 35%;
+  border-left: 5px dashed #e5e9f2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.token-view .synonyms {
+  margin-top: 20px;
+}
+.token-view .synonyms button {
+  border: 1px solid black;
+  color: black;
+}
+.token-view .note {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.note textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.note-text {
+  text-align: right;
+}
+.note-center {
+  text-align: center;
+  margin-top: 10px;
+}
+.fa-search-plus,
+.fa-window-maximize {
+  font-size: 25px !important;
+  margin-bottom: 20px;
+}
+.alias,
+.alias div {
+  display: flex;
+  justify-content: space-between;
+}
+.alias :first-child {
+  background: transparent;
+}
+.synonyms button,
+.multiple-tokens button {
+  flex-basis: 5%;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: transparent;
+  border: 1px solid #969faa;
+  color: #969faa;
+}
+.multiple-tokens button {
+  border: 2px solid;
+  color: black;
+}
+.synonyms,
+.classification-tags,
+.synonyms-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.classification-tags button,
+.synonyms-tags button {
+  flex-basis: 30%;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: transparent;
+  border: 2px solid;
+}
+.selected button {
+  margin-right: 5px;
+  width: 100%;
+}
+.multiple-tokens {
+  margin-top: 20px;
+}
+.badge-centered,
+.multiple-tokens {
+  display: flex !important;
+  justify-content: space-around !important;
+}
+.fa-cog {
+  margin-left: 10px;
+}
+textarea#note {
+  resize: none;
+  border: 1px solid #969faa;
+  border-radius: 5px;
+}
+.fa-question-circle {
+  margin-left: 10px;
+}
+.fa-times-circle {
+  margin-left: 5px;
+}
+.form-control {
+  margin-right: 10px;
+}
+.list-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.list-item {
+  flex-basis: 50%;
+  display: flex;
+  justify-content: center;
+}

@@ -20,6 +20,8 @@ function createWindow() {
   mainWindow.loadURL(`file://${path.join(__dirname, "splashScreen.html")}`);
   mainWindow.on("closed", () => (mainWindow = null));
   //mainWindow.webContents.openDevTools();
+  if (isDev)
+    mainWindow.webContents.openDevTools();
 }
 
 app.on("ready", createWindow);
@@ -55,18 +57,18 @@ const createPyProc = () => {
   let script = isDev ? path.join(__dirname, "/../python/api.py") : guessOs();
   pyProc = isDev
     ? require("child_process").spawn("python", [script, port])
-    : require("child_process").execFile(script, [port], function(
-        error,
-        stdout,
-        stderr
-      ) {
-        console.log(error, stdout, stderr);
-        ipcMain.on("asynchronous-message", (event, arg) => {
-          event.reply("asynchronous-reply", error + stdout + stderr);
-        });
+    : require("child_process").execFile(script, [port], function (
+      error,
+      stdout,
+      stderr
+    ) {
+      console.log(error, stdout, stderr);
+      ipcMain.on("asynchronous-message", (event, arg) => {
+        event.reply("asynchronous-reply", error + stdout + stderr);
       });
+    });
 
-  pyProc.stdout.on("data", function(data) {
+  pyProc.stdout.on("data", function (data) {
     console.log("data from api.py: ", data.toString("utf8"));
     if (data.toString("utf8").includes("server")) {
       mainWindow.loadURL(

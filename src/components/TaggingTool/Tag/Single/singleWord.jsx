@@ -10,6 +10,9 @@ import Alert from "../../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import text from "../../../../assets/language/en.js";
 import List from "../TagComponents/list";
+import { ProgressBar } from "react-bootstrap";
+import { getCompleteness } from "../../Report/reportAction";
+
 const fuzz = window.fuzz;
 
 class SingleWord extends Component {
@@ -42,6 +45,7 @@ class SingleWord extends Component {
       this.props.onUpdateVocab(
         this.props.singleTokens[prevProps.match.params.id]
       );
+      this.props.onGetCompleteness();
     }
   }
   render() {
@@ -57,6 +61,32 @@ class SingleWord extends Component {
         )}
         <div className="tag-section">
           <div className="token-tagging-section">
+            <ProgressBar
+              animated
+              striped
+              variant="success"
+              now={
+                this.props.report.total === this.props.report.empty
+                  ? 0
+                  : ((this.props.report.total -
+                    this.props.report.empty -
+                    this.props.report.complete) /
+                    this.props.report.total) *
+                  100
+              }
+              label={
+                this.props.report.total === this.props.report.empty
+                  ? 0
+                  : (
+                    ((this.props.report.total -
+                      this.props.report.empty -
+                      this.props.report.complete) /
+                      this.props.report.total) *
+                    100
+                  ).toFixed(2) + " %"
+              }
+              key={1}
+            />
             <div className="alias">
               <TagButton
                 value={
@@ -144,20 +174,20 @@ class SingleWord extends Component {
             </div>
             {this.props.singleTokens[parseInt(this.props.match.params.id)]
               .classification.label && (
-              <div
-                className="badge"
-                style={{
-                  borderColor: this.props.singleTokens[
-                    parseInt(this.props.match.params.id)
-                  ].classification.color
-                }}
-              >
-                {
-                  this.props.singleTokens[parseInt(this.props.match.params.id)]
-                    .classification.value
-                }
-              </div>
-            )}
+                <div
+                  className="badge"
+                  style={{
+                    borderColor: this.props.singleTokens[
+                      parseInt(this.props.match.params.id)
+                    ].classification.color
+                  }}
+                >
+                  {
+                    this.props.singleTokens[parseInt(this.props.match.params.id)]
+                      .classification.value
+                  }
+                </div>
+              )}
             <div>
               {text.taggingTool.tagging.singleToken.synonymSectionTitle}
             </div>
@@ -301,8 +331,8 @@ class SingleWord extends Component {
     tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
-  handleAddNote = () => {};
-  handleEditNote = () => {};
+  handleAddNote = () => { };
+  handleEditNote = () => { };
   handleDeleteSynonym = synonym => {
     var tokens = [...this.props.singleTokens];
     var token = {
@@ -362,21 +392,29 @@ const mapStateToProps = createSelector(
   state => state.alert,
   state => state.pattern,
   state => state.similarity,
-  (singleTokens, classification, tokensNumber, alert, pattern, similarity) => ({
+  state => state.report,
+  (
     singleTokens,
     classification,
     tokensNumber,
     alert,
     pattern,
-    similarity
+    similarity,
+    report
+  ) => ({
+    singleTokens,
+    classification,
+    tokensNumber,
+    alert,
+    pattern,
+    similarity,
+    report
   })
 );
 const mapActionsToProps = {
   onUpdateSingleTokens: updateSingleTokens,
   onUpdateVocab: updateVocab,
-  onUpdateAlert: updateAlert
+  onUpdateAlert: updateAlert,
+  onGetCompleteness: getCompleteness
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(SingleWord);
+export default connect(mapStateToProps, mapActionsToProps)(SingleWord);

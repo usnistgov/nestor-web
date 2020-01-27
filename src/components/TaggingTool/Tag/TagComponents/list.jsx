@@ -11,9 +11,10 @@ class List extends Component
     super(props);
     this.state = {
       input: "",
-      list: this.props.list
+      list: this.props.list,
+      alpahbeticFilter: false
     };
-    this.handleFilter.bind(this);
+    this.handleAlphabeticFilter.bind(this);
   }
 
 
@@ -39,11 +40,8 @@ class List extends Component
               aria-describedby="basic-addon2"
             />
             <InputGroup.Append>
-              <Button variant="outline-secondary">
-                <i className="fas fa-search" />
-              </Button>
-              <Button variant="outline-secondary" onClick={ this.handleFilter }>
-                <i className="fas  fa-filter" />
+              <Button variant="outline-secondary" onClick={ this.handleAlphabeticFilter } className={ this.state.alpahbeticFilter ? 'btn-active' : '' }>
+                <i className="fas fa-sort-alpha-down"></i>
               </Button>
             </InputGroup.Append>
           </InputGroup>
@@ -72,6 +70,7 @@ class List extends Component
   }
   handleChange = event =>
   {
+    this.setState({ alpahbeticFilter: false });
     var input = this.state.input;
     input = event.target.value;
     this.setState({ input });
@@ -80,13 +79,25 @@ class List extends Component
     this.setState({ list });
   };
 
-  handleFilter = () =>
+  handleAlphabeticFilter = () => 
   {
-    var keywords = [ ...this.props.list ];
-    const filteredList = keywords
-      .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
-      .sort((a, b) => a.label < b.label ? -1 : 1);
-    this.setState({ list: filteredList });
+    if (!this.state.alpahbeticFilter)
+    {
+      var keywords = this.state.list;
+      const filteredList = keywords
+        .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
+        .sort((a, b) => a.label < b.label ? -1 : 1);
+      this.setState({ list: filteredList });
+      this.setState({ alpahbeticFilter: true });
+    } else
+    {
+      var keywords = this.state.list;
+      const filteredList = keywords
+        .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
+        .sort((a, b) => a.index < b.index ? -1 : 1);
+      this.setState({ list: filteredList });
+      this.setState({ alpahbeticFilter: false });
+    }
   }
 }
 

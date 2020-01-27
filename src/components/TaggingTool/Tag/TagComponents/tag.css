@@ -165,3 +165,7 @@ textarea#note {
   display: flex;
   justify-content: center;
 }
+.btn-active{
+  background-color:#6c757d;
+  color:#fff;
+}

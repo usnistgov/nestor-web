@@ -413,7 +413,8 @@ class SingleWord extends Component
   {
     var tokens = [ ...this.props.singleTokens ];
     var token = { ...this.props.singleTokens[ index ] };
-    if (token.synonyms.length < 1)
+    // if the token doesn't have synonyms and it doesn't have any selected synonyms
+    if (token.synonyms.length < 1 && token.selectedSynonyms.length === 0)
     {
       var synonyms = this.computeSynonyms(token.label);
       token.synonyms = synonyms;

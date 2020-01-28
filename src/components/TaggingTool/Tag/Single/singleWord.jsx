@@ -355,8 +355,6 @@ class SingleWord extends Component
   handleEditNote = () => { };
   handleDeleteSynonym = synonym =>
   {
-    console.log(synonym);
-
     var tokens = [ ...this.props.singleTokens ];
     var token = {
       ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
@@ -365,9 +363,12 @@ class SingleWord extends Component
     {
       return element.value !== synonym.value;
     });
-    console.log(token.synonyms);
-    console.log(token.selectedSynonyms);
-    token.synonyms.push(synonym);
+    var synonyms = this.computeSynonyms(token.label);
+    var synonymToBeAdded = synonyms.filter(element =>
+    {
+      return element.label === synonym.value;
+    })[ 0 ];
+    token.synonyms.push(synonymToBeAdded);
     token.selectedSynonyms = selectedSynonyms;
     tokens[ parseInt(this.props.match.params.id) ] = token;
     this.props.onUpdateSingleTokens(tokens);
@@ -406,7 +407,6 @@ class SingleWord extends Component
         synonyms.push(element);
       }
     });
-    console.log(synonyms);
     return synonyms;
   };
   initTokenWithSynonymAlias(index)

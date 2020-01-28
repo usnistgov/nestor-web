@@ -81,9 +81,10 @@ class List extends Component
 
   handleAlphabeticFilter = () => 
   {
+    var keywords = this.state.list;
     if (!this.state.alpahbeticFilter)
     {
-      var keywords = this.state.list;
+
       const filteredList = keywords
         .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
         .sort((a, b) => a.label < b.label ? -1 : 1);
@@ -91,7 +92,6 @@ class List extends Component
       this.setState({ alpahbeticFilter: true });
     } else
     {
-      var keywords = this.state.list;
       const filteredList = keywords
         .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
         .sort((a, b) => a.index < b.index ? -1 : 1);

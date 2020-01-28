@@ -9,10 +9,11 @@ import text from "../../../assets/language/en.js";
 import Alert from "../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../CommonComponents/Alert/alertAction";
 
-class Report extends Component {
+class Report extends Component
+{
   state = {
     bar: {
-      labels: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.1],
+      labels: [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.1 ],
       datasets: [
         {
           label: text.taggingTool.report.thirdRow.title,
@@ -21,9 +22,11 @@ class Report extends Component {
       ]
     }
   };
-  componentDidMount() {
+  componentDidMount()
+  {
     //this.props.onInitReport();
-    if (this.props.singleTokens.length) {
+    if (this.props.singleTokens.length)
+    {
       let alert = {
         showAlert: false,
         alertHeader: text.taggingTool.alerts.tagging.header,
@@ -31,7 +34,8 @@ class Report extends Component {
       };
       this.props.onUpdateAlert(alert);
       this.props.onGetCompleteness();
-    } else {
+    } else
+    {
       let alert = {
         showAlert: true,
         alertHeader: text.taggingTool.alerts.tagging.header,
@@ -40,48 +44,49 @@ class Report extends Component {
       this.props.onUpdateAlert(alert);
     }
   }
-  render() {
+  render()
+  {
     return (
       <div>
-        {this.props.alert.showAlert && (
+        { this.props.alert.showAlert && (
           <Alert
-            alertHeader={this.props.alert.alertHeader}
-            alertMessage={this.props.alert.alertMessage}
+            alertHeader={ this.props.alert.alertHeader }
+            alertMessage={ this.props.alert.alertMessage }
             styleColor="alert alert-warning"
-            onDelete={this.handleDelete}
+            onDelete={ this.handleDelete }
           />
-        )}
-        {!this.props.alert.showAlert && (
+        ) }
+        { !this.props.alert.showAlert && (
           <div>
-            {/* {!this.props.report.total && <div className="loader" />} */}
-            {/* {!!this.props.report.total && ( */}
+            {/* {!this.props.report.total && <div className="loader" />} */ }
+            {/* {!!this.props.report.total && ( */ }
             <div className="report-container">
               <div className="report-col">
                 <div className="report-title">
-                  {text.taggingTool.report.firstRow.title}
+                  { text.taggingTool.report.firstRow.title }
                 </div>
                 <div className="report-row">
                   <div className="report-title">
-                    {text.taggingTool.report.firstRow.tagged}{" "}
-                    {this.props.report.tagged}
+                    { text.taggingTool.report.firstRow.tagged }{ " " }
+                    { this.props.report.tagged }
                   </div>
                   <div className="report-title">
-                    {text.taggingTool.report.firstRow.notTagged}{" "}
-                    {this.props.tokensNumber.maxValue -
-                      this.props.report.tagged}
+                    { text.taggingTool.report.firstRow.notTagged }{ " " }
+                    { this.props.tokensNumber.maxValue -
+                      this.props.report.tagged }
                   </div>
                 </div>
 
                 <div className="set-size charts-container">
                   <div className="pie-wrapper progress-45 style-2">
                     <span className="label">
-                      {this.props.report.tagged}
+                      { this.props.report.tagged }
                       <span className="smaller">
-                        {(
+                        { (
                           (this.props.report.tagged /
                             this.props.tokensNumber.maxValue) *
                           100
-                        ).toFixed(2)}{" "}
+                        ).toFixed(2) }{ " " }
                         %
                       </span>
                     </span>
@@ -91,29 +96,29 @@ class Report extends Component {
                         (this.props.report.tagged /
                           this.props.tokensNumber.value) *
                           100 <=
-                        50
+                          50
                           ? {}
                           : { clip: "rect(auto, auto, auto, auto)" }
                       }
                     >
                       <div
                         className="left-side half-circle"
-                        style={{
+                        style={ {
                           transform:
                             "rotate(" +
                             3.6 *
-                              ((this.props.report.tagged /
-                                this.props.tokensNumber.value) *
-                                100) +
+                            ((this.props.report.tagged /
+                              this.props.tokensNumber.value) *
+                              100) +
                             "deg)",
                           WebkitTransform:
                             "rotate(" +
                             3.6 *
-                              ((this.props.report.tagged /
-                                this.props.tokensNumber.value) *
-                                100) +
+                            ((this.props.report.tagged /
+                              this.props.tokensNumber.value) *
+                              100) +
                             "deg)"
-                        }}
+                        } }
                       />
                       <div
                         className="right-side half-circle"
@@ -121,12 +126,12 @@ class Report extends Component {
                           (this.props.report.tagged /
                             this.props.tokensNumber.value) *
                             100 <=
-                          50
+                            50
                             ? { display: "none" }
                             : {
-                                transform: "rotate(" + 180 + "deg)",
-                                WebkitTransform: "rotate(" + 180 + "deg)"
-                              }
+                              transform: "rotate(" + 180 + "deg)",
+                              WebkitTransform: "rotate(" + 180 + "deg)"
+                            }
                         }
                       />
                     </div>
@@ -137,37 +142,37 @@ class Report extends Component {
               <div className="report-col">
                 <div className="report-row">
                   <div className="report-title">
-                    {text.taggingTool.report.firstRow.tags}{" "}
-                    {this.props.report.tagged}
+                    { text.taggingTool.report.firstRow.tags }{ " " }
+                    { this.props.report.tagged }
                   </div>
                   <div className="report-title">
-                    {text.taggingTool.report.firstRow.autoTagged}{" "}
-                    {this.props.report.taggedWords}
+                    { text.taggingTool.report.firstRow.autoTagged }{ " " }
+                    { this.props.report.taggedWords }
                   </div>
                 </div>
               </div>
               <div className="report-col">
                 <div className="report-title">
-                  {text.taggingTool.report.secondRow.title}
+                  { text.taggingTool.report.secondRow.title }
                 </div>
                 <div className="report-row">
                   <div className="report-title">
-                    {text.taggingTool.report.secondRow.complete}{" "}
-                    {this.props.report.total === this.props.report.empty
+                    { text.taggingTool.report.secondRow.complete }{ " " }
+                    { this.props.report.total === this.props.report.empty
                       ? 0
-                      : this.props.report.complete}
+                      : this.props.report.complete }
                   </div>
                   <div className="report-title">
-                    {text.taggingTool.report.secondRow.partlyTagged}{" "}
-                    {this.props.report.total === this.props.report.empty
+                    { text.taggingTool.report.secondRow.partlyTagged }{ " " }
+                    { this.props.report.total === this.props.report.empty
                       ? 0
                       : this.props.report.total -
-                        this.props.report.empty -
-                        this.props.report.complete}
+                      this.props.report.empty -
+                      this.props.report.complete }
                   </div>
                   <div className="report-title">
-                    {text.taggingTool.report.secondRow.empty}{" "}
-                    {this.props.report.empty}
+                    { text.taggingTool.report.secondRow.empty }{ " " }
+                    { this.props.report.empty }
                   </div>
                 </div>
                 <div>
@@ -179,43 +184,44 @@ class Report extends Component {
                         this.props.report.total === this.props.report.empty
                           ? 0
                           : (this.props.report.complete /
-                              this.props.report.total) *
-                            100
+                            this.props.report.total) *
+                          100
                       }
                       label={
                         this.props.report.total === this.props.report.empty
                           ? 0
                           : (
-                              (this.props.report.complete /
-                                this.props.report.total) *
-                              100
-                            ).toFixed(2) + " %"
+                            (this.props.report.complete /
+                              this.props.report.total) *
+                            100
+                          ).toFixed(2) + " %"
                       }
-                      key={1}
+                      key={ 1 }
                     />
                     <ProgressBar
+                      striped
                       variant="warning"
                       now={
                         this.props.report.total === this.props.report.empty
                           ? 0
                           : ((this.props.report.total -
-                              this.props.report.empty -
-                              this.props.report.complete) /
-                              this.props.report.total) *
-                            100
+                            this.props.report.empty -
+                            this.props.report.complete) /
+                            this.props.report.total) *
+                          100
                       }
                       label={
                         this.props.report.total === this.props.report.empty
                           ? 0
                           : (
-                              ((this.props.report.total -
-                                this.props.report.empty -
-                                this.props.report.complete) /
-                                this.props.report.total) *
-                              100
-                            ).toFixed(2) + " %"
+                            ((this.props.report.total -
+                              this.props.report.empty -
+                              this.props.report.complete) /
+                              this.props.report.total) *
+                            100
+                          ).toFixed(2) + " %"
                       }
-                      key={2}
+                      key={ 2 }
                     />
                     <ProgressBar
                       striped
@@ -230,22 +236,22 @@ class Report extends Component {
                           100
                         ).toFixed(2) + " %"
                       }
-                      key={3}
+                      key={ 3 }
                     />
                   </ProgressBar>
                 </div>
               </div>
               <div className="report-col">
-                <Bar data={this.state.bar} />
+                <Bar data={ this.state.bar } />
               </div>
             </div>
-            {/* )} */}
+            {/* )} */ }
           </div>
-        )}
+        ) }
       </div>
     );
   }
-  handleDelete = () => {};
+  handleDelete = () => { };
 }
 
 const mapStateToProps = createSelector(

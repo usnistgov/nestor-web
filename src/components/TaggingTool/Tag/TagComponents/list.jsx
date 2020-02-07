@@ -63,23 +63,28 @@ class List extends Component
               </div>
             )) }
           </div> : <Accordion defaultActiveKey="0">
-              { this.state.list.map((obj, i) => (<Card>
-                <Accordion.Toggle as={ Card.Header } eventKey="0">
-                  Click me!
-              </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>
-                    <TagButton
-                      value={ obj.label }
-                      shortkey={ "" }
-                      showTooltipIcon={ false }
-                      tooltip={ "" }
-                      color={ "#00a6ff" }
-                      onClick={ () => this.props.onClick(obj) }
-                    />
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
+              { this.state.list.map((obj, i) => (
+                <Card key={ i }>
+                  <Accordion.Toggle as={ Card.Header } eventKey={ i }>
+                    { obj.letter }
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey={ i }>
+                    <Card.Body>
+                      { this.state.list[ i ].values.map((subobj, j) => (
+                        <div key={ j } className="list-item">
+                          <TagButton
+                            value={ subobj.label }
+                            shortkey={ "" }
+                            showTooltipIcon={ false }
+                            tooltip={ "" }
+                            color={ "#00a6ff" }
+                            onClick={ () => this.props.onClick(subobj) }
+                          />
+                        </div>
+                      )) }
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
               )) }
             </Accordion> }
         </Modal.Body>
@@ -104,49 +109,44 @@ class List extends Component
 
   handleAlphabeticFilter = () => 
   {
-    /* old version var keywords = this.state.list;
+    var keywords = this.state.list;
     if (!this.state.alpahbeticFilter)
     {
-
       const filteredList = keywords
         .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
         .sort((a, b) => a.label < b.label ? -1 : 1);
-      this.setState({ list: filteredList });
+      let newarray = [];
+      let beginning = "0";
+      let arrayByLetter = [];
+      let firstLetter = "";
+      filteredList.forEach(element =>
+      {
+        firstLetter = element.label[ 0 ];
+        if (firstLetter === beginning)
+        {
+          arrayByLetter.push(element);
+        } else
+        {
+          newarray.push({ letter: beginning, values: arrayByLetter });
+          beginning = firstLetter;
+          arrayByLetter = [];
+        }
+      });
+      this.setState({ list: newarray });
       this.setState({ alpahbeticFilter: true });
     } else
     {
-      const filteredList = keywords
-        .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
+      let tmpArray = [];
+      keywords.forEach(element =>
+      {
+        tmpArray = tmpArray.concat(element.values);
+      });
+      const filteredList = tmpArray
+        .filter((keyword, index) => tmpArray.lastIndexOf(keyword) === index)
         .sort((a, b) => a.index < b.index ? -1 : 1);
       this.setState({ list: filteredList });
       this.setState({ alpahbeticFilter: false });
-    }*/
-    var keywords = this.state.list;
-
-    var newArr = keywords.reduce(function (collect, cur, index, originalArrray)
-    {
-      var currentChar = cur.name.toUpperCase().substr(0, 1);
-      if (currentChar < 'A') currentChar = '#';
-      if (collect[ 1 ] != currentChar)
-      {
-        collect[ 0 ].push({ isLetter: true, letter: currentChar });
-        collect[ 1 ] = currentChar;
-      }
-      collect[ 0 ].push(cur);
-      return collect;
-    }, [ [], null ])[ 0 ];
-
-    // output
-    console.log(newArr);
-
-    if (!this.state.alpahbeticFilter)
-    {
-      this.setState({ alpahbeticFilter: true });
-    } else
-    {
-      this.setState({ alpahbeticFilter: false });
     }
-
   }
 }
 

@@ -116,13 +116,17 @@ class List extends Component
         .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
         .sort((a, b) => a.label < b.label ? -1 : 1);
       let newarray = [];
-      let beginning = "0";
+      let beginning = "0-9";
       let arrayByLetter = [];
       let firstLetter = "";
       filteredList.forEach(element =>
       {
         firstLetter = element.label[ 0 ];
-        if (firstLetter === beginning)
+        if (firstLetter.match("[0-9]"))
+        {
+          arrayByLetter.push(element);
+        }
+        else if (firstLetter === beginning)
         {
           arrayByLetter.push(element);
         } else

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Modal, Button, InputGroup, FormControl } from "react-bootstrap";
 import text from "../../../../assets/language/en.js";
 import TagButton from "./tagButton";
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
+
 
 class List extends Component
 {
@@ -45,7 +48,8 @@ class List extends Component
               </Button>
             </InputGroup.Append>
           </InputGroup>
-          <div className="list-body">
+
+          { !this.state.alpahbeticFilter ? <div id="classicList" className="list-body">
             { this.state.list.map((obj, i) => (
               <div key={ i } className="list-item">
                 <TagButton
@@ -58,7 +62,31 @@ class List extends Component
                 />
               </div>
             )) }
-          </div>
+          </div> : <Accordion defaultActiveKey="0">
+              { this.state.list.map((obj, i) => (
+                <Card key={ i }>
+                  <Accordion.Toggle as={ Card.Header } eventKey={ i }>
+                    { obj.letter }
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey={ i }>
+                    <Card.Body>
+                      { this.state.list[ i ].values.map((subobj, j) => (
+                        <div key={ j } className="list-item">
+                          <TagButton
+                            value={ subobj.label }
+                            shortkey={ "" }
+                            showTooltipIcon={ false }
+                            tooltip={ "" }
+                            color={ "#00a6ff" }
+                            onClick={ () => this.props.onClick(subobj) }
+                          />
+                        </div>
+                      )) }
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+              )) }
+            </Accordion> }
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={ this.props.onDelete }>
@@ -84,16 +112,41 @@ class List extends Component
     var keywords = this.state.list;
     if (!this.state.alpahbeticFilter)
     {
-
       const filteredList = keywords
         .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
         .sort((a, b) => a.label < b.label ? -1 : 1);
-      this.setState({ list: filteredList });
+      let newarray = [];
+      let beginning = "0-9";
+      let arrayByLetter = [];
+      let firstLetter = "";
+      filteredList.forEach(element =>
+      {
+        firstLetter = element.label[ 0 ];
+        if (firstLetter.match("[0-9]"))
+        {
+          arrayByLetter.push(element);
+        }
+        else if (firstLetter === beginning)
+        {
+          arrayByLetter.push(element);
+        } else
+        {
+          newarray.push({ letter: beginning, values: arrayByLetter });
+          beginning = firstLetter;
+          arrayByLetter = [];
+        }
+      });
+      this.setState({ list: newarray });
       this.setState({ alpahbeticFilter: true });
     } else
     {
-      const filteredList = keywords
-        .filter((keyword, index) => keywords.lastIndexOf(keyword) === index)
+      let tmpArray = [];
+      keywords.forEach(element =>
+      {
+        tmpArray = tmpArray.concat(element.values);
+      });
+      const filteredList = tmpArray
+        .filter((keyword, index) => tmpArray.lastIndexOf(keyword) === index)
         .sort((a, b) => a.index < b.index ? -1 : 1);
       this.setState({ list: filteredList });
       this.setState({ alpahbeticFilter: false });

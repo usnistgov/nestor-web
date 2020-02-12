@@ -18,24 +18,30 @@ const links = [
     exact: false
   },
   {
-    label:  text.home.navbar.dashboard,
+    label: text.home.navbar.dashboard,
     link: "/dashboard",
+    exact: false
+  },
+  {
+    label: text.home.navbar.save,
+    link: "/save",
     exact: false
   }
 ]
-const NavBar = () => {
+const NavBar = () =>
+{
   return (
     <div>
       <Navbar bg="light" variant="light">
         <Navbar.Brand>
-          <img src={logo} width="40" height="40" alt="logo" />
+          <img src={ logo } width="40" height="40" alt="logo" />
         </Navbar.Brand>
         <Nav className="mr-auto">
-          {links.map((obj, i) => (
-              <NavLink key={i} exact={obj.exact} className="nav-link" to={obj.link}>
-              {obj.label}
-              </NavLink>
-            ))}
+          { links.map((obj, i) => (
+            <NavLink key={ i } exact={ obj.exact } className="nav-link" to={ obj.link }>
+              { obj.label }
+            </NavLink>
+          )) }
         </Nav>
       </Navbar>
     </div>

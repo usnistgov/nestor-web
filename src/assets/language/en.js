@@ -5,7 +5,8 @@ export default {
     navbar: {
       home: "Home",
       taggingTool: "Tagging Tool",
-      dashboard: "Dashboard"
+      dashboard: "Dashboard",
+      save: "Save"
     },
     sidebar: {
       settings: "Settings",
@@ -151,5 +152,8 @@ export default {
       firstRow: "Export your progress"
     }
   },
-  dashboard: {}
+  dashboard: {},
+  save: {
+    header: "Save your tagging work done"
+  }
 };

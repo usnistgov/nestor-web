@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard/dashboard";
 import Features from "./components/features";
 import About from "./components/about";*/
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
+import SaveComponent from "./components/SaveComponent/SaveComponent";
 
 const routes = [
   {
@@ -30,25 +31,32 @@ const routes = [
     path: "/error",
     component: Error,
     exact: false
+  },
+  {
+    path: "/save",
+    component: SaveComponent,
+    exact: false
   }
 ];
 
-class Router extends Component {
-  render() {
+class Router extends Component
+{
+  render()
+  {
     return (
       <BrowserRouter>
         <React.Fragment>
           <NavBar />
           <div className="content">
             <Switch>
-              {routes.map((obj, i) => (
+              { routes.map((obj, i) => (
                 <Route
-                  key={i}
-                  exact={obj.exact}
-                  path={obj.path}
-                  component={obj.component}
+                  key={ i }
+                  exact={ obj.exact }
+                  path={ obj.path }
+                  component={ obj.component }
                 />
-              ))}
+              )) }
             </Switch>
           </div>
           <Redirect to="/" />

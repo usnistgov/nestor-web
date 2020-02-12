@@ -12,6 +12,12 @@
   background-color: #343a40;
   border-color: #343a40;
 }
+
+.btn-green {
+  color: #fff;
+  background-color: green;
+  border-color: green;
+}
 .btn-dark a {
   text-decoration: "none";
   color: white !important;

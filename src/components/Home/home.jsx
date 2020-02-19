@@ -8,7 +8,8 @@ import Papa from "papaparse";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
-import ListGroup from 'react-bootstrap/ListGroup'
+import ListGroup from 'react-bootstrap/ListGroup';
+import { openProject } from "../Home/homeAction";
 
 class Home extends Component
 {
@@ -94,7 +95,7 @@ class Home extends Component
 
   handleOpenProject(projectName)
   {
-    this.setState({ showModal: false });
+    this.handleHideModal();
 
     let currentProject;
     console.log(projectName)
@@ -105,9 +106,14 @@ class Home extends Component
         currentProject = result;
         var csvDataFromDatabase = Papa.unparse(currentProject.inputData.data);
         console.log(csvDataFromDatabase);
-      });
+        this.props.onOpenProject(Papa.unparse(currentProject.inputData.data));
 
+      });
+    console.log(this.props);
     // pass data to api to restaure session
+    // this.props.onUpdateFileBox(projectName);
+    // set input data as csv uploaded
+    // set headers selected
 
   }
 }
@@ -118,6 +124,7 @@ const mapStateToProps = createSelector(
   })
 );
 const mapActionsToProps = {
+  onOpenProject: openProject
 };
 export default connect(
   mapStateToProps,

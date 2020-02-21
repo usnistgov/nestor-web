@@ -23,20 +23,12 @@ export function openProject(json_string)
     {
         const zerorpc = window.zero;
         let client = new zerorpc.Client();
-        console.log('openProject()');
-        console.log(json_string);
         client.connect("tcp://127.0.0.1:4242");
-
         client.invoke("uploadJSON", json_string, (error, res) =>
         {
-            console.log("wiaiting");
             if (error)
             {
                 console.log(error);
-            } else
-            {
-                console.log(res);
-                console.log(JSON.parse(res));
             }
         });
     };

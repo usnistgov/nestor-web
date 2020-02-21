@@ -10,12 +10,6 @@ import PouchDB from "pouchdb";
 
 class SaveComponent extends Component
 {
-
-    constructor(props)
-    {
-        super(props);
-    }
-
     componentDidMount()
     {
         this.props.onExportOutput();
@@ -45,21 +39,11 @@ class SaveComponent extends Component
 
     handleSaveProject = history =>
     {
-        alert('saving projerct state');
-        // PouchDb : insert or update data
-        // Retrieve data for current project
-        // download csv, into JSon and then store field
-        // OR retrieve data from api vocab, tokens, multitokens 
-        // and store it into datastore
-        console.log(this.props.ex.multi);
-        console.log(this.props.ex.single);
-        console.log(this.props.ex.output);
-        console.log(this.props.dragAndDrops);
+
         const multi = this.props.ex.multi;
         const single = this.props.ex.single;
         const output = this.props.ex.output;
-
-
+        const singleTokens = this.props.singleTokens;
         window.db = new PouchDB("testdatabase");
         const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
         window.db.get(projectId).then(function (doc)
@@ -68,6 +52,7 @@ class SaveComponent extends Component
             doc.multiToken = multi;
             doc.singleToken = single;
             doc.vocab = output;
+            doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
             return window.db.put(doc);
 
         }).catch(function (err)
@@ -87,9 +72,11 @@ class SaveComponent extends Component
 const mapStateToProps = createSelector(
     state => state.dragAndDrops,
     state => state.export,
-    (dragAndDrops, ex) => ({
+    state => state.singleTokens,
+    (dragAndDrops, ex, singleTokens) => ({
         dragAndDrops,
-        ex
+        ex,
+        singleTokens
     })
 );
 const mapActionsToProps = {

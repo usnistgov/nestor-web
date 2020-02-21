@@ -10,16 +10,12 @@ import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { openProject } from "../Home/homeAction";
+import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction"
+import { updateSingleTokens } from "../TaggingTool/Tag/Single/singleTokensAction";
+
 
 class Home extends Component
 {
-
-  constructor(props)
-  {
-    super(props);
-  }
-
-
   state = {
     showModal: false,
     listOfProjects: []
@@ -28,20 +24,13 @@ class Home extends Component
   componentDidMount()
   {
     window.db = new PouchDB("testdatabase");
-    window.db.info().then(function (info)
-    {
-      console.log(info);
-    });
     let tmpListOfProjects = [];
     window.db.allDocs().then((result) =>
     {
-      console.log(result);
       result.rows.forEach(element =>
       {
-        console.log(element);
         tmpListOfProjects.push(element.id);
       });
-      console.log(tmpListOfProjects);
       this.setState({ listOfProjects: tmpListOfProjects });
     });
   }
@@ -96,35 +85,40 @@ class Home extends Component
   handleOpenProject(projectName)
   {
     this.handleHideModal();
-
     let currentProject;
-    console.log(projectName)
-
     window.db.get(projectName)
       .then(result =>
       {
         currentProject = result;
-        var csvDataFromDatabase = Papa.unparse(currentProject.inputData.data);
-        console.log(csvDataFromDatabase);
         this.props.onOpenProject(Papa.unparse(currentProject.inputData.data));
-
+        if (!this.props.dragAndDrops.length)
+        {
+          this.props.onInitFileBox();
+        }
+        const dragAndDrops = [ ...this.props.dragAndDrops ];
+        dragAndDrops[ 0 ].file.name = currentProject.project_id;
+        const headers = this.props.headers;
+        headers.headers = currentProject.headers;
+        this.props.onUpdateSingleTokens(currentProject.singleTokens);
+        console.log(this.props);
       });
     console.log(this.props);
-    // pass data to api to restaure session
-    // this.props.onUpdateFileBox(projectName);
-    // set input data as csv uploaded
-    // set headers selected
-
   }
 }
 const mapStateToProps = createSelector(
   state => state.dragAndDrops,
-  (dragAndDrops) => ({
-    dragAndDrops
+  state => state.headers,
+  state => state.singleTokens,
+  (dragAndDrops, headers, singleTokens) => ({
+    dragAndDrops,
+    headers,
+    singleTokens
   })
 );
 const mapActionsToProps = {
-  onOpenProject: openProject
+  onOpenProject: openProject,
+  onInitFileBox: initFileBox,
+  onUpdateSingleTokens: updateSingleTokens
 };
 export default connect(
   mapStateToProps,

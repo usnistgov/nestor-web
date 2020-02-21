@@ -14,6 +14,7 @@ import PouchDB from "pouchdb";
 
 class Upload extends Component
 {
+
   componentDidMount()
   {
     window.ipcRenderer.on("asynchronous-reply", (event, arg) =>
@@ -77,6 +78,7 @@ class Upload extends Component
     this.props.onUpdateFileBox(dragAndDrops);
     this.storeInputData(dragAndDrops[ 0 ].file);
   };
+
   handleAddFile = (dragAndDrop, e) =>
   {
     const dragAndDrops = [ ...this.props.dragAndDrops ];
@@ -151,7 +153,7 @@ class Upload extends Component
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
-  storeInputData(file)
+  storeInputData = (file, history) =>
   {
     window.db = new PouchDB("testdatabase");
     let jsonToStore;
@@ -161,7 +163,6 @@ class Upload extends Component
         jsonToStore = results;
       }
     });
-    console.log(jsonToStore);
     const projectId = file.name.split(".")[ 0 ];
     window.db.get(projectId).then(function (doc)
     {
@@ -174,9 +175,11 @@ class Upload extends Component
         "_id": projectId,
         project_id: file.name,
         inputData: jsonToStore,
+        headers: {},
         singleToken: {},
         multiToken: {},
-        vocab: {}
+        vocab: {},
+        singleTokens: {}
       });
     }).then(function ()
     {
@@ -194,11 +197,13 @@ const mapStateToProps = createSelector(
   state => state.alert,
   state => state.classification,
   state => state.headers,
-  (dragAndDrops, alert, classification, headers) => ({
+  state => state.singleTokens,
+  (dragAndDrops, alert, classification, headers, singleTokens) => ({
     dragAndDrops,
     alert,
     classification,
-    headers
+    headers,
+    singleTokens
   })
 );
 const mapActionsToProps = {

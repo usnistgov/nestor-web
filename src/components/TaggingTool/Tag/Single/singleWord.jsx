@@ -411,6 +411,7 @@ class SingleWord extends Component
   };
   initTokenWithSynonymAlias(index)
   {
+    console.log(this.props.singleTokens)
     var tokens = [ ...this.props.singleTokens ];
     var token = { ...this.props.singleTokens[ index ] };
     // if the token doesn't have synonyms and it doesn't have any selected synonyms
@@ -435,6 +436,7 @@ const mapStateToProps = createSelector(
   state => state.pattern,
   state => state.similarity,
   state => state.report,
+  state => state.dragAndDrops,
   (
     singleTokens,
     classification,
@@ -442,7 +444,8 @@ const mapStateToProps = createSelector(
     alert,
     pattern,
     similarity,
-    report
+    report,
+    dragAndDrops
   ) => ({
     singleTokens,
     classification,
@@ -450,7 +453,8 @@ const mapStateToProps = createSelector(
     alert,
     pattern,
     similarity,
-    report
+    report,
+    dragAndDrops
   })
 );
 const mapActionsToProps = {

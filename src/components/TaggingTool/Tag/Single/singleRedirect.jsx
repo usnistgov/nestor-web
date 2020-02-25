@@ -83,7 +83,6 @@ const mapStateToProps = createSelector(
   })
 );
 const mapActionsToProps = {
-  onSingleTokensRequest: singleTokensRequest,
   onUpdateSingleTokens: updateSingleTokens,
   onUpdateAlert: updateAlert
 };

@@ -72,7 +72,6 @@ class Upload extends Component
     this.props.onUploadFile(
       files.base64.substring(files.base64.indexOf("base64,") + 7)
     );
-    //console.log(files.base64.substring(files.base64.indexOf("base64,") + 7));
     const dragAndDrops = [ ...this.props.dragAndDrops ];
     dragAndDrops[ 0 ].file = files.fileList[ 0 ];
     this.props.onUpdateFileBox(dragAndDrops);
@@ -166,7 +165,6 @@ class Upload extends Component
     const projectId = file.name.split(".")[ 0 ];
     window.db.get(projectId).then(function (doc)
     {
-      console.log(doc);
       doc.inputData = jsonToStore;
       return window.db.put(doc);
     }).catch(function (err)
@@ -184,11 +182,7 @@ class Upload extends Component
     }).then(function ()
     {
       return window.db.get(projectId);
-    }).then(function (doc)
-    {
-      console.log(doc);
     });
-
   }
 }
 

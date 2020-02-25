@@ -43,6 +43,7 @@ class Report extends Component
       };
       this.props.onUpdateAlert(alert);
     }
+    console.log(this.props);
   }
   render()
   {

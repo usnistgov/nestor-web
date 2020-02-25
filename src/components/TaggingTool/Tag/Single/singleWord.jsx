@@ -22,6 +22,7 @@ class SingleWord extends Component
   };
   componentDidMount()
   {
+    console.log(this.props.singleTokens);
     //debugger;
     var alert = {
       showAlert: false,
@@ -30,6 +31,7 @@ class SingleWord extends Component
     };
     this.props.onUpdateAlert(alert);
     this.initTokenWithSynonymAlias(this.props.match.params.id);
+    this.props.onGetCompleteness();
   }
   shouldComponentUpdate(nextProps)
   {
@@ -42,6 +44,8 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
+    console.log(this.prevProps);
+    console.log(this.props.singleTokens);
     //debugger;
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
@@ -273,7 +277,7 @@ class SingleWord extends Component
       syn.notes = tokens[ i ].notes;
       tokens[ syn.index ] = syn;
     });
-    this.props.onUpdateSingleTokens(tokens);
+    this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(tokens)));
     var index = tokens.findIndex(element => !element.alias);
     //debugger;
     if (index === -1)
@@ -411,7 +415,6 @@ class SingleWord extends Component
   };
   initTokenWithSynonymAlias(index)
   {
-    console.log(this.props.singleTokens)
     var tokens = [ ...this.props.singleTokens ];
     var token = { ...this.props.singleTokens[ index ] };
     // if the token doesn't have synonyms and it doesn't have any selected synonyms

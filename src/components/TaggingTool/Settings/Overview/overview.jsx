@@ -8,7 +8,8 @@ import text from "../../../../assets/language/en.js";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 
-class Overview extends Component {
+class Overview extends Component
+{
   state = {
     firstRow: [
       {
@@ -53,18 +54,21 @@ class Overview extends Component {
       }
     ]
   };
-  componentDidMount() {
-    if (!Object.keys(this.props.classification.types).length) {
+  componentDidMount()
+  {
+    if (!Object.keys(this.props.classification.types).length)
+    {
       this.props.onClassificationRequest();
     }
-    var secondRow = [...this.state.secondRow];
-    secondRow[0].value = this.props.tokensNumber.maxValue
+    var secondRow = [ ...this.state.secondRow ];
+    secondRow[ 0 ].value = this.props.tokensNumber.maxValue
       ? (this.props.tokensNumber.value / this.props.tokensNumber.maxValue) * 100
       : 0;
-    secondRow[1].value = this.props.similarity;
-    secondRow[2].value = this.props.pattern;
+    secondRow[ 1 ].value = this.props.similarity;
+    secondRow[ 2 ].value = this.props.pattern;
 
-    secondRow.forEach(col => {
+    secondRow.forEach(col =>
+    {
       col.left = {
         transform: "rotate(" + 3.6 * col.value + "deg)",
         WebkitTransform: "rotate(" + 3.6 * col.value + "deg)"
@@ -73,36 +77,37 @@ class Overview extends Component {
         col.value <= 50
           ? { display: "none" }
           : {
-              transform: "rotate(" + 180 + "deg)",
-              WebkitTransform: "rotate(" + 180 + "deg)"
-            };
+            transform: "rotate(" + 180 + "deg)",
+            WebkitTransform: "rotate(" + 180 + "deg)"
+          };
       col.pie = col.value <= 50 ? {} : { clip: "rect(auto, auto, auto, auto)" };
     });
     this.setState({ secondRow });
   }
-  render() {
+  render()
+  {
     return (
       <div className="overview-container">
         <div className="overview-col firstline">
           <div className="overview-item col1">
             <OverviewHeader
-              title={this.state.firstRow[0].title}
+              title={ this.state.firstRow[ 0 ].title }
               link="/taggingTool/settings/headers"
             />
             <div className="overview-content">
               <ol>
-                {this.props.headers.headers.map((header, i) => (
+                { this.props.headers.headers.map((header, i) => (
                   <li
-                    key={i}
+                    key={ i }
                     style={
                       header.checked
                         ? { fontWeight: "bold" }
                         : { fontWeight: "normal" }
                     }
                   >
-                    {header.label}{" "}
+                    { header.label }{ " " }
                   </li>
-                ))}
+                )) }
               </ol>
             </div>
           </div>
@@ -114,45 +119,45 @@ class Overview extends Component {
             />
             <div className="overview-title">Types</div>
             <div className="overview-classification-types">
-              {this.props.classification.types.map((obj, i) => (
+              { this.props.classification.types.map((obj, i) => (
                 <ClassificationTag
-                  key={i}
-                  label={obj.shortkey + " - " + obj.label}
-                  color={obj.color}
+                  key={ i }
+                  label={ obj.shortkey + " - " + obj.label }
+                  color={ obj.color }
                 />
-              ))}
+              )) }
             </div>
             <div className="overview-classification-rules">
               <div className="overview-title">Rules</div>
-              {this.props.classification.rules.map((obj, i) => (
+              { this.props.classification.rules.map((obj, i) => (
                 <ClassificationTag
-                  key={i}
-                  label={obj.shortkey + " - " + obj.label}
-                  color={obj.color}
+                  key={ i }
+                  label={ obj.shortkey + " - " + obj.label }
+                  color={ obj.color }
                 />
-              ))}
+              )) }
             </div>
           </div>
         </div>
         <div className="overview-col">
-          {this.state.secondRow.map((obj, i) => (
-            <div className="overview-item col2" key={i}>
-              <OverviewHeader title={obj.title} link={obj.link} />
+          { this.state.secondRow.map((obj, i) => (
+            <div className="overview-item col2" key={ i }>
+              <OverviewHeader title={ obj.title } link={ obj.link } />
               <div className="set-size charts-container">
                 <div className="pie-wrapper progress-45 style-2">
                   <span className="label">
-                    {Math.round(obj.value)}
+                    { Math.round(obj.value) }
                     <span className="smaller">%</span>
                   </span>
-                  <div className="pie" style={obj.pie}>
-                    <div className="left-side half-circle" style={obj.left} />
-                    <div className="right-side half-circle" style={obj.right} />
+                  <div className="pie" style={ obj.pie }>
+                    <div className="left-side half-circle" style={ obj.left } />
+                    <div className="right-side half-circle" style={ obj.right } />
                   </div>
                   <div className="shadow" />
                 </div>
               </div>
             </div>
-          ))}
+          )) }
         </div>
         <div className="overview-item hour">
           <OverviewHeader
@@ -161,25 +166,26 @@ class Overview extends Component {
           />
           <div className="overview-content overview-duration">
             <div className="overview-duration-txt">
-              Duration to tag the {this.props.tokensNumber.value} tokens with
-              these settings {"(format : hh-mm-ss)"}
+              Duration to tag the { this.props.tokensNumber.value } tokens with
+              these settings { "(format : hh-mm-ss)" }
             </div>
             <div className="overview-duration-value">
-              {new Date(this.props.tokensNumber.value * 5 * 1000)
+              { new Date(this.props.tokensNumber.value * 5 * 1000)
                 .toISOString()
-                .substr(11, 8)}
+                .substr(11, 8) }
             </div>
           </div>
         </div>
         <Button
-          onClick={this.handleContinue}
+          onClick={ this.handleContinue }
           class="btn btn-primary ctn"
           label="Continue"
         />
       </div>
     );
   }
-  handleContinue = history => {
+  handleContinue = history =>
+  {
     history.push("/taggingTool/tag/single");
   };
 }

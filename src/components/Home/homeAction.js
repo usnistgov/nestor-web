@@ -16,7 +16,7 @@ export function showError(error)
     };
 }
 
-export function openProject(json_string)
+export function openProject(json_string, headers)
 {
 
     return dispatch =>
@@ -24,7 +24,7 @@ export function openProject(json_string)
         const zerorpc = window.zero;
         let client = new zerorpc.Client();
         client.connect("tcp://127.0.0.1:4242");
-        client.invoke("uploadJSON", json_string, (error, res) =>
+        client.invoke("uploadJSON", json_string, headers, (error, res) =>
         {
             if (error)
             {

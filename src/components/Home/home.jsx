@@ -11,7 +11,10 @@ import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { openProject } from "../Home/homeAction";
 import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction"
-import { updateSingleTokens } from "../TaggingTool/Tag/Single/singleTokensAction";
+import { updateSingleTokens, singleTokensRequest, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
+import { updateHeaders } from "../TaggingTool/Settings/Headers/headersAction";
+import { headersRequest } from "../TaggingTool/Settings/Headers/headersAction"
+import { initReport } from "../TaggingTool/Report/reportAction"
 
 
 class Home extends Component
@@ -90,7 +93,6 @@ class Home extends Component
       .then(result =>
       {
         currentProject = result;
-        this.props.onOpenProject(Papa.unparse(currentProject.inputData.data));
         if (!this.props.dragAndDrops.length)
         {
           this.props.onInitFileBox();
@@ -99,26 +101,53 @@ class Home extends Component
         dragAndDrops[ 0 ].file.name = currentProject.project_id;
         const headers = this.props.headers;
         headers.headers = currentProject.headers;
-        this.props.onUpdateSingleTokens(currentProject.singleTokens);
-        console.log(this.props);
+        const tokensNumber = this.props.tokensNumber;
+        tokensNumber.value = parseInt(currentProject.tokensNumber.value);
+        tokensNumber.maxValue = currentProject.tokensNumber.maxValue;
+        let selectedHeadersLabels = [];
+        headers.headers.filter((header) =>
+        {
+          if (header.checked)
+          {
+            selectedHeadersLabels.push(header.label);
+          }
+        })
+        this.props.onOpenProject(Papa.unparse(currentProject.inputData.data), selectedHeadersLabels);
+
+
+        this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(currentProject.singleTokens)));
+        currentProject.singleTokens.forEach(token =>
+        {
+          if (token.classification.label !== "")
+          {
+            this.props.onUpdateVocab(token);
+          }
+        });
+        this.props.history.push("/taggingTool/settings/overview");
       });
-    console.log(this.props);
   }
 }
 const mapStateToProps = createSelector(
   state => state.dragAndDrops,
   state => state.headers,
   state => state.singleTokens,
-  (dragAndDrops, headers, singleTokens) => ({
+  state => state.tokensNumber,
+  (dragAndDrops, headers, singleTokens, tokensNumber) => ({
     dragAndDrops,
     headers,
-    singleTokens
+    singleTokens,
+    tokensNumber
   })
 );
 const mapActionsToProps = {
   onOpenProject: openProject,
   onInitFileBox: initFileBox,
-  onUpdateSingleTokens: updateSingleTokens
+  onUpdateSingleTokens: updateSingleTokens,
+  onUpdateHeaders: updateHeaders,
+  onHeadersRequest: headersRequest,
+  onInitReport: initReport,
+  onSingleTokensRequest: singleTokensRequest,
+  onUpdateVocab: updateVocab
 };
 export default connect(
   mapStateToProps,

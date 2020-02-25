@@ -38,7 +38,7 @@ class Api(object):
             sys.stdout.flush()
             return e
 
-    def uploadJSON(self, jsonstring):
+    def uploadJSON(self, jsonstring, headers):
         try:
             rows = jsonstring.split('\n')
             del rows[-1]
@@ -48,6 +48,23 @@ class Api(object):
             d.columns = [c.replace('"', '') for c in d.columns.values]
             d.fillna(value='"', inplace=True)
             self.__class__.df = d.applymap(lambda x: x.replace('"', ''))
+
+            # 1. Create the output dataframe
+            self.create_output(headers)
+            # 2. Compute single tokens
+            nlp_select = kex.NLPSelect(columns=headers)
+            self.__class__.raw_text = nlp_select.transform(self.__class__.df)
+            tex = kex.TokenExtractor()
+            toks = tex.fit_transform(self.__class__.raw_text)
+            tokens = [token for token in (tex.vocab_).tolist()]
+            # 3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack(
+                (tex.vocab_, empty_array, empty_array, empty_array, tex.scores_))
+            self.__class__.vocab_single_df = pd.DataFrame(
+                data=data, columns=self.__class__.vocab_columns)
+            return tokens
         except Exception as e:
             print(e)
             sys.stdout.flush()

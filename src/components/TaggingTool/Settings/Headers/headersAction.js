@@ -63,8 +63,6 @@ export function headersRequest()
         console.log(error);
       } else
       {
-        console.log(res);
-        console.log(JSON.parse(res));
         var response = JSON.parse(res);
         dispatch(
           getHeaders(response.headers, response.tooltip, response.empty_columns)

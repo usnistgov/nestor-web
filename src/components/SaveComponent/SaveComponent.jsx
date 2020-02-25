@@ -44,15 +44,16 @@ class SaveComponent extends Component
         const single = this.props.ex.single;
         const output = this.props.ex.output;
         const singleTokens = this.props.singleTokens;
+        const tokensNumber = this.props.tokensNumber;
         window.db = new PouchDB("testdatabase");
         const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
         window.db.get(projectId).then(function (doc)
         {
-            console.log(doc);
             doc.multiToken = multi;
             doc.singleToken = single;
             doc.vocab = output;
             doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
+            doc.tokensNumber = tokensNumber;
             return window.db.put(doc);
 
         }).catch(function (err)
@@ -73,10 +74,13 @@ const mapStateToProps = createSelector(
     state => state.dragAndDrops,
     state => state.export,
     state => state.singleTokens,
-    (dragAndDrops, ex, singleTokens) => ({
+    state => state.tokensNumber,
+    (dragAndDrops, ex, singleTokens, tokensNumber,
+    ) => ({
         dragAndDrops,
         ex,
-        singleTokens
+        singleTokens,
+        tokensNumber,
     })
 );
 const mapActionsToProps = {

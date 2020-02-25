@@ -44,10 +44,7 @@ class Classification extends Component
           this.props.onUpdateAlert(alert);
         } else if (selectedHeaders.length)
         {
-          if (!this.props.singleTokens.length)
-          {
-            this.props.onSingleTokensRequest(selectedHeadersLabels);
-          }
+          this.props.onSingleTokensRequest(selectedHeadersLabels);
         }
       } else
       {

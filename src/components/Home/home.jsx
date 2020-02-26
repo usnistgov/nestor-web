@@ -51,11 +51,12 @@ class Home extends Component
           </button>
           <br />
           <br />
-          <Button
+          <button className="btn-dark"
             onClick={ this.handleShowModal }
-            class="btn btn-primary ctn"
             label="Open Project">
-          </Button>
+            Open Project
+          </button>
+
         </div>
         <Modal
           show={ this.state.showModal }

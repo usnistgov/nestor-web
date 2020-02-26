@@ -22,7 +22,6 @@ class SingleWord extends Component
   };
   componentDidMount()
   {
-    console.log(this.props.singleTokens);
     //debugger;
     var alert = {
       showAlert: false,
@@ -44,8 +43,6 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
-    console.log(this.prevProps);
-    console.log(this.props.singleTokens);
     //debugger;
     if (prevProps.match.params.id !== this.props.match.params.id)
     {

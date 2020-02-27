@@ -5,9 +5,6 @@ import Home from "./components/Home/home";
 import NavBar from "./components/Home/navbar";
 import Error from "./components/CommonComponents/Error/error";
 import Dashboard from "./components/Dashboard/dashboard";
-/*import Footer from "./components/footer";
-import Features from "./components/features";
-import About from "./components/about";*/
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
 import SaveComponent from "./components/SaveComponent/SaveComponent";
 

@@ -133,11 +133,13 @@ const mapStateToProps = createSelector(
   state => state.headers,
   state => state.singleTokens,
   state => state.tokensNumber,
-  (dragAndDrops, headers, singleTokens, tokensNumber) => ({
+  state => state.projectName,
+  (dragAndDrops, headers, singleTokens, tokensNumber, projectName) => ({
     dragAndDrops,
     headers,
     singleTokens,
-    tokensNumber
+    tokensNumber,
+    projectName
   })
 );
 const mapActionsToProps = {

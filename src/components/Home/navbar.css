@@ -39,5 +39,11 @@ nav ul li {
   border: 2px solid green; 
   text-align: center;
   margin-right:10px;
-  border-radius: 10px;;
+  border-radius: 10px;
+}
+.project-title{
+  text-align:center;
+  margin:auto;
+  font-size: 18pt;
+  font-weight: bold;
 }

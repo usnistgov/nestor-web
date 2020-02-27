@@ -82,9 +82,6 @@ export function updateVocab(token)
       if (error)
       {
         console.log(error);
-      } else
-      {
-        console.log(res);
       }
     });
   };

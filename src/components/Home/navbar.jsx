@@ -29,7 +29,17 @@ const links = [
 ]
 class NavBar extends Component
 {
-  state = { isSaving: false };
+  state = { isSaving: false, projectName: "", projectNameUpdated: true };
+
+  componentDidUpdate()
+  {
+    let projectName;
+    projectName = this.props.dragAndDrops[ 0 ].file.name;
+    if (projectName && this.state.projectNameUpdated)
+    {
+      this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] })
+    }
+  }
 
   render()
   {
@@ -44,8 +54,9 @@ class NavBar extends Component
               { obj.label }
             </NavLink>
           )) }
+          <div className="project-title">{ this.state.projectName }</div>
           <NavLink key={ 1000 } className="nav-link save-button" exact={ false } to={ '/save' } onClick={ this.handleSaveProject } >
-            <i class="fas fa-save"></i>
+            <i className="fas fa-save"></i>
             &nbsp;&nbsp;
             { text.home.navbar.save }
           </NavLink>
@@ -84,6 +95,7 @@ class NavBar extends Component
       {
         console.log(doc);
       });
+
     } catch (error)
     {
       console.log(error);
@@ -96,12 +108,12 @@ const mapStateToProps = createSelector(
   state => state.export,
   state => state.singleTokens,
   state => state.tokensNumber,
-  (dragAndDrops, ex, singleTokens, tokensNumber,
+  (dragAndDrops, ex, singleTokens, tokensNumber
   ) => ({
     dragAndDrops,
     ex,
     singleTokens,
-    tokensNumber,
+    tokensNumber
   })
 );
 const mapActionsToProps = {

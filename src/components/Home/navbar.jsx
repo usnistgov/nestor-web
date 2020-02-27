@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./navbar.css";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import { NavLink } from "react-router-dom";
 import logo from "../.././assets/img/icon.png";
@@ -8,6 +8,8 @@ import text from "../../assets/language/en.js";
 import PouchDB from "pouchdb";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
+import Modal from 'react-bootstrap/Modal';
+
 
 
 const links = [
@@ -29,7 +31,7 @@ const links = [
 ]
 class NavBar extends Component
 {
-  state = { isSaving: false, projectName: "", projectNameUpdated: true };
+  state = { isSaving: false, projectName: '', projectNameUpdated: true, showModal: false };
 
   componentDidUpdate()
   {
@@ -54,19 +56,42 @@ class NavBar extends Component
               { obj.label }
             </NavLink>
           )) }
-          <div className="project-title">{ this.state.projectName }</div>
-          <NavLink key={ 1000 } className="nav-link save-button" exact={ false } to={ '/save' } onClick={ this.handleSaveProject } >
+          <div className="project-title"><h4>{ this.state.projectName }</h4></div>
+          <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ this.state.projectName === '' } >
             <i className="fas fa-save"></i>
-            &nbsp;&nbsp;
+            &nbsp; &nbsp;
             { text.home.navbar.save }
-          </NavLink>
+          </Button>
         </Nav>
       </Navbar>
-    </div>)
+      <Modal
+        show={ this.state.showModal }
+        onHide={ this.handleHideModal }>
+        <Modal.Header>
+          <Modal.Title>
+            <i className="fas fa-save"></i>
+            &nbsp;
+            Save succcessful</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Your project has beeen successfully saved. Next time, you can open the project using the dedicated button on the home page.
+        </Modal.Body>
+      </Modal>
+    </div >)
   }
+
+  handleHideModal = () =>
+  {
+    this.setState({ showModal: false });
+  };
+  handleShowModal = () =>
+  {
+    this.setState({ showModal: true });
+  };
 
   handleSaveProject = () =>
   {
+    this.handleShowModal();
     try
     {
       const multi = this.props.ex.multi;

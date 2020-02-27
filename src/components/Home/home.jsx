@@ -2,20 +2,20 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./home.css";
 import text from "../../assets/language/en.js";
-import Button from "../CommonComponents/Button/button";
 import PouchDB from "pouchdb";
 import Papa from "papaparse";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { openProject } from "../Home/homeAction";
-import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction"
+import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction";
 import { updateSingleTokens, singleTokensRequest, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
 import { updateHeaders } from "../TaggingTool/Settings/Headers/headersAction";
-import { headersRequest } from "../TaggingTool/Settings/Headers/headersAction"
-import { initReport } from "../TaggingTool/Report/reportAction"
-
+import { headersRequest } from "../TaggingTool/Settings/Headers/headersAction";
+import { initReport } from "../TaggingTool/Report/reportAction";
+import Accordion from 'react-bootstrap/Accordion'
+import Card from 'react-bootstrap/Card'
+import Button from "react-bootstrap/Button"
 
 class Home extends Component
 {
@@ -51,27 +51,40 @@ class Home extends Component
           </button>
           <br />
           <br />
-          <button className="btn-dark"
+          <button className="btn-light"
             onClick={ this.handleShowModal }
             label="Open Project">
-            Open Project
+            Manage Projects
           </button>
 
         </div>
         <Modal
           show={ this.state.showModal }
           onHide={ this.handleHideModal }>
-          <Modal.Header closeButton>
-            <Modal.Title>Select the project you want to open in the list below</Modal.Title>
+          <Modal.Header>
+            <Modal.Title><i className="far fa-folder-open"></i>&nbsp;&nbsp;List of projects</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ListGroup variant="flush">
+            You can either select a project to open it or delete it by selecting the trash button.
+          <hr />
+            <Accordion defaultActiveKey="0">
               { this.state.listOfProjects.map((obj, i) =>
                 (
-                  <ListGroup.Item key={ i }
-                    onClick={ () => this.handleOpenProject(obj) }>{ obj }</ListGroup.Item>
+                  <Card bg="light" className="project-card" key={ i }>
+                    <Accordion.Toggle as={ Card.Header } eventKey={ i }>
+                      { obj }
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={ i }>
+                      <Card.Body className="flexbox">
+                        <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
+                        <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+
                 )) }
-            </ListGroup>
+
+            </Accordion>
           </Modal.Body>
         </Modal>
       </div >);
@@ -84,6 +97,31 @@ class Home extends Component
   {
     this.setState({ showModal: true });
   };
+
+  handleDeleteProject(projectName)
+  {
+    // TODO : implement this
+    window.db.get(projectName).then(function (doc)
+    {
+      return window.db.remove(doc);
+    }).catch((error) =>
+    {
+      console.log("an error occured : ".concat(error));
+    }).then(() =>
+    {
+
+      window.db = new PouchDB("testdatabase");
+      let tmpListOfProjects = [];
+      window.db.allDocs().then((result) =>
+      {
+        result.rows.forEach(element =>
+        {
+          tmpListOfProjects.push(element.id);
+        });
+        this.setState({ listOfProjects: tmpListOfProjects });
+      });
+    });
+  }
 
 
   handleOpenProject(projectName)
@@ -110,8 +148,9 @@ class Home extends Component
         {
           if (header.checked)
           {
-            selectedHeadersLabels.push(header.label);
+            return selectedHeadersLabels.push(header.label);
           }
+          return 0;
         })
         this.props.onOpenProject(Papa.unparse(currentProject.inputData.data), selectedHeadersLabels);
 

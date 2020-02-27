@@ -1,7 +1,6 @@
 .fullWidth{
   width:100%;
 }
-
 nav {
   padding: 0px !important;
   border-bottom: 1px solid #e5e9f2 !important;
@@ -32,18 +31,23 @@ nav ul li {
   font-weight: 600;
 }
 .save-button {
+  background-color: white !important;
   width:90px;
   color:green !important;
   margin-left: auto;
   order: 2;
-  border: 2px solid green; 
+  border: 2px solid green!important; 
   text-align: center;
   margin-right:10px;
   border-radius: 10px;
 }
 .project-title{
-  text-align:center;
   margin:auto;
-  font-size: 18pt;
-  font-weight: bold;
+}
+.fa-save{
+  color:green;
+}
+.save-button[disabled]
+{
+  cursor: not-allowed;
 }

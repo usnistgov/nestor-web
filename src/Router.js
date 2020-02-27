@@ -6,7 +6,6 @@ import NavBar from "./components/Home/navbar";
 import Error from "./components/CommonComponents/Error/error";
 import Dashboard from "./components/Dashboard/dashboard";
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
-import SaveComponent from "./components/SaveComponent/SaveComponent";
 
 const routes = [
   {
@@ -27,11 +26,6 @@ const routes = [
   {
     path: "/error",
     component: Error,
-    exact: false
-  },
-  {
-    path: "/save",
-    component: SaveComponent,
     exact: false
   }
 ];

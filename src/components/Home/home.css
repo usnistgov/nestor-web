@@ -11,6 +11,8 @@
   color: #fff;
   background-color: #343a40;
   border-color: #343a40;
+  border-radius:5px !important;
+
 }
 
 .btn-green {
@@ -31,3 +33,23 @@
   justify-content: center;
   align-items: center;
 }
+
+.btn-light{
+  text-decoration:none;
+  color:black;
+  background-color:white !important;
+  border:2px solid black !important;
+  border-radius:5px !important;
+}
+
+
+.flexbox{
+  margin-left:30px;
+  display: flex; 
+  align-content: space-between;
+}
+.project-card:hover{
+  background-color:rgba(255,255,255,0.9) !important;
+  cursor:pointer;
+}
+

@@ -276,7 +276,6 @@ class SingleWord extends Component
     });
     this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(tokens)));
     var index = tokens.findIndex(element => element.classification.color === "");
-    console.log(tokens);
     //debugger;
     if (index === -1)
     {

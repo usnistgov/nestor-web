@@ -64,6 +64,24 @@ class Api(object):
                 (tex.vocab_, empty_array, empty_array, empty_array, tex.scores_))
             self.__class__.vocab_single_df = pd.DataFrame(
                 data=data, columns=self.__class__.vocab_columns)
+
+            # 2. Compute multi tokens
+            if (self.__class__.raw_text.empty):
+                nlp_select = kex.NLPSelect(columns=headers)
+                self.__class__.raw_text = nlp_select.transform(
+                    self.__class__.df)
+            tex2 = kex.TokenExtractor(ngram_range=(2, 2))
+            vocab = kex.generate_vocabulary_df(tex)
+            replaced_text = kex.token_to_alias(self.__class__.raw_text, vocab)
+            toks2 = tex2.fit_transform(replaced_text)
+            tokens = [token for token in (tex2.vocab_).tolist()]
+            # 3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex2.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack(
+                (tex2.vocab_, empty_array, empty_array, empty_array, tex2.scores_))
+            self.__class__.vocab_multi_df = pd.DataFrame(
+                data=data, columns=self.__class__.vocab_columns)
             return tokens
         except Exception as e:
             print(e)

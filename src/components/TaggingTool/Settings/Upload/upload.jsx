@@ -152,7 +152,7 @@ class Upload extends Component
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
-  storeInputData = (file, history) =>
+  storeInputData = (file) =>
   {
     window.db = new PouchDB("testdatabase");
     let jsonToStore;
@@ -174,10 +174,9 @@ class Upload extends Component
         project_id: file.name,
         inputData: jsonToStore,
         headers: {},
-        singleToken: {},
-        multiToken: {},
-        vocab: {},
-        singleTokens: {}
+        singleTokens: {},
+        multiTokens: {},
+        tokensNumber: {}
       });
     }).then(function ()
     {

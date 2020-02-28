@@ -9,7 +9,8 @@ import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 import { openProject } from "../Home/homeAction";
 import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction";
-import { updateSingleTokens, singleTokensRequest, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
+import { updateSingleTokens, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
+import { updateMultiTokens } from "../TaggingTool/Tag/Multi/multiTokensAction";
 import { updateHeaders } from "../TaggingTool/Settings/Headers/headersAction";
 import { headersRequest } from "../TaggingTool/Settings/Headers/headersAction";
 import { initReport } from "../TaggingTool/Report/reportAction";
@@ -100,7 +101,6 @@ class Home extends Component
 
   handleDeleteProject(projectName)
   {
-    // TODO : implement this
     window.db.get(projectName).then(function (doc)
     {
       return window.db.remove(doc);
@@ -154,15 +154,28 @@ class Home extends Component
         })
         this.props.onOpenProject(Papa.unparse(currentProject.inputData.data), selectedHeadersLabels);
 
-
-        this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(currentProject.singleTokens)));
-        currentProject.singleTokens.forEach(token =>
+        if (currentProject.singleTokens)
         {
-          if (token.classification.label !== "")
+          this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(currentProject.singleTokens)));
+          currentProject.singleTokens.forEach(token =>
           {
-            this.props.onUpdateVocab(token);
-          }
-        });
+            if (token.classification.label !== "")
+            {
+              this.props.onUpdateVocab(token);
+            }
+          });
+        }
+        if (currentProject.multiTokens)
+        {
+          this.props.onUpdateMultiTokens(JSON.parse(JSON.stringify(currentProject.multiTokens)));
+          currentProject.multiTokens.forEach(token =>
+          {
+            if (token.classification.label !== "")
+            {
+              this.props.onUpdateVocab(token);
+            }
+          });
+        }
         this.props.history.push("/taggingTool/settings/overview");
       });
   }
@@ -170,13 +183,11 @@ class Home extends Component
 const mapStateToProps = createSelector(
   state => state.dragAndDrops,
   state => state.headers,
-  state => state.singleTokens,
   state => state.tokensNumber,
   state => state.projectName,
-  (dragAndDrops, headers, singleTokens, tokensNumber, projectName) => ({
+  (dragAndDrops, headers, tokensNumber, projectName) => ({
     dragAndDrops,
     headers,
-    singleTokens,
     tokensNumber,
     projectName
   })
@@ -185,10 +196,10 @@ const mapActionsToProps = {
   onOpenProject: openProject,
   onInitFileBox: initFileBox,
   onUpdateSingleTokens: updateSingleTokens,
+  onUpdateMultiTokens: updateMultiTokens,
   onUpdateHeaders: updateHeaders,
   onHeadersRequest: headersRequest,
   onInitReport: initReport,
-  onSingleTokensRequest: singleTokensRequest,
   onUpdateVocab: updateVocab
 };
 export default connect(

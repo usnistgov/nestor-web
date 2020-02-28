@@ -94,18 +94,15 @@ class NavBar extends Component
     this.handleShowModal();
     try
     {
-      const multi = this.props.ex.multi;
-      const single = this.props.ex.single;
-      const output = this.props.ex.output;
+      console.log(this.props);
       const singleTokens = this.props.singleTokens;
+      const multi = this.props.multiTokens;
       const tokensNumber = this.props.tokensNumber;
       window.db = new PouchDB("testdatabase");
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
       window.db.get(projectId).then(function (doc)
       {
-        doc.multiToken = multi;
-        doc.singleToken = single;
-        doc.vocab = output;
+        doc.multiTokens = JSON.parse(JSON.stringify(multi));
         doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
         doc.tokensNumber = tokensNumber;
         return window.db.put(doc);
@@ -133,12 +130,14 @@ const mapStateToProps = createSelector(
   state => state.export,
   state => state.singleTokens,
   state => state.tokensNumber,
-  (dragAndDrops, ex, singleTokens, tokensNumber
+  state => state.multiTokens,
+  (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens
   ) => ({
     dragAndDrops,
     ex,
     singleTokens,
-    tokensNumber
+    tokensNumber,
+    multiTokens
   })
 );
 const mapActionsToProps = {

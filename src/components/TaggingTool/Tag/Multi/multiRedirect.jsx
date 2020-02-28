@@ -17,7 +17,8 @@ class MultiRedirect extends Component
       alertMessage: text.taggingTool.alerts.tagging.message
     };
     this.props.onUpdateAlert(alert);
-    if (this.props.singleTokens.length > 1)
+    console.log(this.props);
+    if (this.props.singleTokens.length > 1 && this.props.multiTokens.length === 0)
     {
       this.props.onMultiTokensRequest();
     } else
@@ -32,7 +33,7 @@ class MultiRedirect extends Component
     if (this.props.multiTokens.length > 1)
     {
       var index = [ ...this.props.multiTokens ].findIndex(
-        element => !element.alias
+        element => element.classification.color === ""
       );
       if (index === -1)
       {
@@ -45,14 +46,8 @@ class MultiRedirect extends Component
   {
     if (prevProps.multiTokens !== this.props.multiTokens)
     {
-      /* var index = [...this.props.multiTokens]
-        .reverse()
-        .findIndex(element => element.alias);
-      var count = [...this.props.multiTokens].length - 1;
-      var finalIndex = index >= 0 ? count - index : index;
-      index = finalIndex === -1 ? 0 : finalIndex; */
       var index = [ ...this.props.multiTokens ].findIndex(
-        element => !element.alias
+        element => element.classification.color === ""
       );
       this.props.history.push("/taggingTool/tag/multi/" + index);
     }

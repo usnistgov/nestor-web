@@ -18,13 +18,6 @@ class SingleRedirect extends Component
     this.props.onUpdateAlert(alert);
     if (this.props.singleTokens.length > 1)
     {
-      /* var index = [...this.props.singleTokens]
-        .reverse()
-        .findIndex(element => element.alias);
-      var count = [...this.props.singleTokens].length - 1;
-      var finalIndex = index >= 0 ? count - index : index;
-      index = finalIndex === -1 ? 0 : finalIndex; */
-
       var index = [ ...this.props.singleTokens ].findIndex(
         element => element.classification.color === ""
       );

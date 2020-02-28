@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import List from "../TagComponents/list";
 import text from "../../../../assets/language/en.js";
+import { ProgressBar } from 'react-bootstrap';
+import { getCompleteness } from '../../Report/reportAction';
 
 class MultiWord extends Component
 {
@@ -17,6 +19,7 @@ class MultiWord extends Component
   componentDidMount()
   {
     this.initTokenWithSynonymAlias(this.props.match.params.id);
+    this.props.onGetCompleteness();
   }
   shouldComponentUpdate(nextProps)
   {
@@ -34,6 +37,7 @@ class MultiWord extends Component
       this.props.onUpdateVocab(
         this.props.multiTokens[ prevProps.match.params.id ]
       );
+      this.props.onGetCompleteness();
     }
   }
   render()
@@ -42,6 +46,32 @@ class MultiWord extends Component
       <div className="tag-container">
         <div className="tag-section">
           <div className="token-tagging-section">
+            <ProgressBar
+              animated
+              striped
+              variant="success"
+              now={
+                this.props.report.total === this.props.report.empty
+                  ? 0
+                  : ((this.props.report.total -
+                    this.props.report.empty -
+                    this.props.report.complete) /
+                    this.props.report.total) *
+                  100
+              }
+              label={
+                this.props.report.total === this.props.report.empty
+                  ? 0
+                  : (
+                    ((this.props.report.total -
+                      this.props.report.empty -
+                      this.props.report.complete) /
+                      this.props.report.total) *
+                    100
+                  ).toFixed(2) + " %"
+              }
+              key={ 1 }
+            />
             <div className="alias">
               <TagButton
                 value={
@@ -331,13 +361,16 @@ const mapStateToProps = createSelector(
   state => state.multiTokens,
   state => state.singleTokens,
   state => state.classification,
-  (multiTokens, singleTokens, classification) => ({
+  state => state.report,
+  (multiTokens, singleTokens, classification, report) => ({
     multiTokens,
+    report,
     singleTokens,
     classification
   })
 );
 const mapActionsToProps = {
+  onGetCompleteness: getCompleteness,
   onUpdateMultiTokens: updateMultiTokens,
   onUpdateVocab: updateVocab
 };

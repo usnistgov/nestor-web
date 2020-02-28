@@ -43,11 +43,9 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
-    //debugger;
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
-      //debugger;
       this.props.onUpdateVocab(
         this.props.singleTokens[ prevProps.match.params.id ]
       );

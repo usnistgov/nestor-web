@@ -50,7 +50,6 @@ export function setTokens(tokensList)
 }
 export function multiTokensRequest(headers)
 {
-  console.log('multitokensRequest');
   return dispatch =>
   {
     const zerorpc = window.zero;

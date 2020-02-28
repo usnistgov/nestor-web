@@ -120,14 +120,8 @@ class Home extends Component
         });
         this.setState({ listOfProjects: tmpListOfProjects });
       });
-      const dragAndDrops = [ ...this.props.dragAndDrops ];
-      dragAndDrops[ 0 ].file.name = "";
-      const headers = this.props.headers;
-      headers.headers = [];
-      const tokensNumber = this.props.tokensNumber;
-      tokensNumber.value = 0;
-      tokensNumber.maxValue = 0;
-      console.log(this.props);
+      window.location.reload(false);
+
     });
   }
 

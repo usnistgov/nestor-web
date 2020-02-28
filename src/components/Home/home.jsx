@@ -66,26 +66,29 @@ class Home extends Component
             <Modal.Title><i className="far fa-folder-open"></i>&nbsp;&nbsp;List of projects</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            You can either select a project to open it or delete it by selecting the trash button.
-          <hr />
-            <Accordion defaultActiveKey="0">
-              { this.state.listOfProjects.map((obj, i) =>
-                (
-                  <Card bg="light" className="project-card" key={ i }>
-                    <Accordion.Toggle as={ Card.Header } eventKey={ i }>
-                      { obj }
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey={ i }>
-                      <Card.Body className="flexbox">
-                        <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
-                        <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
-                      </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-
-                )) }
-
-            </Accordion>
+            { this.state.listOfProjects.length !== 0 ? <div>
+              You can either select a project to open it or delete it by selecting the trash button.
+            <hr />
+              <Accordion defaultActiveKey="0">
+                { this.state.listOfProjects.map((obj, i) =>
+                  (
+                    <Card bg="light" className="project-card" key={ i }>
+                      <Accordion.Toggle as={ Card.Header } eventKey={ i }>
+                        { obj }
+                      </Accordion.Toggle>
+                      <Accordion.Collapse eventKey={ i }>
+                        <Card.Body className="flexbox">
+                          <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
+                          <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
+                        </Card.Body>
+                      </Accordion.Collapse>
+                    </Card>
+                  )) }
+              </Accordion></div>
+              : <div>
+                There is no project yet in your local database. You should first upload a csv file and then you can save projects to use this menu and open them.
+              </div>
+            }
           </Modal.Body>
         </Modal>
       </div >);
@@ -121,7 +124,6 @@ class Home extends Component
         this.setState({ listOfProjects: tmpListOfProjects });
       });
       window.location.reload(false);
-
     });
   }
 

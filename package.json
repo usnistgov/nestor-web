@@ -38,13 +38,15 @@
   "scripts": {
     "init": "npm install && ./node_modules/.bin/electron-rebuild",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-react": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-pack": "react-scripts build --em.main=build/electron.js",
+    "build-electron": " ./node_modules/.bin/electron-packager . --overwrite --all",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build-python": "pyinstaller api.spec --additional-hooks-dir=. --distpath pythondist --noconfirm",
+    "build": "npm run build-react && npm run build-python && npm run build-electron"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -65,9 +67,9 @@
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
-    "electron": "^5.0.13",
+    "electron": "^5.0.11",
     "electron-builder": "^20.44.4",
-    "electron-packager": "^14.2.0",
+    "electron-packager": "^14.0.6",
     "electron-rebuild": "^1.10.0",
     "typescript": "^3.7.5"
   },

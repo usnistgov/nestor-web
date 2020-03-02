@@ -1,11 +1,12 @@
-# -*- mode: python -*-
+# -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
 
 
-a = Analysis(['python\\api.py'],
-             pathex=['C:\\Users\\snl20\\Documents\\app'],
-             binaries=[],
+a = Analysis(['python/api.py'],
+             pathex=['/Users/cjb15/Documents/nestor-web'],
+             binaries=[('/System/Library/Frameworks/Tk.framework/Tk', 'tk'),
+               ('/System/Library/Frameworks/Tcl.framework/Tcl', 'tcl')],
              datas=[],
              hiddenimports=[],
              hookspath=['.'],
@@ -33,4 +34,5 @@ coll = COLLECT(exe,
                a.datas,
                strip=False,
                upx=True,
+               upx_exclude=[],
                name='api')

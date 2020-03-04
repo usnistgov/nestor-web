@@ -42,11 +42,13 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build-electron": " ./node_modules/.bin/electron-packager . --overwrite --all",
+    "build-electron-windows": "./node_modules/.bin/electron-packager . --overwrite  --platform=win32 --arch=x64 --icon=build/icon.ico",
+    "build-electron-macos": "./node_modules/.bin/electron-packager . --overwrite   --platform==darwin --arch=x64 --icon=build/icon.icns",
+    "build-electron-linux": "./node_modules/.bin/electron-packager . --overwrite   --platform==deb --arch=x64 --icon=build/icon.icns",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "build-python": "pyinstaller api.spec --additional-hooks-dir=. --distpath pythondist --noconfirm",
-    "build": "npm run build-react && npm run build-python && npm run build-electron"
+    "build": "npm run build-react && npm run build-python && npm run build-electron-windows"
   },
   "eslintConfig": {
     "extends": "react-app"

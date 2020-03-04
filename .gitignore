@@ -33,6 +33,7 @@ nestor-win32-x64.7z
 nestor-win32-x64.zip
 # packaged version windows
 nestor-win32-x64
+nestor-darwin-x64/
 .vscode/
 /dist
 

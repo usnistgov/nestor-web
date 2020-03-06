@@ -123,7 +123,7 @@ class Home extends Component
         });
         this.setState({ listOfProjects: tmpListOfProjects });
       });
-      window.location.reload(false);
+      this.handleHideModal();
     });
   }
 

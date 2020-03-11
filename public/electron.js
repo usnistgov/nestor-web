@@ -99,9 +99,12 @@ const createPyProc = () =>
 
 const exitPyProc = () =>
 {
-  pyProc.kill();
-  pyProc = null;
-  pyPort = null;
+  if (pyProc)
+  {
+    pyProc.kill();
+    pyProc = null;
+    pyPort = null;
+  }
 };
 
 app.on("ready", createPyProc);

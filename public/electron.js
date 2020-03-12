@@ -4,6 +4,10 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 const ipcMain = electron.ipcMain;
+const log = require('electron-log');
+ 
+log.info('Hello, log');
+log.warn('Some problem appears');
 
 let mainWindow = null;
 
@@ -54,8 +58,10 @@ const selectPort = () =>
 
 const guessOs = () =>
 {
-  const win = path.join(__dirname, "../pythondist/api/api.exe");
-  const linux = path.join(__dirname, "../pythondist/api/api");
+  const win = path.join(process.resourcesPath, "pythondist/api/api.exe");
+  const linux = path.join(process.env.PORTABLE_EXECUTABLE_DIR, "../pythondist/api/api");
+
+  log.info( require("fs").existsSync(win) ? win : linux);
   return require("fs").existsSync(win) ? win : linux;
 };
 
@@ -63,6 +69,7 @@ const createPyProc = () =>
 {
   let port = "" + selectPort();
   let script = isDev ? path.join(__dirname, "/../python/api.py") : guessOs();
+  log.info(script);
   pyProc = isDev
     ? require("child_process").spawn("python", [ script, port ])
     : require("child_process").execFile(script, [ port ], function (

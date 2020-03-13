@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { getHeaders, updateHeaders, headersRequest } from "./headersAction";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { createSelector } from "reselect";
+import PouchDB from "pouchdb";
 
 const empty = [ text.taggingTool.settings.headers.emptyTooltip ];
 
@@ -25,7 +26,11 @@ class Headers extends Component
     this.props.onUpdateAlert(alert);
     if (this.props.dragAndDrops.length)
     {
-      if (this.props.dragAndDrops[ 0 ].file)
+      if (this.props.headers.headers.length)
+      {
+        const emptyColumns = [ ...this.props.headers.emptyColumns ];
+        this.props.onUpdateHeaders(this.props.headers.headers, emptyColumns);
+      } else if (this.props.dragAndDrops[ 0 ].file)
       {
         this.props.onHeadersRequest();
       } else
@@ -46,7 +51,6 @@ class Headers extends Component
       };
       this.props.onUpdateAlert(alert);
     }
-    console.log(this.props);
   }
   render()
   {
@@ -127,6 +131,7 @@ class Headers extends Component
     } else if (selectedHeaders.length)
     {
       history.push("/taggingTool/settings/classification");
+      this.storeSelectedHeaders(headers);
     }
   };
   handleCheck = header =>
@@ -148,6 +153,26 @@ class Headers extends Component
       this.props.onUpdateHeaders(headers, emptyColumns);
     }
   };
+  storeSelectedHeaders(headers)
+  {
+    window.db = new PouchDB("testdatabase");
+    const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
+    window.db.get(projectId).then(function (doc)
+    {
+      doc.headers = headers;
+      return window.db.put(doc);
+    }).catch(function (err)
+    {
+      console.log('cant store headers of unknown doc')
+    }).then(function ()
+    {
+      return window.db.get(projectId);
+    }).then(function (doc)
+    {
+      console.log(doc);
+    });
+
+  }
 }
 const mapStateToProps = createSelector(
   state => state.headers,

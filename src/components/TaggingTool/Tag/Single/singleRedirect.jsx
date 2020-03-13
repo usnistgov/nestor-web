@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
-import { updateSingleTokens, singleTokensRequest } from "./singleTokensAction";
+import { updateSingleTokens } from "./singleTokensAction";
 import Alert from "../../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import text from "../../../../assets/language/en.js";
@@ -18,15 +18,8 @@ class SingleRedirect extends Component
     this.props.onUpdateAlert(alert);
     if (this.props.singleTokens.length > 1)
     {
-      /* var index = [...this.props.singleTokens]
-        .reverse()
-        .findIndex(element => element.alias);
-      var count = [...this.props.singleTokens].length - 1;
-      var finalIndex = index >= 0 ? count - index : index;
-      index = finalIndex === -1 ? 0 : finalIndex; */
-
       var index = [ ...this.props.singleTokens ].findIndex(
-        element => !element.alias
+        element => element.classification.color === ""
       );
       if (index === -1)
       {
@@ -83,7 +76,6 @@ const mapStateToProps = createSelector(
   })
 );
 const mapActionsToProps = {
-  onSingleTokensRequest: singleTokensRequest,
   onUpdateSingleTokens: updateSingleTokens,
   onUpdateAlert: updateAlert
 };

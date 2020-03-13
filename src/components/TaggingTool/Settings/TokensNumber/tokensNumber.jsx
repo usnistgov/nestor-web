@@ -7,20 +7,25 @@ import Alert from "../../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { singleTokensRequest } from "../../Tag/Single/singleTokensAction";
 import { connect } from "react-redux";
-import {
+import
+{
   getTokensNumber,
   updateSingleTokensNumber,
   initTokensNumber
 } from "./tokensNumberAction";
 import { createSelector } from "reselect";
 
-class TokensNumber extends Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.singleTokens !== this.props.singleTokens) {
+class TokensNumber extends Component
+{
+  componentDidUpdate(prevProps)
+  {
+    if (prevProps.singleTokens !== this.props.singleTokens)
+    {
       this.props.onGetTokensNumber(this.props.singleTokens.length);
     }
   }
-  componentDidMount() {
+  componentDidMount()
+  {
     ////debugger;
     var alert = {
       showAlert: false,
@@ -28,21 +33,27 @@ class TokensNumber extends Component {
       alertMessage: text.taggingTool.alerts.upload.message
     };
     this.props.onUpdateAlert(alert);
-    if (!this.props.tokensNumber.value) {
+    if (!this.props.tokensNumber.value)
+    {
       //debugger;
-      if (this.props.dragAndDrops.length) {
+      if (this.props.dragAndDrops.length)
+      {
         //debugger;
-        if (this.props.dragAndDrops[0].file) {
+        if (this.props.dragAndDrops[ 0 ].file)
+        {
           //debugger;
-          const headers = [...this.props.headers.headers];
+          const headers = [ ...this.props.headers.headers ];
           var selectedHeadersLabels = [];
-          var selectedHeaders = headers.filter(header => {
+          var selectedHeaders = headers.filter(header =>
+          {
             return header.checked === true;
           });
-          selectedHeaders.forEach(header => {
+          selectedHeaders.forEach(header =>
+          {
             selectedHeadersLabels.push(header.label);
           });
-          if (!selectedHeaders.length && !this.props.alert.showAlert) {
+          if (!selectedHeaders.length && !this.props.alert.showAlert)
+          {
             //debugger;
             let alert = {
               showAlert: true,
@@ -50,11 +61,16 @@ class TokensNumber extends Component {
               alertMessage: text.taggingTool.alerts.headers.message
             };
             this.props.onUpdateAlert(alert);
-          } else if (selectedHeaders.length) {
+          } else if (selectedHeaders.length)
+          {
             //debugger;
-            this.props.onSingleTokensRequest(selectedHeadersLabels);
+            if (this.props.singleTokens.length)
+            {
+              this.props.onSingleTokensRequest(selectedHeadersLabels);
+            }
           }
-        } else {
+        } else
+        {
           //debugger;
           let alert = {
             showAlert: true,
@@ -63,7 +79,8 @@ class TokensNumber extends Component {
           };
           this.props.onUpdateAlert(alert);
         }
-      } else {
+      } else
+      {
         //debugger;
         let alert = {
           showAlert: true,
@@ -75,39 +92,42 @@ class TokensNumber extends Component {
     }
   }
 
-  render() {
+  render()
+  {
     return (
       <React.Fragment>
-        {this.props.alert.showAlert && (
+        { this.props.alert.showAlert && (
           <Alert
-            alertHeader={this.props.alert.alertHeader}
-            alertMessage={this.props.alert.alertMessage}
+            alertHeader={ this.props.alert.alertHeader }
+            alertMessage={ this.props.alert.alertMessage }
             styleColor="alert alert-danger"
-            onDelete={this.handleDelete}
+            onDelete={ this.handleDelete }
           />
-        )}
+        ) }
         <Title
-          title={text.taggingTool.settings.tokens.title}
-          informationMessage={text.taggingTool.settings.tokens.titleInfo}
+          title={ text.taggingTool.settings.tokens.title }
+          informationMessage={ text.taggingTool.settings.tokens.titleInfo }
         />
         <DynamicSlider
-          slider={this.props.tokensNumber}
-          onUpdate={this.handleUpdate}
+          slider={ this.props.tokensNumber }
+          onUpdate={ this.handleUpdate }
         />
         <Button
-          onClick={this.handleContinue}
+          onClick={ this.handleContinue }
           class="btn btn-primary ctn"
           label="Continue"
         />
       </React.Fragment>
     );
   }
-  handleDelete = () => {
+  handleDelete = () =>
+  {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
-  handleUpdate = e => {
+  handleUpdate = e =>
+  {
     e.preventDefault();
     e.persist();
     const tokensNumber = { ...this.props.tokensNumber };
@@ -115,11 +135,14 @@ class TokensNumber extends Component {
     tokensNumber.value = value;
     this.props.onUpdateSingleTokensNumber(tokensNumber);
   };
-  handleContinue = history => {
-    if (this.props.tokensNumber.value) {
+  handleContinue = history =>
+  {
+    if (this.props.tokensNumber.value)
+    {
       //put same checkings before redirecting
       history.push("/taggingTool/settings/overview");
-    } else if (!this.props.alert.showAlert) {
+    } else if (!this.props.alert.showAlert)
+    {
       var alert = { ...this.props.alert };
       alert.showAlert = true;
       this.props.onUpdateAlert(alert);

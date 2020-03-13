@@ -30,6 +30,7 @@ class SingleWord extends Component
     };
     this.props.onUpdateAlert(alert);
     this.initTokenWithSynonymAlias(this.props.match.params.id);
+    this.props.onGetCompleteness();
   }
   shouldComponentUpdate(nextProps)
   {
@@ -42,11 +43,9 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
-    //debugger;
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
-      //debugger;
       this.props.onUpdateVocab(
         this.props.singleTokens[ prevProps.match.params.id ]
       );
@@ -273,8 +272,8 @@ class SingleWord extends Component
       syn.notes = tokens[ i ].notes;
       tokens[ syn.index ] = syn;
     });
-    this.props.onUpdateSingleTokens(tokens);
-    var index = tokens.findIndex(element => !element.alias);
+    this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(tokens)));
+    var index = tokens.findIndex(element => element.classification.color === "");
     //debugger;
     if (index === -1)
     {
@@ -435,6 +434,7 @@ const mapStateToProps = createSelector(
   state => state.pattern,
   state => state.similarity,
   state => state.report,
+  state => state.dragAndDrops,
   (
     singleTokens,
     classification,
@@ -442,7 +442,8 @@ const mapStateToProps = createSelector(
     alert,
     pattern,
     similarity,
-    report
+    report,
+    dragAndDrops
   ) => ({
     singleTokens,
     classification,
@@ -450,7 +451,8 @@ const mapStateToProps = createSelector(
     alert,
     pattern,
     similarity,
-    report
+    report,
+    dragAndDrops
   })
 );
 const mapActionsToProps = {

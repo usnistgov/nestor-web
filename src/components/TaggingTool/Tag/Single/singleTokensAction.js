@@ -4,14 +4,16 @@ export const UPDATE_SINGLE_TOKENS = "singleTokens:updateSingleTokens";
 export const UPDATE_VOCAB = "singleTokens:updateSingleVocab";
 export const UPDATE_SINGLE_TOKEN = "singleTokens:updateSingleToken";
 
-export function showError(error) {
+export function showError(error)
+{
   console.log(error);
   return {
     type: API_REQUEST_ERROR,
     payload: { singleTokens: "ERROR" }
   };
 }
-export function updateSingleToken(tokens) {
+export function updateSingleToken(tokens)
+{
   return {
     type: UPDATE_SINGLE_TOKEN,
     payload: {
@@ -19,7 +21,8 @@ export function updateSingleToken(tokens) {
     }
   };
 }
-export function updateSingleTokens(tokens) {
+export function updateSingleTokens(tokens)
+{
   return {
     type: UPDATE_SINGLE_TOKENS,
     payload: {
@@ -27,9 +30,11 @@ export function updateSingleTokens(tokens) {
     }
   };
 }
-export function setTokens(tokensList) {
+export function setTokens(tokensList)
+{
   const tokens = [];
-  tokensList.forEach((element, index) => {
+  tokensList.forEach((element, index) =>
+  {
     tokens.push({
       index: index,
       label: element,
@@ -42,34 +47,41 @@ export function setTokens(tokensList) {
     });
   });
   return updateSingleTokens(tokens);
+
 }
-export function singleTokensRequest(headers) {
-  return dispatch => {
+export function singleTokensRequest(headers)
+{
+  return dispatch =>
+  {
     const zerorpc = window.zero;
     let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
     client.connect("tcp://127.0.0.1:4242");
 
-    client.invoke("single_tokens", headers, (error, res) => {
-      if (error) {
+    client.invoke("single_tokens", headers, (error, res) =>
+    {
+      if (error)
+      {
         console.log(error);
-      } else {
+      } else
+      {
         dispatch(setTokens(res));
       }
     });
   };
 }
 
-export function updateVocab(token) {
-  return dispatch => {
+export function updateVocab(token)
+{
+  return dispatch =>
+  {
     const zerorpc = window.zero;
     let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
     client.connect("tcp://127.0.0.1:4242");
-    console.log(token);
-    client.invoke("update_data", token, (error, res) => {
-      if (error) {
+    client.invoke("update_data", token, (error, res) =>
+    {
+      if (error)
+      {
         console.log(error);
-      } else {
-        console.log(res);
       }
     });
   };

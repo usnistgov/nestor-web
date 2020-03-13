@@ -5,9 +5,6 @@ import Home from "./components/Home/home";
 import NavBar from "./components/Home/navbar";
 import Error from "./components/CommonComponents/Error/error";
 import Dashboard from "./components/Dashboard/dashboard";
-/*import Footer from "./components/footer";
-import Features from "./components/features";
-import About from "./components/about";*/
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
 
 const routes = [
@@ -33,22 +30,24 @@ const routes = [
   }
 ];
 
-class Router extends Component {
-  render() {
+class Router extends Component
+{
+  render()
+  {
     return (
       <BrowserRouter>
         <React.Fragment>
           <NavBar />
           <div className="content">
             <Switch>
-              {routes.map((obj, i) => (
+              { routes.map((obj, i) => (
                 <Route
-                  key={i}
-                  exact={obj.exact}
-                  path={obj.path}
-                  component={obj.component}
+                  key={ i }
+                  exact={ obj.exact }
+                  path={ obj.path }
+                  component={ obj.component }
                 />
-              ))}
+              )) }
             </Switch>
           </div>
           <Redirect to="/" />

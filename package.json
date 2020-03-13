@@ -44,13 +44,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build-electron-windows": "./node_modules/.bin/electron-packager . --overwrite  --platform=win32 --arch=x64 --icon=build/icon.ico --asar --prune=true --out=release-builds",
-    "build-electron-macos": "./node_modules/.bin/electron-packager . --overwrite   --platform=darwin --arch=x64 --icon=build/icon.icns --prune=true --out=release-builds",
-    "build-electron-linux": "./node_modules/.bin/electron-packager . --overwrite   --platform=linux --arch=x64 --icon=build/icon.icns --asar --prune=true --out=release-builds",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder --linux",
     "build-python": "pyinstaller api.spec --additional-hooks-dir=. --distpath pythondist --noconfirm",
-    "build": "npm run build-react && npm run build-python && npm run build-electron-windows"
+    "build": "npm run build-react && npm run build-python && npm run dist"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -83,7 +79,7 @@
       "build/**/*",
       "node_modules/**/*"
     ],
-    "extraResources":"pythondist/**/*",
+    "extraResources": "pythondist/**/*",
     "directories": {
       "buildResources": "assets"
     },

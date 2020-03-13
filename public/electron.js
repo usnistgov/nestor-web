@@ -5,7 +5,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 const ipcMain = electron.ipcMain;
 const log = require('electron-log');
- 
+
 log.info('Hello, log');
 log.warn('Some problem appears');
 
@@ -59,9 +59,9 @@ const selectPort = () =>
 const guessOs = () =>
 {
   const win = path.join(process.resourcesPath, "pythondist/api/api.exe");
-  const linux = path.join(process.env.PORTABLE_EXECUTABLE_DIR, "../pythondist/api/api");
+  const linux = path.join(process.resourcesPath, "pythondist/api/api");
 
-  log.info( require("fs").existsSync(win) ? win : linux);
+  log.info(require("fs").existsSync(win) ? win : linux);
   return require("fs").existsSync(win) ? win : linux;
 };
 

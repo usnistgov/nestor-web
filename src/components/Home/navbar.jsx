@@ -7,7 +7,7 @@ import logo from "../.././assets/img/icon.png";
 import text from "../../assets/language/en.js";
 import PouchDB from "pouchdb";
 import { createSelector } from "reselect";
-import { connect } from "react-redux";
+import { connect, connectAdvanced } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -56,7 +56,7 @@ class NavBar extends Component
               { obj.label }
             </NavLink>
           )) }
-          <div className="project-title"><h4>{ this.state.projectName }</h4></div>
+          <div className="project-title"><h4>{ this.handleDisplayProjectName(this.state.projectName) }</h4></div>
           <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ this.state.projectName === '' } >
             <i className="fas fa-save"></i>
             &nbsp; &nbsp;
@@ -91,6 +91,14 @@ class NavBar extends Component
         </Modal.Body>
       </Modal>
     </div >)
+  }
+
+  handleDisplayProjectName = (projectName) => {
+    if(projectName.length >= 10){
+      return projectName.substring(0,10).concat("...");
+    }else {
+      return projectName;
+    }
   }
 
   handleHideModal = () =>

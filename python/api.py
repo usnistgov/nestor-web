@@ -258,13 +258,11 @@ class Api(object):
 
     def clearAllAttributes(self):
         try:
-            print('clearing all attributes')
             self.__class__.df = pd.DataFrame([])
             self.__class__.vocab_single_df = pd.DataFrame([])
             self.__class__.vocab_multi_df = pd.DataFrame([])
             self.__class__.output_df = pd.DataFrame([])
             self.__class__.raw_text = pd.Series(0, [])
-            sys.stdout.flush()
         except Exception as e:
             print(e)
             sys.stdout.flush()

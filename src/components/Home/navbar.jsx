@@ -30,16 +30,25 @@ const links = [
 ]
 class NavBar extends Component
 {
-  state = { isSaving: false, projectName: '', projectNameUpdated: true, showModal: false };
+  state = { isSaving: false, projectName: '', projectNameUpdated: true, showModal: false, hasStartedTagging: false };
 
   componentDidUpdate()
   {
     let projectName;
     projectName = this.props.dragAndDrops[ 0 ].file.name;
+    const startedTagging = this.checkIfTagged();
+    console.log(startedTagging);
     if (projectName && this.state.projectNameUpdated)
     {
-      this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] })
+      this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ], hasStartedTagging: startedTagging });
+      console.log(startedTagging);
+      console.log(this.state.hasStartedTagging);
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    console.log("update : " +JSON.stringify((nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0) && nextProps !== this.props));
+    return (nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0) && nextProps !== this.props || nextState.showModal !== this.state.showModal;
   }
 
   render()
@@ -56,7 +65,7 @@ class NavBar extends Component
             </NavLink>
           )) }
           <div className="project-title"><h4>{ this.handleDisplayProjectName(this.state.projectName) }</h4></div>
-          <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ this.state.projectName === '' } >
+          <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ !this.state.hasStartedTagging } >
             <i className="fas fa-save"></i>
             &nbsp; &nbsp;
             { text.home.navbar.save }
@@ -90,6 +99,17 @@ class NavBar extends Component
         </Modal.Body>
       </Modal>
     </div >)
+  }
+
+  checkIfTagged = () => {
+    console.log(this.props.singleTokens);
+    console.log(this.props.singleTokens.length);
+    console.log(this.props.singleTokens.length !==0);
+    console.log(this.props.multiTokens);
+    console.log(this.props.multiTokens.length);
+    console.log(this.props.multiTokens.length !==0);
+    console.log(this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0);
+    return this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0; 
   }
 
   handleDisplayProjectName = (projectName) => {

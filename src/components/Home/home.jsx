@@ -24,6 +24,14 @@ class Home extends Component
     showModal: false,
     listOfProjects: []
   };
+  constructor(props){
+    super(props);
+    if (window.performance) {
+      if (performance.navigation.type === 1) {
+        this.props.onClearAllAttributes();
+      }
+    }
+  }
 
   componentDidMount()
   {

@@ -176,7 +176,7 @@ const mapStateToProps = createSelector(
   state => state.headers,
   (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens, headers
   ) => ({
-    dragAndDrops
+    dragAndDrops,
     headers,
     ex,
     singleTokens,

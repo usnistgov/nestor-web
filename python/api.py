@@ -256,6 +256,20 @@ class Api(object):
         return list(self.__class__.output_df.columns), self.__class__.output_df.to_json(orient='values', index=True), list(self.__class__.vocab_single_df.columns), self.__class__.vocab_single_df.to_json(orient='values'), list(self.__class__.vocab_multi_df.columns), self.__class__.vocab_multi_df.to_json(orient='values')
 
 
+    def clearAllAttributes(self):
+        try:
+            print('clearing all attributes')
+            self.__class__.df = pd.DataFrame([])
+            self.__class__.vocab_single_df = pd.DataFrame([])
+            self.__class__.vocab_multi_df = pd.DataFrame([])
+            self.__class__.output_df = pd.DataFrame([])
+            self.__class__.raw_text = pd.Series(0, [])
+            sys.stdout.flush()
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+
 def main():
 
     addr = 'tcp://127.0.0.1:4242'

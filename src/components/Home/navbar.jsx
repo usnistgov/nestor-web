@@ -126,7 +126,7 @@ class NavBar extends Component
       window.db = new PouchDB("testdatabase");
       let jsonToStore;
       const dragAndDrops = [ ...this.props.dragAndDrops ];
-      Papa.parse(dragAndDrops[ 0 ].file.blob, {
+      Papa.parse(dragAndDrops[ 0 ].file, {
         complete: function (results)
         {
           jsonToStore = results;
@@ -148,7 +148,7 @@ class NavBar extends Component
         return window.db.put(doc);
       }).catch(function (error)
       {
-        console.log(error);
+        console.log("creating new project : ".concat(projectId));
         return window.db.put({
           "_id": projectId,
           project_id: projectId,
@@ -176,7 +176,7 @@ const mapStateToProps = createSelector(
   state => state.headers,
   (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens, headers
   ) => ({
-    dragAndDrops,
+    dragAndDrops
     headers,
     ex,
     singleTokens,

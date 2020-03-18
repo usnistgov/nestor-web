@@ -33,3 +33,21 @@ export function openProject(json_string, headers)
         });
     };
 }
+
+export function clearAllAttributes()
+{
+
+    return dispatch =>
+    {
+        const zerorpc = window.zero;
+        let client = new zerorpc.Client();
+        client.connect("tcp://127.0.0.1:4242");
+        client.invoke("clearAllAttributes", (error, res) =>
+        {
+            if (error)
+            {
+                console.log(error);
+            }
+        });
+    };
+}

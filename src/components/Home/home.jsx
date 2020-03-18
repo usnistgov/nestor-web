@@ -7,7 +7,7 @@ import Papa from "papaparse";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
-import { openProject } from "../Home/homeAction";
+import { openProject, clearAllAttributes } from "../Home/homeAction";
 import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction";
 import { updateSingleTokens, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
 import { updateMultiTokens } from "../TaggingTool/Tag/Multi/multiTokensAction";
@@ -112,19 +112,27 @@ class Home extends Component
       console.log("an error occured : ".concat(error));
     }).then(() =>
     {
-
-      window.db = new PouchDB("testdatabase");
-      let tmpListOfProjects = [];
-      window.db.allDocs().then((result) =>
-      {
-        result.rows.forEach(element =>
-        {
-          tmpListOfProjects.push(element.id);
-        });
-        this.setState({ listOfProjects: tmpListOfProjects });
-      });
+      // const dragAndDrops = [...this.props.dragAndDrops];
+      // dragAndDrops[0] = {};
+      // const headers = this.props.headers;
+      // headers.headers = [];
+      // const tokensNumber = this.props.tokensNumber;
+      // tokensNumber.maxValue = 0;
+      // tokensNumber.value='';
+      // window.db = new PouchDB("testdatabase");
+      // let tmpListOfProjects = [];
+      // window.db.allDocs().then((result) =>
+      // {
+      //   result.rows.forEach(element =>
+      //   {
+      //     tmpListOfProjects.push(element.id);
+      //   });
+      //   this.setState({ listOfProjects: tmpListOfProjects });
+      // });
+      this.props.onClearAllAttributes();
       this.handleHideModal();
-    });
+      window.location.reload();
+    }).then(console.log(this.props));
   }
 
 
@@ -204,7 +212,8 @@ const mapActionsToProps = {
   onUpdateHeaders: updateHeaders,
   onHeadersRequest: headersRequest,
   onInitReport: initReport,
-  onUpdateVocab: updateVocab
+  onUpdateVocab: updateVocab,
+  onClearAllAttributes: clearAllAttributes
 };
 export default connect(
   mapStateToProps,

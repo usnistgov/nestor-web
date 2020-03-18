@@ -130,7 +130,6 @@ class Headers extends Component
     } else if (selectedHeaders.length)
     {
       history.push("/taggingTool/settings/classification");
-      this.storeSelectedHeaders(headers);
     }
   };
   handleCheck = header =>

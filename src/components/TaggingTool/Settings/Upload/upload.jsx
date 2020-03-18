@@ -74,7 +74,6 @@ class Upload extends Component
     const dragAndDrops = [ ...this.props.dragAndDrops ];
     dragAndDrops[ 0 ].file = files.fileList[ 0 ];
     this.props.onUpdateFileBox(dragAndDrops);
-    dragAndDrops[0].file.blob = file;
   };
 
   handleAddFile = (dragAndDrop, e) =>

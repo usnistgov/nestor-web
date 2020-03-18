@@ -6,8 +6,7 @@ const isDev = require("electron-is-dev");
 const ipcMain = electron.ipcMain;
 const log = require('electron-log');
 
-log.info('Hello, log');
-log.warn('Some problem appears');
+log.info('This is the first log');
 
 let mainWindow = null;
 

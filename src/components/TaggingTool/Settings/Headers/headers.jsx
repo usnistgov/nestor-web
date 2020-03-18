@@ -10,7 +10,6 @@ import { connect } from "react-redux";
 import { getHeaders, updateHeaders, headersRequest } from "./headersAction";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { createSelector } from "reselect";
-import PouchDB from "pouchdb";
 
 const empty = [ text.taggingTool.settings.headers.emptyTooltip ];
 
@@ -153,26 +152,6 @@ class Headers extends Component
       this.props.onUpdateHeaders(headers, emptyColumns);
     }
   };
-  storeSelectedHeaders(headers)
-  {
-    window.db = new PouchDB("testdatabase");
-    const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
-    window.db.get(projectId).then(function (doc)
-    {
-      doc.headers = headers;
-      return window.db.put(doc);
-    }).catch(function (err)
-    {
-      console.log('cant store headers of unknown doc')
-    }).then(function ()
-    {
-      return window.db.get(projectId);
-    }).then(function (doc)
-    {
-      console.log(doc);
-    });
-
-  }
 }
 const mapStateToProps = createSelector(
   state => state.headers,

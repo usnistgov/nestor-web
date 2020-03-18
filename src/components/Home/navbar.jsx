@@ -5,12 +5,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import { NavLink } from "react-router-dom";
 import logo from "../.././assets/img/icon.png";
 import text from "../../assets/language/en.js";
-import PouchDB from "pouchdb";
 import { createSelector } from "reselect";
-import { connect, connectAdvanced } from "react-redux";
+import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
-
-
+import Papa from "papaparse";
+import PouchDB from "pouchdb";
 
 const links = [
   {
@@ -124,29 +123,46 @@ class NavBar extends Component
     try
     {
       this.handleShowModal();
+      window.db = new PouchDB("testdatabase");
+      let jsonToStore;
+      const dragAndDrops = [ ...this.props.dragAndDrops ];
+      Papa.parse(dragAndDrops[ 0 ].file.blob, {
+        complete: function (results)
+        {
+          jsonToStore = results;
+        }
+      });
       const singleTokens = this.props.singleTokens;
       const multi = this.props.multiTokens;
       const tokensNumber = this.props.tokensNumber;
+      const headers = [ ...this.props.headers.headers ];
       window.db = new PouchDB("testdatabase");
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
       window.db.get(projectId).then(function (doc)
       {
+        doc.inputData = jsonToStore;
         doc.multiTokens = JSON.parse(JSON.stringify(multi));
         doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
         doc.tokensNumber = tokensNumber;
+        doc.headers = headers;
         return window.db.put(doc);
-      }).catch((err) => 
+      }).catch(function (error)
       {
-        console.log(err);
-        console.log('No data entered at the beginning');
-        this.handleHideModal();
-        this.handleShowErrorModal();
-      }).then(() =>
-      {
-        return window.db.get(projectId);
+        console.log(error);
+        return window.db.put({
+          "_id": projectId,
+          project_id: projectId,
+          inputData: jsonToStore,
+          multiTokens: JSON.parse(JSON.stringify(multi)),
+          singleTokens: JSON.parse(JSON.stringify(singleTokens)),
+          tokensNumber: tokensNumber,
+          headers: headers
+        });
       });
     } catch (error)
     {
+      this.handleHideModal();
+      this.handleShowErrorModal();
       console.log(error);
     }
   };
@@ -157,9 +173,11 @@ const mapStateToProps = createSelector(
   state => state.singleTokens,
   state => state.tokensNumber,
   state => state.multiTokens,
-  (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens
+  state => state.headers,
+  (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens, headers
   ) => ({
     dragAndDrops,
+    headers,
     ex,
     singleTokens,
     tokensNumber,

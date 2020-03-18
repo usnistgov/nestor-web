@@ -9,8 +9,7 @@ import { classificationRequest } from "../Classification/classificationAction";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { updateHeaders } from "../Headers/headersAction";
 import { createSelector } from "reselect";
-import Papa from "papaparse";
-import PouchDB from "pouchdb";
+
 
 class Upload extends Component
 {
@@ -75,7 +74,7 @@ class Upload extends Component
     const dragAndDrops = [ ...this.props.dragAndDrops ];
     dragAndDrops[ 0 ].file = files.fileList[ 0 ];
     this.props.onUpdateFileBox(dragAndDrops);
-    this.storeInputData(dragAndDrops[ 0 ].file);
+    dragAndDrops[0].file.blob = file;
   };
 
   handleAddFile = (dragAndDrop, e) =>
@@ -112,6 +111,7 @@ class Upload extends Component
     dragAndDrops[ index ] = { ...dragAndDrop };
     dragAndDrops[ index ].dragged = false;
     dragAndDrops[ index ].dropped = true;
+    console.log(e.dataTransfer.files[0]);
     dragAndDrops[ index ].file = e.dataTransfer.files[ 0 ];
     if (this.props.alert.showAlert)
     {
@@ -152,37 +152,6 @@ class Upload extends Component
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
-  storeInputData = (file) =>
-  {
-    window.db = new PouchDB("testdatabase");
-    let jsonToStore;
-    Papa.parse(file, {
-      complete: function (results)
-      {
-        jsonToStore = results;
-      }
-    });
-    const projectId = file.name.split(".")[ 0 ];
-    window.db.get(projectId).then(function (doc)
-    {
-      doc.inputData = jsonToStore;
-      return window.db.put(doc);
-    }).catch(function (err)
-    {
-      return window.db.put({
-        "_id": projectId,
-        project_id: file.name,
-        inputData: jsonToStore,
-        headers: {},
-        singleTokens: {},
-        multiTokens: {},
-        tokensNumber: {}
-      });
-    }).then(function ()
-    {
-      return window.db.get(projectId);
-    });
-  }
 }
 
 const mapStateToProps = createSelector(
@@ -190,13 +159,11 @@ const mapStateToProps = createSelector(
   state => state.alert,
   state => state.classification,
   state => state.headers,
-  state => state.singleTokens,
-  (dragAndDrops, alert, classification, headers, singleTokens) => ({
+  (dragAndDrops, alert, classification, headers) => ({
     dragAndDrops,
     alert,
     classification,
-    headers,
-    singleTokens
+    headers
   })
 );
 const mapActionsToProps = {

@@ -140,7 +140,14 @@ class NavBar extends Component
       let jsonToStore;
       const dragAndDrops = [ ...this.props.dragAndDrops ];
       console.log(dragAndDrops[0]);
-
+      if(dragAndDrops[0].file.path){
+        Papa.parse(dragAndDrops[ 0 ].file, {
+          complete: function (results)
+          {
+            jsonToStore = results;
+          }
+        });
+      }
       const singleTokens = this.props.singleTokens;
       const multi = this.props.multiTokens;
       const tokensNumber = this.props.tokensNumber;
@@ -149,8 +156,7 @@ class NavBar extends Component
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
       window.db.get(projectId).then(function (doc)
       {
-        doc.dragAndDrops = dragAndDrops;
-        doc.inputData = jsonToStore;
+        doc.dragAndDrops = dragAndDrops[0];
         doc.multiTokens = JSON.parse(JSON.stringify(multi));
         doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
         doc.tokensNumber = tokensNumber;
@@ -158,12 +164,6 @@ class NavBar extends Component
         return window.db.put(doc);
       }).catch(function (error)
       {
-        Papa.parse(dragAndDrops[ 0 ].file, {
-          complete: function (results)
-          {
-            jsonToStore = results;
-          }
-        });
         console.log("creating new project : ".concat(projectId));
         return window.db.put({
           "_id": projectId,

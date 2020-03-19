@@ -35,20 +35,19 @@ class NavBar extends Component
   componentDidUpdate()
   {
     let projectName;
+    console.log(this.props.dragAndDrops[0]);
     projectName = this.props.dragAndDrops[ 0 ].file.name;
     const startedTagging = this.checkIfTagged();
-    console.log(startedTagging);
     if (projectName && this.state.projectNameUpdated)
     {
       this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ], hasStartedTagging: startedTagging });
-      console.log(startedTagging);
-      console.log(this.state.hasStartedTagging);
+      console.log(this.state);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log("update : " +JSON.stringify((nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0) && nextProps !== this.props));
-    return (nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0) && nextProps !== this.props || nextState.showModal !== this.state.showModal;
+    console.log('update :'+JSON.stringify(nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal))
+    return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal;
   }
 
   render()
@@ -102,13 +101,7 @@ class NavBar extends Component
   }
 
   checkIfTagged = () => {
-    console.log(this.props.singleTokens);
-    console.log(this.props.singleTokens.length);
-    console.log(this.props.singleTokens.length !==0);
-    console.log(this.props.multiTokens);
-    console.log(this.props.multiTokens.length);
-    console.log(this.props.multiTokens.length !==0);
-    console.log(this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0);
+    console.log("checkIfTagged : "+ JSON.stringify(this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0))
     return this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0; 
   }
 
@@ -146,12 +139,8 @@ class NavBar extends Component
       window.db = new PouchDB("testdatabase");
       let jsonToStore;
       const dragAndDrops = [ ...this.props.dragAndDrops ];
-      Papa.parse(dragAndDrops[ 0 ].file, {
-        complete: function (results)
-        {
-          jsonToStore = results;
-        }
-      });
+      console.log(dragAndDrops[0]);
+
       const singleTokens = this.props.singleTokens;
       const multi = this.props.multiTokens;
       const tokensNumber = this.props.tokensNumber;
@@ -160,6 +149,7 @@ class NavBar extends Component
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
       window.db.get(projectId).then(function (doc)
       {
+        doc.dragAndDrops = dragAndDrops;
         doc.inputData = jsonToStore;
         doc.multiTokens = JSON.parse(JSON.stringify(multi));
         doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
@@ -168,6 +158,12 @@ class NavBar extends Component
         return window.db.put(doc);
       }).catch(function (error)
       {
+        Papa.parse(dragAndDrops[ 0 ].file, {
+          complete: function (results)
+          {
+            jsonToStore = results;
+          }
+        });
         console.log("creating new project : ".concat(projectId));
         return window.db.put({
           "_id": projectId,
@@ -176,7 +172,8 @@ class NavBar extends Component
           multiTokens: JSON.parse(JSON.stringify(multi)),
           singleTokens: JSON.parse(JSON.stringify(singleTokens)),
           tokensNumber: tokensNumber,
-          headers: headers
+          headers: headers,
+          dragAndDrops: dragAndDrops[0]
         });
       });
     } catch (error)

@@ -120,27 +120,10 @@ class Home extends Component
       console.log("an error occured : ".concat(error));
     }).then(() =>
     {
-      // const dragAndDrops = [...this.props.dragAndDrops];
-      // dragAndDrops[0] = {};
-      // const headers = this.props.headers;
-      // headers.headers = [];
-      // const tokensNumber = this.props.tokensNumber;
-      // tokensNumber.maxValue = 0;
-      // tokensNumber.value='';
-      // window.db = new PouchDB("testdatabase");
-      // let tmpListOfProjects = [];
-      // window.db.allDocs().then((result) =>
-      // {
-      //   result.rows.forEach(element =>
-      //   {
-      //     tmpListOfProjects.push(element.id);
-      //   });
-      //   this.setState({ listOfProjects: tmpListOfProjects });
-      // });
       this.props.onClearAllAttributes();
       this.handleHideModal();
       window.location.reload();
-    }).then(console.log(this.props));
+    });
   }
 
 
@@ -156,14 +139,17 @@ class Home extends Component
         {
           this.props.onInitFileBox();
         }
-        const dragAndDrops = [ ...this.props.dragAndDrops ];
-        dragAndDrops[ 0 ].file.name = currentProject.project_id;
+        console.log(currentProject);
+        console.log(this.props);
+        const dragAndDrops = [...this.props.dragAndDrops];
+        dragAndDrops[0].file.name = currentProject.dragAndDrops.projectName;
         const headers = this.props.headers;
         headers.headers = currentProject.headers;
         const tokensNumber = this.props.tokensNumber;
         tokensNumber.value = parseInt(currentProject.tokensNumber.value);
         tokensNumber.maxValue = currentProject.tokensNumber.maxValue;
         let selectedHeadersLabels = [];
+        console.log(this.props);
         headers.headers.filter((header) =>
         {
           if (header.checked)

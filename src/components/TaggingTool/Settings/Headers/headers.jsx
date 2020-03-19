@@ -23,7 +23,7 @@ class Headers extends Component
       alertMessage: text.taggingTool.alerts.upload.message
     };
     this.props.onUpdateAlert(alert);
-    if (this.props.dragAndDrops.length)
+    if (this.props.dragAndDrops[0].file.name)
     {
       if (this.props.headers.headers.length)
       {

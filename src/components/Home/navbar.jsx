@@ -32,41 +32,31 @@ class NavBar extends Component
 {
   state = { isSaving: false, projectName: '', projectNameUpdated: true, showModal: false, hasStartedTagging: false };
 
-  
-  
+
+
   componentDidUpdate()
   {
     let projectName;
-    console.log(this.props);
     projectName = this.props.dragAndDrops[ 0 ].file.name;
     const startedTagging = this.checkIfTagged();
-    if(this.state.projectName !== projectName){
-      console.log('juste le nom ');
-      this.setState({projectName:projectName, hasStartedTagging: startedTagging });
+    if (this.state.projectName !== projectName)
+    {
+      this.setState({ projectName: projectName, hasStartedTagging: startedTagging });
     }
     if (projectName && this.state.projectNameUpdated)
     {
-      console.log('latotale');
       this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ], hasStartedTagging: startedTagging });
     }
-    console.log(this.state);
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    // console.log(nextProps);
-    // console.log(nextState);
-    // console.log(this.props);
-    // console.log(this.state);
-    console.log(nextState.projectName);
-    if(nextProps.dragAndDrops[0].file.name){
-      console.log("ici");
-      console.log(nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal 
-        || (nextProps.dragAndDrops[0].file.name.split('.')[0] !== nextState.projectName));
-      return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal 
-    || (nextProps.dragAndDrops[0].file.name.split('.')[0] !== nextState.projectName);
-    }else {
-      console.log("la");
-      console.log(nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal)
+  shouldComponentUpdate(nextProps, nextState)
+  {
+    if (nextProps.dragAndDrops[ 0 ].file.name)
+    {
+      return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal
+        || (nextProps.dragAndDrops[ 0 ].file.name.split('.')[ 0 ] !== nextState.projectName);
+    } else
+    {
       return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal;
     }
   }
@@ -121,16 +111,18 @@ class NavBar extends Component
     </div >)
   }
 
-  checkIfTagged = () => {
-    console.log(this.props.singleTokens);
-    console.log(this.props.multiTokens)
-    return this.props.singleTokens.length !==0 || this.props.multiTokens.length !== 0; 
+  checkIfTagged = () =>
+  {
+    return this.props.singleTokens.length !== 0 || this.props.multiTokens.length !== 0;
   }
 
-  handleDisplayProjectName = (projectName) => {
-    if(projectName.length >= 10){
-      return projectName.substring(0,10).concat("...");
-    }else {
+  handleDisplayProjectName = (projectName) =>
+  {
+    if (projectName.length >= 10)
+    {
+      return projectName.substring(0, 10).concat("...");
+    } else
+    {
       return projectName;
     }
   }
@@ -161,7 +153,8 @@ class NavBar extends Component
       window.db = new PouchDB("testdatabase");
       let jsonToStore;
       const dragAndDrops = [ ...this.props.dragAndDrops ];
-      if(dragAndDrops[0].file.path){
+      if (dragAndDrops[ 0 ].file.path)
+      {
         Papa.parse(dragAndDrops[ 0 ].file, {
           complete: function (results)
           {
@@ -177,7 +170,7 @@ class NavBar extends Component
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
       window.db.get(projectId).then(function (doc)
       {
-        doc.dragAndDrops = dragAndDrops[0];
+        doc.dragAndDrops = dragAndDrops[ 0 ];
         doc.multiTokens = JSON.parse(JSON.stringify(multi));
         doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
         doc.tokensNumber = tokensNumber;
@@ -194,7 +187,7 @@ class NavBar extends Component
           singleTokens: JSON.parse(JSON.stringify(singleTokens)),
           tokensNumber: tokensNumber,
           headers: headers,
-          dragAndDrops: dragAndDrops[0]
+          dragAndDrops: dragAndDrops[ 0 ]
         });
       });
     } catch (error)

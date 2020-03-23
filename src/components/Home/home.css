@@ -53,3 +53,7 @@
   cursor:pointer;
 }
 
+Button[disabled]
+{
+  cursor: not-allowed;
+}

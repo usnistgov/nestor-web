@@ -1,7 +1,10 @@
 export default {
   home: {
     header: "The application designed to help manufacturers",
-    button: "Getting Started",
+    button: {
+      newProject: "New project",
+      openProject: "Manage Projects"
+    },
     navbar: {
       home: "Home",
       taggingTool: "Tagging Tool",

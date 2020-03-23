@@ -22,12 +22,16 @@ class Home extends Component
 {
   state = {
     showModal: false,
-    listOfProjects: []
+    listOfProjects: [],
+    projectOpened: ''
   };
-  constructor(props){
+  constructor(props)
+  {
     super(props);
-    if (window.performance) {
-      if (performance.navigation.type === 1) {
+    if (window.performance)
+    {
+      if (performance.navigation.type === 1)
+      {
         this.props.onClearAllAttributes();
       }
     }
@@ -45,7 +49,20 @@ class Home extends Component
       });
       this.setState({ listOfProjects: tmpListOfProjects });
     });
+    if (this.props.dragAndDrops[ 0 ] && this.props.dragAndDrops[ 0 ].file.name)
+    {
+      this.setState({ projectOpened: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] });
+    }
   }
+
+  componentWillReceiveProps(nextProps)
+  {
+    if (nextProps.dragAndDrops[ 0 ] && nextProps.dragAndDrops[ 0 ].file.name)
+    {
+      this.setState({ projectOpened: nextProps.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] })
+    }
+  }
+
 
 
 
@@ -55,15 +72,15 @@ class Home extends Component
       <div className="home-container">
         <div className="title">{ text.home.header }</div>
         <div className="button text-center">
-          <button className="btn-dark">
-            <NavLink to="/taggingTool/settings/upload">{ text.home.button }</NavLink>
+          <button className="btn-dark" onClick={ this.clearApplicationState }>
+            <NavLink to="/taggingTool/settings/upload">{ text.home.button.newProject }</NavLink>
           </button>
           <br />
           <br />
           <button className="btn-light"
             onClick={ this.handleShowModal }
             label="Open Project">
-            Manage Projects
+            { text.home.button.openProject }
           </button>
 
         </div>
@@ -86,7 +103,7 @@ class Home extends Component
                       </Accordion.Toggle>
                       <Accordion.Collapse eventKey={ i }>
                         <Card.Body className="flexbox">
-                          <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
+                          <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) } disabled={ obj === this.state.projectOpened }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
                           <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
                         </Card.Body>
                       </Accordion.Collapse>
@@ -126,6 +143,21 @@ class Home extends Component
     });
   }
 
+  clearApplicationState = () =>
+  {
+    this.props.onClearAllAttributes();
+    if (this.props.dragAndDrops[ 0 ] && this.props.dragAndDrops[ 0 ].file)
+    {
+      const headers = this.props.headers;
+      headers.headers = [];
+      const dragAndDrops = [ ...this.props.dragAndDrops ];
+      dragAndDrops[ 0 ].file = null;
+      const tokensNumber = this.props.tokensNumber;
+      tokensNumber.value = parseInt("0");
+      tokensNumber.maxValue = 0;
+    }
+  }
+
 
   handleOpenProject(projectName)
   {
@@ -139,8 +171,8 @@ class Home extends Component
         {
           this.props.onInitFileBox();
         }
-        const dragAndDrops = [...this.props.dragAndDrops];
-        dragAndDrops[0].file.name = currentProject.dragAndDrops.projectName;
+        const dragAndDrops = [ ...this.props.dragAndDrops ];
+        dragAndDrops[ 0 ].file.name = currentProject.dragAndDrops.projectName;
         const headers = this.props.headers;
         headers.headers = currentProject.headers;
         const tokensNumber = this.props.tokensNumber;

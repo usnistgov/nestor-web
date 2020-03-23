@@ -74,7 +74,8 @@ class Upload extends Component
     const dragAndDrops = [ ...this.props.dragAndDrops ];
     dragAndDrops[ 0 ].file = files.fileList[ 0 ];
     dragAndDrops[ 0 ].projectName = files.fileList[ 0 ].name;
-    console.log(dragAndDrops);
+    const headers = this.props.headers;
+    headers.headers = [];
     this.props.onUpdateFileBox(dragAndDrops);
   };
 
@@ -85,7 +86,6 @@ class Upload extends Component
     dragAndDrops[ index ] = { ...dragAndDrop };
     dragAndDrops[ index ].file = e.target.files[ 0 ];
     dragAndDrops[ index ].projectName = e.dataTransfer.files[ 0 ].name;
-    console.log(dragAndDrops);
     this.props.onUpdateFileBox(dragAndDrops);
   };
   handleDragOver = (dragAndDrop, e) =>
@@ -114,10 +114,8 @@ class Upload extends Component
     dragAndDrops[ index ] = { ...dragAndDrop };
     dragAndDrops[ index ].dragged = false;
     dragAndDrops[ index ].dropped = true;
-    console.log(e.dataTransfer.files[0]);
     dragAndDrops[ index ].file = e.dataTransfer.files[ 0 ];
     dragAndDrops[ index ].projectName = e.dataTransfer.files[ 0 ].name;
-    console.log(dragAndDrops);
     if (this.props.alert.showAlert)
     {
       this.handleDelete();
@@ -134,7 +132,6 @@ class Upload extends Component
     dragAndDrops[ index ].dropped = true;
     dragAndDrops[ index ].file = e.target.files[ 0 ];
     dragAndDrops[ index ].projectName = e.dataTransfer.files[ 0 ].name;
-    console.log(dragAndDrops);
     if (this.props.alert.showAlert)
     {
       this.handleDelete();

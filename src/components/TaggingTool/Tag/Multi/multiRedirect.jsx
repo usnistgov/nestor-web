@@ -17,7 +17,6 @@ class MultiRedirect extends Component
       alertMessage: text.taggingTool.alerts.tagging.message
     };
     this.props.onUpdateAlert(alert);
-    console.log(this.props);
     if (this.props.singleTokens.length > 1 && this.props.multiTokens.length === 0)
     {
       this.props.onMultiTokensRequest();

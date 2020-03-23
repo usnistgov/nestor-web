@@ -139,8 +139,6 @@ class Home extends Component
         {
           this.props.onInitFileBox();
         }
-        console.log(currentProject);
-        console.log(this.props);
         const dragAndDrops = [...this.props.dragAndDrops];
         dragAndDrops[0].file.name = currentProject.dragAndDrops.projectName;
         const headers = this.props.headers;
@@ -149,7 +147,6 @@ class Home extends Component
         tokensNumber.value = parseInt(currentProject.tokensNumber.value);
         tokensNumber.maxValue = currentProject.tokensNumber.maxValue;
         let selectedHeadersLabels = [];
-        console.log(this.props);
         headers.headers.filter((header) =>
         {
           if (header.checked)

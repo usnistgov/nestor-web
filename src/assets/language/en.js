@@ -78,8 +78,8 @@ export default {
         }
       },
       classification: {
-        name: "Classfication",
-        title: "Classfication",
+        name: "Classification",
+        title: "Classification",
         titleInfo: "You will use these types and rules to tag your MVOs"
       },
       headers: {

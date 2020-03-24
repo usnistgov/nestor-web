@@ -153,43 +153,53 @@ class NavBar extends Component
       window.db = new PouchDB("testdatabase");
       let jsonToStore;
       const dragAndDrops = [ ...this.props.dragAndDrops ];
-      if (dragAndDrops[ 0 ].file.path)
-      {
-        Papa.parse(dragAndDrops[ 0 ].file, {
-          complete: function (results)
-          {
-            jsonToStore = results;
-          }
-        });
-      }
       const singleTokens = this.props.singleTokens;
       const multi = this.props.multiTokens;
       const tokensNumber = this.props.tokensNumber;
       const headers = [ ...this.props.headers.headers ];
       window.db = new PouchDB("testdatabase");
       const projectId = this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ];
-      window.db.get(projectId).then(function (doc)
+      if (dragAndDrops[ 0 ].file.path)
       {
-        doc.dragAndDrops = dragAndDrops[ 0 ];
-        doc.multiTokens = JSON.parse(JSON.stringify(multi));
-        doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
-        doc.tokensNumber = tokensNumber;
-        doc.headers = headers;
-        return window.db.put(doc);
-      }).catch(function (error)
-      {
-        console.log("creating new project : ".concat(projectId));
-        return window.db.put({
-          "_id": projectId,
-          project_id: projectId,
-          inputData: jsonToStore,
-          multiTokens: JSON.parse(JSON.stringify(multi)),
-          singleTokens: JSON.parse(JSON.stringify(singleTokens)),
-          tokensNumber: tokensNumber,
-          headers: headers,
-          dragAndDrops: dragAndDrops[ 0 ]
+        Papa.parse(dragAndDrops[ 0 ].file, {
+          complete: function (results)
+          {
+            jsonToStore = results;
+            window.db.get(projectId).then(function (doc)
+            {
+              doc.dragAndDrops = dragAndDrops[ 0 ];
+              doc.multiTokens = JSON.parse(JSON.stringify(multi));
+              doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
+              doc.tokensNumber = tokensNumber;
+              doc.headers = headers;
+              return window.db.put(doc);
+            }).catch(function (error)
+            {
+              return window.db.put({
+                "_id": projectId,
+                project_id: projectId,
+                inputData: jsonToStore,
+                multiTokens: JSON.parse(JSON.stringify(multi)),
+                singleTokens: JSON.parse(JSON.stringify(singleTokens)),
+                tokensNumber: tokensNumber,
+                headers: headers,
+                dragAndDrops: dragAndDrops[ 0 ]
+              });
+            });
+          }
         });
-      });
+      } else
+      {
+        window.db.get(projectId).then(function (doc)
+        {
+          doc.dragAndDrops = dragAndDrops[ 0 ];
+          doc.multiTokens = JSON.parse(JSON.stringify(multi));
+          doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
+          doc.tokensNumber = tokensNumber;
+          doc.headers = headers;
+          return window.db.put(doc);
+        });
+      }
     } catch (error)
     {
       this.handleHideModal();

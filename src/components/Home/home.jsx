@@ -172,7 +172,7 @@ class Home extends Component
           this.props.onInitFileBox();
         }
         const dragAndDrops = [ ...this.props.dragAndDrops ];
-        dragAndDrops[ 0 ].file.name = currentProject.dragAndDrops.projectName;
+        dragAndDrops[ 0 ].file = new File([], currentProject._id);
         const headers = this.props.headers;
         headers.headers = currentProject.headers;
         const tokensNumber = this.props.tokensNumber;

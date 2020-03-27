@@ -44,7 +44,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "dist": "electron-builder --linux",
+    "dist": "electron-builder",
     "build-python": "pyinstaller api.spec --additional-hooks-dir=. --distpath pythondist --noconfirm",
     "build": "npm run build-react && npm run build-python && npm run dist"
   },

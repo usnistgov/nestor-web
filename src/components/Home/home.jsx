@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 import { openProject, clearAllAttributes } from "../Home/homeAction";
 import { initFileBox } from "../TaggingTool/Settings/Upload/uploadAction";
-import { updateSingleTokens, updateVocab } from "../TaggingTool/Tag/Single/singleTokensAction";
+import { updateSingleTokens, updateVocab, setTokens } from "../TaggingTool/Tag/Single/singleTokensAction";
 import { updateMultiTokens } from "../TaggingTool/Tag/Multi/multiTokensAction";
 import { updateHeaders } from "../TaggingTool/Settings/Headers/headersAction";
 import { headersRequest } from "../TaggingTool/Settings/Headers/headersAction";
@@ -57,14 +57,11 @@ class Home extends Component
 
   componentWillReceiveProps(nextProps)
   {
-    if (nextProps.dragAndDrops[ 0 ] && nextProps.dragAndDrops[ 0 ].file.name)
+    if (nextProps.dragAndDrops[ 0 ] && nextProps.dragAndDrops[0].file && nextProps.dragAndDrops[ 0 ].file.name)
     {
       this.setState({ projectOpened: nextProps.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] })
     }
   }
-
-
-
 
   render()
   {
@@ -82,7 +79,6 @@ class Home extends Component
             label="Open Project">
             { text.home.button.openProject }
           </button>
-
         </div>
         <Modal
           show={ this.state.showModal }
@@ -137,21 +133,29 @@ class Home extends Component
       console.log("an error occured : ".concat(error));
     }).then(() =>
     {
-      this.props.onClearAllAttributes();
       this.handleHideModal();
-      window.location.reload();
+      if(this.state.projectOpened === projectName){
+        this.clearApplicationState();
+      }
+      const newListOfProjects = this.state.listOfProjects.filter( project => {
+        return project !== projectName;
+      });
+      this.setState({listOfProjects: newListOfProjects});
     });
   }
 
   clearApplicationState = () =>
   {
+    this.props.onInitFileBox();
+    this.props.onSetTokens([]);
     this.props.onClearAllAttributes();
     if (this.props.dragAndDrops[ 0 ] && this.props.dragAndDrops[ 0 ].file)
     {
       const headers = this.props.headers;
       headers.headers = [];
       const dragAndDrops = [ ...this.props.dragAndDrops ];
-      dragAndDrops[ 0 ].file = null;
+      dragAndDrops[ 0 ].file = new File([], '');
+      dragAndDrops[ 0 ].projectName = '';
       const tokensNumber = this.props.tokensNumber;
       tokensNumber.value = parseInt("0");
       tokensNumber.maxValue = 0;
@@ -173,6 +177,7 @@ class Home extends Component
         }
         const dragAndDrops = [ ...this.props.dragAndDrops ];
         dragAndDrops[ 0 ].file = new File([], currentProject._id);
+        dragAndDrops[ 0 ].projectName = currentProject._id;
         const headers = this.props.headers;
         headers.headers = currentProject.headers;
         const tokensNumber = this.props.tokensNumber;
@@ -220,11 +225,13 @@ const mapStateToProps = createSelector(
   state => state.headers,
   state => state.tokensNumber,
   state => state.projectName,
-  (dragAndDrops, headers, tokensNumber, projectName) => ({
+  state => state.singleTokens,
+  (dragAndDrops, headers, tokensNumber, projectName, singleTokens) => ({
     dragAndDrops,
     headers,
     tokensNumber,
-    projectName
+    projectName,
+    singleTokens
   })
 );
 const mapActionsToProps = {
@@ -236,7 +243,8 @@ const mapActionsToProps = {
   onHeadersRequest: headersRequest,
   onInitReport: initReport,
   onUpdateVocab: updateVocab,
-  onClearAllAttributes: clearAllAttributes
+  onClearAllAttributes: clearAllAttributes,
+  onSetTokens: setTokens
 };
 export default connect(
   mapStateToProps,

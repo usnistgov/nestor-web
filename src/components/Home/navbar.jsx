@@ -30,35 +30,33 @@ const links = [
 ]
 class NavBar extends Component
 {
-  state = { isSaving: false, projectName: '', projectNameUpdated: true, showModal: false, hasStartedTagging: false };
+  state = { projectName: '', showModal: false, hasStartedTagging: false };
 
-
-
-  componentDidUpdate()
-  {
-    let projectName;
-    projectName = this.props.dragAndDrops[ 0 ].file.name;
-    const startedTagging = this.checkIfTagged();
-    if (this.state.projectName !== projectName)
-    {
-      this.setState({ projectName: projectName, hasStartedTagging: startedTagging });
+  componentDidUpdate(prevProps)
+  { 
+    if(this.props.dragAndDrops[0].projectName !== prevProps.dragAndDrops[0].projectName 
+      || this.props.dragAndDrops[0].projectName !== this.state.projectName){
+      this.setState({projectName: this.props.dragAndDrops[0].projectName});
+    }else if(this.props.dragAndDrops[0].projectName === "" && this.props.dragAndDrops[0].projectName !== 
+    prevProps.dragAndDrops[0].projectName){
+      this.setState({projectName:""});
     }
-    if (projectName && this.state.projectNameUpdated)
-    {
-      this.setState({ projectNameUpdated: false, projectName: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ], hasStartedTagging: startedTagging });
+    if(this.props.singleTokens.length !== prevProps.singleTokens.length && this.props.singleTokens.length>0){
+      this.setState({hasStartedTagging: true});
+    }else if(this.props.singleTokens.length !== prevProps.singleTokens.length && this.props.singleTokens.length === 0) {
+      this.setState({hasStartedTagging: false});
     }
   }
 
   shouldComponentUpdate(nextProps, nextState)
   {
-    if (nextProps.dragAndDrops[ 0 ].file.name)
-    {
-      return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal
-        || (nextProps.dragAndDrops[ 0 ].file.name.split('.')[ 0 ] !== nextState.projectName);
-    } else
-    {
-      return nextProps.singleTokens.length > 0 || nextProps.multiTokens.length > 0 || nextState.showModal !== this.state.showModal;
-    }
+    if(this.props.dragAndDrops[0] && nextProps.dragAndDrops[0]){
+      return this.state.projectName !== nextProps.dragAndDrops[0].projectName 
+      || this.props.singleTokens.length !== nextProps.singleTokens.length
+      || nextState.showModal !== this.state.showModal;
+    }else{
+      return false;
+    }  
   }
 
   render()
@@ -75,7 +73,7 @@ class NavBar extends Component
             </NavLink>
           )) }
           <div className="project-title"><h4>{ this.handleDisplayProjectName(this.state.projectName) }</h4></div>
-          <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ !this.state.hasStartedTagging } >
+          <Button key={ 1000 } className="nav-link save-button" onClick={ this.handleSaveProject } disabled={ this.checkIfTagged() } >
             <i className="fas fa-save"></i>
             &nbsp; &nbsp;
             { text.home.navbar.save }
@@ -113,7 +111,7 @@ class NavBar extends Component
 
   checkIfTagged = () =>
   {
-    return this.props.singleTokens.length !== 0 || this.props.multiTokens.length !== 0;
+    return  this.props.singleTokens.length === 0;
   }
 
   handleDisplayProjectName = (projectName) =>

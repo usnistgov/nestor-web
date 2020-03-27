@@ -21,7 +21,8 @@ export function initFileBox()
           id: 1,
           file: {},
           dragged: false,
-          dropped: false
+          dropped: false,
+          projectName: ''
         } /*,
         {
           id: 2,

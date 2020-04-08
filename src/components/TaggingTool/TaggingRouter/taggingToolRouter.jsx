@@ -53,7 +53,8 @@ const routes = [
     path: "/taggingTool/settings/tokensNumber",
     component: TokensNumber,
     exact: false
-  },
+  }
+  ,
   {
     path: "/taggingTool/settings/similarity",
     component: Similarity,

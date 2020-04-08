@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./report.css";
-import { Bar } from "react-chartjs-2";
+// import { Bar } from "react-chartjs-2";
 import { getCompleteness, initReport } from "./reportAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -241,9 +241,10 @@ class Report extends Component
                   </ProgressBar>
                 </div>
               </div>
+              {/* OLD Distribution over MWOs
               <div className="report-col">
                 <Bar data={ this.state.bar } />
-              </div>
+              </div> */}
             </div>
             {/* )} */ }
           </div>

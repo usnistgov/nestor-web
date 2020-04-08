@@ -18,3 +18,21 @@
 .fa-times-circle {
   margin-bottom: 0px !important;
 }
+
+.badge-no-classification {
+  color: black !important;
+  background-color: transparent !important;
+  border: 2px dashed;
+  width: 100% !important;
+  border-radius: 5px !important;
+  height: 50px !important;
+  font-size: 16px !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+  text-align: left !important;
+  font-weight: 400 !important;
+  padding: 10px 25px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}

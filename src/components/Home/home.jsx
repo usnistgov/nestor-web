@@ -28,13 +28,6 @@ class Home extends Component
   constructor(props)
   {
     super(props);
-    if (window.performance)
-    {
-      if (performance.navigation.type === 1)
-      {
-        this.props.onClearAllAttributes();
-      }
-    }
   }
 
   componentDidMount()
@@ -45,7 +38,13 @@ class Home extends Component
     {
       result.rows.forEach(element =>
       {
-        tmpListOfProjects.push(element.id);
+        window.db.get(element.id).then((project)=>{
+          tmpListOfProjects.push({
+            name: project._id,
+            lastModification: project.details.lastModification,
+            originalFile: project.details.originalFile,
+            originalLocation: project.details.originalLocation });
+        });
       });
       this.setState({ listOfProjects: tmpListOfProjects });
     });
@@ -95,12 +94,19 @@ class Home extends Component
                   (
                     <Card bg="light" className="project-card" key={ i }>
                       <Accordion.Toggle as={ Card.Header } eventKey={ i }>
-                        { obj }
+                        { obj.name }
                       </Accordion.Toggle>
                       <Accordion.Collapse eventKey={ i }>
-                        <Card.Body className="flexbox">
-                          <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj) } disabled={ obj === this.state.projectOpened }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
-                          <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
+                        <Card.Body>
+                        <Card.Subtitle className="mb-2 text-muted">Details</Card.Subtitle>
+                          <strong>Last opened</strong> : { obj.lastModification }<br />
+                          <strong>Original input file</strong> : {obj.originalFile }<br />
+                          <strong>Location</strong> : { obj.originalLocation }
+                          <hr />
+                          <div className="flexbox">
+                            <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj.name) } disabled={ obj.name === this.state.projectOpened }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
+                            <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj.name) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
+                          </div>
                         </Card.Body>
                       </Accordion.Collapse>
                     </Card>
@@ -133,12 +139,12 @@ class Home extends Component
       console.log("an error occured : ".concat(error));
     }).then(() =>
     {
-      this.handleHideModal();
+      // this.handleHideModal();
       if(this.state.projectOpened === projectName){
         this.clearApplicationState();
       }
       const newListOfProjects = this.state.listOfProjects.filter( project => {
-        return project !== projectName;
+        return project.name !== projectName;
       });
       this.setState({listOfProjects: newListOfProjects});
     });

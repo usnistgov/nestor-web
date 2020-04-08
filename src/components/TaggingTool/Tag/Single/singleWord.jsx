@@ -12,13 +12,15 @@ import text from "../../../../assets/language/en.js";
 import List from "../TagComponents/list";
 import { ProgressBar } from "react-bootstrap";
 import { getCompleteness } from "../../Report/reportAction";
+import { exportOutput } from "../../Export/exportAction";
 
 const fuzz = window.fuzz;
 
 class SingleWord extends Component
 {
   state = {
-    showModal: false
+    showModal: false,
+    showNoClassificationModal: false
   };
   componentDidMount()
   {
@@ -29,6 +31,7 @@ class SingleWord extends Component
       alertMessage: text.taggingTool.alerts.tag.message
     };
     this.props.onUpdateAlert(alert);
+    this.props.onExportOutput();
     this.initTokenWithSynonymAlias(this.props.match.params.id);
     this.props.onGetCompleteness();
   }
@@ -43,6 +46,7 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
+    this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
@@ -56,6 +60,14 @@ class SingleWord extends Component
   {
     return (
       <div className="tag-container">
+        { this.state.showNoClassificationModal && (
+          <Alert 
+            alertHeader={text.taggingTool.alerts.tag.noClassificationHeader}
+            alertMessage={text.taggingTool.alerts.tag.noClassificationMessage}
+            styleColor="alert alert-danger"
+            onDelete={this.handleDeleteNoClassificationAlert}
+          />
+        ) }
         { this.props.alert.showAlert && (
           <Alert
             alertHeader={ this.props.alert.alertHeader }
@@ -88,24 +100,14 @@ class SingleWord extends Component
                       this.props.report.complete) /
                       this.props.report.total) *
                     100
-                  ).toFixed(2) + " %"
+                  ).toFixed(2) + " % Complete"
               }
               key={ 1 }
             />
+            <br />
+            <h4>{this.props.singleTokens[ parseInt(this.props.match.params.id) ].label}</h4>
+            <div>Alias</div>
             <div className="alias">
-              <TagButton
-                value={
-                  this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-                    .label
-                }
-                showTooltipIcon={ true }
-                showCloseIcon={ false }
-                tooltip={ text.taggingTool.tagging.singleToken.tokenTooltip }
-                color={ "transparent" }
-                style={ { borderColor: "transparent" } }
-                buttonTag={ "" }
-                onClick={ this.handleAddNote }
-              />
               <div>
                 <input
                   type="text"
@@ -129,7 +131,10 @@ class SingleWord extends Component
                 ) }
               </div>
             </div>
+            <br />
+            <div>Classification</div>
             <div className="classification-tags">
+              <br/>
               { this.props.classification.types.map((obj, i) => (
                 <TagButton
                   key={ i }
@@ -155,9 +160,9 @@ class SingleWord extends Component
                   key={ i }
                   value={ obj.label }
                   shortkey={ "" }
-                  showTooltipIcon={ false }
+                  showTooltipIcon={ true }
                   showCloseIcon={ false }
-                  tooltip={ "" }
+                  tooltip={ obj.tooltip }
                   color={ "black" }
                   style={ { borderColor: "black" } }
                   onClick={ this.handleSelectSynonym }
@@ -166,33 +171,35 @@ class SingleWord extends Component
             </div>
           </div>
           <div className="token-view">
-            <div
+            <h4>Summary</h4>
+            <input
+                  type="text"
+                  className="form-control"
+                  value={
+                    this.props.singleTokens[
+                      parseInt(this.props.match.params.id)
+                    ].alias
+                  }
+                  readOnly
+                />
+            { this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+              .classification.label ? <div
               className="badge"
               style={ {
-                borderColor: "black"
+                borderColor: this.props.singleTokens[
+                  parseInt(this.props.match.params.id)
+                ].classification.color
               } }
             >
               {
                 this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-                  .alias
+                  .classification.value
               }
-            </div>
-            { this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-              .classification.label && (
-                <div
-                  className="badge"
-                  style={ {
-                    borderColor: this.props.singleTokens[
-                      parseInt(this.props.match.params.id)
-                    ].classification.color
-                  } }
+            </div> : <div
+                  className="badge-no-classification"
                 >
-                  {
-                    this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-                      .classification.value
-                  }
-                </div>
-              ) }
+                  No classification
+                </div>}
             <div>
               { text.taggingTool.tagging.singleToken.synonymSectionTitle }
             </div>
@@ -204,9 +211,9 @@ class SingleWord extends Component
                   key={ i }
                   value={ obj.value }
                   shortkey={ "" }
-                  showTooltipIcon={ false }
+                  showTooltipIcon={ true }
                   showCloseIcon={ true }
-                  tooltip={ "" }
+                  tooltip={ obj.tooltip }
                   color={ "black" }
                   style={ { borderColor: "black" } }
                   onClick={ this.handleDeleteSynonym }
@@ -259,6 +266,12 @@ class SingleWord extends Component
   };
   handleContinue = history =>
   {
+    if(this.props.singleTokens[ parseInt(this.props.match.params.id) ].classification.color === ""){
+      this.setState({showNoClassificationModal:true});
+      return null;
+    }else{
+      this.setState({showNoClassificationModal:false});
+    }
     var i = parseInt(this.props.match.params.id);
     var tokens = [ ...this.props.singleTokens ];
     tokens[ i ].selectedSynonyms.forEach(synonym =>
@@ -283,6 +296,9 @@ class SingleWord extends Component
       history.push("/taggingTool/tag/single/" + index);
     }
   };
+  handleDeleteNoClassificationAlert = () => {
+    this.setState({showNoClassificationModal: false});
+  }
   handleDeleteModal = () =>
   {
     this.setState({ showModal: false });
@@ -393,6 +409,22 @@ class SingleWord extends Component
       this.props.onUpdateSingleTokens(tokens);
     }
   };
+
+refreshSynonyms = () => 
+{
+  this.props.singleTokens.forEach(element =>
+    {
+      element.synonyms.forEach((synonym)=> {
+        synonym.tooltip = [];
+        this.props.ex.output.filter((outputLine)=>{
+          if(outputLine[0].toLowerCase().includes(synonym.label.toLowerCase()) && synonym.tooltip.length<3){
+            synonym.tooltip.push(outputLine[0]);
+          }
+        })
+      });      
+    });
+  }
+
   computeSynonyms = label =>
   {
     var synonyms = [];
@@ -403,6 +435,7 @@ class SingleWord extends Component
         element.label !== label
       )
       {
+        element.tooltip = ["synonym appeared there"];
         synonyms.push(element);
       }
     });
@@ -435,6 +468,7 @@ const mapStateToProps = createSelector(
   state => state.similarity,
   state => state.report,
   state => state.dragAndDrops,
+  state => state.export,
   (
     singleTokens,
     classification,
@@ -443,7 +477,8 @@ const mapStateToProps = createSelector(
     pattern,
     similarity,
     report,
-    dragAndDrops
+    dragAndDrops,
+    ex
   ) => ({
     singleTokens,
     classification,
@@ -452,13 +487,15 @@ const mapStateToProps = createSelector(
     pattern,
     similarity,
     report,
-    dragAndDrops
+    dragAndDrops,
+    ex
   })
 );
 const mapActionsToProps = {
   onUpdateSingleTokens: updateSingleTokens,
   onUpdateVocab: updateVocab,
   onUpdateAlert: updateAlert,
-  onGetCompleteness: getCompleteness
+  onGetCompleteness: getCompleteness,
+  onExportOutput: exportOutput
 };
 export default connect(mapStateToProps, mapActionsToProps)(SingleWord);

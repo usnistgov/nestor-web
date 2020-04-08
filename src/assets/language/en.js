@@ -56,7 +56,9 @@ export default {
       tag: {
         header: "Tagging limit",
         message:
-          "You have reached the tagging limit you set earlier, feel free to continue"
+          "You have reached the tagging limit you set earlier, feel free to continue",
+        noClassificationHeader: "No Classification selected",
+        noClassificationMessage: "Please select a classification among Item, Problem, Solution or others before continuing to next token."
       },
       tagging: {
         header: "No tokens to annotate",

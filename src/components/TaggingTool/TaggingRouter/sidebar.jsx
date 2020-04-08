@@ -23,14 +23,14 @@ const links = [
         label: text.home.sidebar.tokensNumber,
         link: "/taggingTool/settings/tokensNumber"
       },
-      {
-        label: text.home.sidebar.similarity,
-        link: "/taggingTool/settings/similarity"
-      },
-      {
-        label: text.home.sidebar.pattern,
-        link: "/taggingTool/settings/pattern"
-      },
+      // {
+      //   label: text.home.sidebar.similarity,
+      //   link: "/taggingTool/settings/similarity"
+      // },
+      // {
+      //   label: text.home.sidebar.pattern,
+      //   link: "/taggingTool/settings/pattern"
+      // },
       {
         label: text.home.sidebar.overview,
         link: "/taggingTool/settings/overview"

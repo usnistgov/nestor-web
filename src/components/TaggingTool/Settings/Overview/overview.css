@@ -20,6 +20,7 @@
   }
   .overview-item.hour{
     overflow: visible;
+    flex-basis: 66%;
   }
   .overview-header {
     display: flex;

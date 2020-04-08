@@ -29,30 +29,33 @@ class Overview extends Component
         left: {},
         right: {},
         pie: {}
-      },
-      {
-        title: text.taggingTool.settings.similarity.name,
-        link: "/taggingTool/settings/similarity",
-        value: "0",
-        left: {},
-        right: {},
-        pie: {}
-      },
-      {
-        title: text.taggingTool.settings.pattern.name,
-        link: "/taggingTool/settings/pattern",
-        value: "0",
-        left: {},
-        right: {},
-        pie: {}
       }
-    ],
-    thirdRow: [
-      {
-        title: text.taggingTool.settings.tokens.name,
-        link: "/taggingTool/settings/tokensNumber"
-      }
+      // ,
+      // 
+      // {
+      //   title: text.taggingTool.settings.similarity.name,
+      //   link: "/taggingTool/settings/similarity",
+      //   value: "0",
+      //   left: {},
+      //   right: {},
+      //   pie: {}
+      // },
+      // {
+      //   title: text.taggingTool.settings.pattern.name,
+      //   link: "/taggingTool/settings/pattern",
+      //   value: "0",
+      //   left: {},
+      //   right: {},
+      //   pie: {}
+      // }
     ]
+    // ,
+    // thirdRow: [
+      // {
+        //   title: text.taggingTool.settings.tokens.name,
+        //   link: "/taggingTool/settings/tokensNumber"
+        // }
+    // ]
   };
   componentDidMount()
   {
@@ -64,8 +67,8 @@ class Overview extends Component
     secondRow[ 0 ].value = this.props.tokensNumber.maxValue
       ? (this.props.tokensNumber.value / this.props.tokensNumber.maxValue) * 100
       : 0;
-    secondRow[ 1 ].value = this.props.similarity;
-    secondRow[ 2 ].value = this.props.pattern;
+    // secondRow[ 1 ].value = this.props.similarity;
+    // secondRow[ 2 ].value = this.props.pattern;
 
     secondRow.forEach(col =>
     {
@@ -158,21 +161,21 @@ class Overview extends Component
               </div>
             </div>
           )) }
-        </div>
-        <div className="overview-item hour">
-          <OverviewHeader
-            title="Estimated Duration"
-            link="/taggingTool/settings/tokensNumber"
-          />
-          <div className="overview-content overview-duration">
-            <div className="overview-duration-txt">
-              Duration to tag the { this.props.tokensNumber.value } tokens with
-              these settings { "(format : hh-mm-ss)" }
-            </div>
-            <div className="overview-duration-value">
-              { new Date(this.props.tokensNumber.value * 5 * 1000)
-                .toISOString()
-                .substr(11, 8) }
+          <div className="overview-item hour">
+            <OverviewHeader
+              title="Estimated Duration"
+              link="/taggingTool/settings/tokensNumber"
+            />
+            <div className="overview-content overview-duration">
+              <div className="overview-duration-txt">
+                Duration to tag the { this.props.tokensNumber.value } tokens with
+                these settings { "(format : hh-mm-ss)" }
+              </div>
+              <div className="overview-duration-value">
+                { new Date(this.props.tokensNumber.value * 5 * 1000)
+                  .toISOString()
+                  .substr(11, 8) }
+              </div>
             </div>
           </div>
         </div>

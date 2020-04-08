@@ -42,7 +42,7 @@ class Classification extends Component
             alertMessage: text.taggingTool.alerts.headers.message
           };
           this.props.onUpdateAlert(alert);
-        } else if (selectedHeaders.length)
+        } else if (selectedHeaders.length && this.props.singleTokens.length === 0)
         {
           this.props.onSingleTokensRequest(selectedHeadersLabels);
         }
@@ -71,9 +71,6 @@ class Classification extends Component
     {
       this.props.onGetTokensNumber(this.props.singleTokens.length);
     }
-    /* if (prevProps.tokensNumber.value !== this.props.tokensNumber.value) {
-      this.props.history.push("/taggingTool/settings/tokensNumber");
-    } */
   }
   render()
   {
@@ -123,7 +120,6 @@ class Classification extends Component
   {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
-    //this.props.onUpdateAlert(alert);
   };
   handleContinue = history =>
   {

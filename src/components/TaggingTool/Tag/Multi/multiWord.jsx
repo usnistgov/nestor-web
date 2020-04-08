@@ -10,14 +10,19 @@ import List from "../TagComponents/list";
 import text from "../../../../assets/language/en.js";
 import { ProgressBar } from 'react-bootstrap';
 import { getCompleteness } from '../../Report/reportAction';
+import Alert from "../../../CommonComponents/Alert/alert";
+import { exportOutput } from "../../Export/exportAction";
+
 
 class MultiWord extends Component
 {
   state = {
-    showModal: false
+    showModal: false,
+    showNoClassificationModal: false
   };
   componentDidMount()
   {
+    this.props.onExportOutput();
     this.initTokenWithSynonymAlias(this.props.match.params.id);
     this.props.onGetCompleteness();
   }
@@ -31,6 +36,7 @@ class MultiWord extends Component
   }
   componentDidUpdate(prevProps)
   {
+    this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
@@ -44,6 +50,14 @@ class MultiWord extends Component
   {
     return (
       <div className="tag-container">
+        { this.state.showNoClassificationModal && (
+          <Alert 
+            alertHeader={text.taggingTool.alerts.tag.noClassificationHeader}
+            alertMessage={text.taggingTool.alerts.tag.noClassificationMessage}
+            styleColor="alert alert-danger"
+            onDelete={this.handleDeleteNoClassificationAlert}
+          />
+        )}
         <div className="tag-section">
           <div className="token-tagging-section">
             <ProgressBar
@@ -68,23 +82,14 @@ class MultiWord extends Component
                       this.props.report.complete) /
                       this.props.report.total) *
                     100
-                  ).toFixed(2) + " %"
+                  ).toFixed(2) + " % Complete"
               }
               key={ 1 }
             />
+            <br />
+            <h4>{this.props.multiTokens[ parseInt(this.props.match.params.id) ].label}</h4>
+            <div>Alias</div>
             <div className="alias">
-              <TagButton
-                value={
-                  this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-                    .label
-                }
-                showTooltipIcon={ true }
-                tooltip={ text.taggingTool.tagging.singleToken.tokenTooltip }
-                color={ "transparent" }
-                style={ { borderColor: "transparent" } }
-                buttonTag={ "" }
-                onClick={ this.handleContinue }
-              />
               <div>
                 <input
                   type="text"
@@ -107,7 +112,10 @@ class MultiWord extends Component
                 ) }
               </div>
             </div>
+            <br />
+            <div>Classification</div>
             <div className="classification-tags">
+              <br/>
               { this.props.classification.rules.map((obj, i) => (
                 <TagButton
                   key={ i }
@@ -123,17 +131,17 @@ class MultiWord extends Component
             </div>
           </div>
           <div className="token-view">
-            <div
-              className="badge"
-              style={ {
-                borderColor: "black"
-              } }
-            >
-              {
-                this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-                  .alias
-              }
-            </div>
+          <h4>Summary</h4>
+            <input
+                  type="text"
+                  className="form-control"
+                  value={
+                    this.props.multiTokens[
+                      parseInt(this.props.match.params.id)
+                    ].alias
+                  }
+                  readOnly
+                />
             { this.props.multiTokens[ parseInt(this.props.match.params.id) ]
               .classification.label && (
                 <div
@@ -161,8 +169,8 @@ class MultiWord extends Component
                   key={ i }
                   value={ obj.label }
                   shortkey={ "" }
-                  showTooltipIcon={ false }
-                  tooltip={ "" }
+                  showTooltipIcon={ true }
+                  tooltip={ obj.tooltip }
                   color={ "black" }
                   style={ { borderColor: "black" } }
                   onClick={ this.handleDeleteSynonym }
@@ -216,6 +224,12 @@ class MultiWord extends Component
   };
   handleContinue = history =>
   {
+    if(this.props.multiTokens[ parseInt(this.props.match.params.id) ].classification.color === ""){
+      this.setState({showNoClassificationModal:true});
+      return null;
+    }else{
+      this.setState({showNoClassificationModal:false});
+    }
     var index = [ ...this.props.multiTokens ].findIndex(
       element => element.classification.color === ""
     );
@@ -227,6 +241,9 @@ class MultiWord extends Component
       history.push("/taggingTool/tag/multi/" + index);
     }
   };
+  handleDeleteNoClassificationAlert = () => {
+    this.setState({showNoClassificationModal: false});
+  }
   handleDeleteModal = () =>
   {
     this.setState({ showModal: false });
@@ -320,6 +337,20 @@ class MultiWord extends Component
       this.props.onUpdateMultiTokens(tokens);
     }
   };
+  refreshSynonyms = () => 
+{
+  this.props.singleTokens.forEach(element =>
+    {
+      element.synonyms.forEach((synonym)=> {
+        synonym.tooltip = [];
+        this.props.ex.output.filter((outputLine)=>{
+          if(outputLine[0].toLowerCase().includes(synonym.label.toLowerCase()) && synonym.tooltip.length<3){
+            synonym.tooltip.push(outputLine[0]);
+          }
+        })
+      });      
+    });
+  }
   computeSynonyms = label =>
   {
     var labels = label.split(" ");
@@ -332,6 +363,7 @@ class MultiWord extends Component
         {
           token.synonyms.forEach(synonym =>
           {
+            token.tooltip = ["synonym appeared there"];
             synonyms.push(synonym);
           });
         }
@@ -362,17 +394,20 @@ const mapStateToProps = createSelector(
   state => state.singleTokens,
   state => state.classification,
   state => state.report,
-  (multiTokens, singleTokens, classification, report) => ({
+  state => state.export,
+  (multiTokens, singleTokens, classification, report, ex) => ({
     multiTokens,
     report,
     singleTokens,
-    classification
+    classification,
+    ex
   })
 );
 const mapActionsToProps = {
   onGetCompleteness: getCompleteness,
   onUpdateMultiTokens: updateMultiTokens,
-  onUpdateVocab: updateVocab
+  onUpdateVocab: updateVocab,
+  onExportOutput: exportOutput
 };
 export default connect(
   mapStateToProps,

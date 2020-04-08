@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import "./tag.css";
 
 const tooltip = data => (
-  <Tooltip id="tooltip">
-    <strong>{ data }</strong>
+  <Tooltip id="tooltip" >
+    { data.map((obj, i) => (
+      <strong key={ i } >{ obj }<br /></strong>
+    )) }
   </Tooltip>
 );
 class TagButton extends Component
@@ -29,7 +32,6 @@ class TagButton extends Component
         { this.props.showCloseIcon && (
           <i
             className="fa fa-times-circle"
-
           />
         ) }
       </button>

@@ -71,7 +71,6 @@ export function multiTokensRequest(headers)
 
 export function updateVocab(token)
 {
-  console.log(token);
   return dispatch =>
   {
     const zerorpc = window.zero;

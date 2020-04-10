@@ -19,7 +19,7 @@ class MultiRedirect extends Component
     this.props.onUpdateAlert(alert);
     if (this.props.singleTokens.length > 1 && this.props.multiTokens.length === 0)
     {
-      this.props.onMultiTokensRequest();
+      this.props.onMultiTokensRequest(this.props.headers);
     } else
     {
       alert = {

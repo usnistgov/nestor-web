@@ -417,9 +417,12 @@ refreshSynonyms = () =>
       element.synonyms.forEach((synonym)=> {
         synonym.tooltip = [];
         this.props.ex.output.filter((outputLine)=>{
-          if(outputLine[0].toLowerCase().includes(synonym.label.toLowerCase()) && synonym.tooltip.length<3){
-            synonym.tooltip.push(outputLine[0]);
-          }
+          var tmpInputDataParsed = outputLine[0].toLowerCase().split(" ");
+          tmpInputDataParsed.map( (token)=>{
+            if(token === (synonym.label.toLowerCase()) && synonym.tooltip.length<3){
+              synonym.tooltip.push(outputLine[0]);
+            }
+          });
         })
       });      
     });

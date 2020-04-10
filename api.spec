@@ -5,8 +5,7 @@ block_cipher = None
 
 a = Analysis(['python/api.py'],
              pathex=['/Users/cjb15/Documents/nestor-web'],
-             binaries=[('/System/Library/Frameworks/Tk.framework/Tk', 'tk'),
-               ('/System/Library/Frameworks/Tcl.framework/Tcl', 'tcl')],
+             binaries=[],
              datas=[],
              hiddenimports=[],
              hookspath=['.'],

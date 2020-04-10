@@ -68,8 +68,8 @@ class Home extends Component
       <div className="home-container">
         <div className="title">{ text.home.header }</div>
         <div className="button text-center">
-          <button className="btn-dark" onClick={ this.clearApplicationState }>
-            <NavLink to="/taggingTool/settings/upload">{ text.home.button.newProject }</NavLink>
+          <button className="btn-dark" onClick={ this.newProject }>
+            { text.home.button.newProject }
           </button>
           <br />
           <br />
@@ -224,6 +224,10 @@ class Home extends Component
         }
         this.props.history.push("/taggingTool/settings/overview");
       });
+  }
+  newProject = () => {
+    this.clearApplicationState(); 
+    this.props.history.push("/taggingTool/settings/upload");
   }
 }
 const mapStateToProps = createSelector(

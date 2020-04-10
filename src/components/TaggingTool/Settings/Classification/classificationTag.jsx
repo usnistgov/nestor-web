@@ -3,7 +3,8 @@ import "./classificationTag.css";
 
 class ClassificationTag extends Component {
   styles = {
-    borderColor: this.props.color
+    borderColor: this.props.color,
+    display: this.props.display
   };
   render() {
     return (

@@ -14,11 +14,22 @@ import { createSelector } from "reselect";
 
 class Classification extends Component
 {
+  constructor(props){
+    super(props);
+    this.state={
+      classification:{
+        rules:[],
+        types:[]
+      }
+    }
+  }
   componentDidMount()
   {
     if (!Object.keys(this.props.classification.types).length)
     {
       this.props.onClassificationRequest();
+      console.log(this.props.classification);
+      this.updateClassification();
     }
     if (this.props.dragAndDrops.length)
     {
@@ -67,10 +78,15 @@ class Classification extends Component
   }
   componentDidUpdate(prevProps)
   {
+     debugger;
     if (prevProps.singleTokens !== this.props.singleTokens)
     {
       this.props.onGetTokensNumber(this.props.singleTokens.length);
+      this.updateClassification();
     }
+    // this.updateClassification();
+    // console.log(this.props.classification);
+    // console.log(this.state.classification);
   }
   render()
   {
@@ -92,6 +108,7 @@ class Classification extends Component
         />
         <div className="setting-content">
           <div>
+            <div>Classification</div>
             { this.props.classification.types.map((obj, i) => (
               <ClassificationTag
                 key={ i }
@@ -99,12 +116,28 @@ class Classification extends Component
                 color={ obj.color }
               />
             )) }
-            { this.props.classification.rules.map((obj, i) => (
-              <ClassificationTag
+            <br/>
+            <div>Hybrid classification</div>
+            { this.state.classification.rules.map((obj, i) => (
+              <div key={i} className="mycustomflexbox">
+                <ClassificationTag
                 key={ i }
                 label={ obj.shortkey + " - " + obj.label }
                 color={ obj.color }
-              />
+                /> 
+                <div className="center"><i class="fas fa-equals"></i></div>
+                <ClassificationTag
+                key={i+2000}
+                label={ obj.composedBy[0].shortkey + " - " + obj.composedBy[0].label}
+                color={obj.composedBy[0].color}
+                /> 
+                <div className="center"><i class="fas fa-plus"></i></div>
+                <ClassificationTag
+                key={i+1001}
+                label={ obj.composedBy[1].shortkey + " - " + obj.composedBy[1].label}
+                color={obj.composedBy[1].color}
+                />
+              </div>
             )) }
           </div>
           <Button
@@ -115,6 +148,15 @@ class Classification extends Component
         </div>
       </React.Fragment>
     );
+  }
+  updateClassification = () => {
+    if(this.props.classification.rules.length !==0){
+      let newClassification = this.props.classification;
+      newClassification.rules[0].composedBy= [this.props.classification.types[1],this.props.classification.types[0]];
+      newClassification.rules[1].composedBy= [this.props.classification.types[2],this.props.classification.types[0]];
+      this.setState({classification: newClassification});
+      console.log(newClassification);
+    }
   }
   handleDelete = () =>
   {

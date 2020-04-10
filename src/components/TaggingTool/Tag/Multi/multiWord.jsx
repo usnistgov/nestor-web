@@ -23,7 +23,7 @@ class MultiWord extends Component
   componentDidMount()
   {
     this.props.onExportOutput();
-    this.initTokenWithSynonymAlias(this.props.match.params.id);
+    // this.initTokenWithSynonymAlias(this.props.match.params.id);
     this.props.onGetCompleteness();
   }
   shouldComponentUpdate(nextProps)
@@ -36,10 +36,10 @@ class MultiWord extends Component
   }
   componentDidUpdate(prevProps)
   {
-    this.refreshSynonyms();
+    // this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
-      this.initTokenWithSynonymAlias(this.props.match.params.id);
+      // this.initTokenWithSynonymAlias(this.props.match.params.id);
       this.props.onUpdateVocab(
         this.props.multiTokens[ prevProps.match.params.id ]
       );
@@ -113,7 +113,7 @@ class MultiWord extends Component
               </div>
             </div>
             <br />
-            <div>Classification</div>
+            <div>Hybrid Classification</div>
             <div className="classification-tags">
               <br/>
               { this.props.classification.rules.map((obj, i) => (
@@ -122,6 +122,24 @@ class MultiWord extends Component
                   value={ obj.label }
                   shortkey={ obj.shortkey }
                   showTooltipIcon={ false }
+                  tooltip={ "" }
+                  color={ obj.color }
+                  style={ { borderColor: obj.color } }
+                  onClick={ this.handleAddClassification }
+                />
+              )) }
+            </div>
+            <br/>
+            <div>Classification</div>
+            <div className="classification-tags">
+              <br/>
+              { this.props.classification.types.map((obj, i) => (
+                <TagButton
+                  key={ i }
+                  value={ obj.label }
+                  shortkey={ obj.shortkey }
+                  showTooltipIcon={ false }
+                  showCloseIcon={ false }
                   tooltip={ "" }
                   color={ obj.color }
                   style={ { borderColor: obj.color } }
@@ -160,7 +178,7 @@ class MultiWord extends Component
                 >
                   No classification
                 </div>}
-            <div>
+            {/* <div>
               { text.taggingTool.tagging.singleToken.synonymSectionTitle }
             </div>
             <div className="synonyms-tags selected">
@@ -178,7 +196,7 @@ class MultiWord extends Component
                   onClick={ this.handleDeleteSynonym }
                 />
               )) }
-            </div>
+            </div> */}
             <Note
               showNote={
                 this.props.multiTokens[ parseInt(this.props.match.params.id) ]
@@ -308,97 +326,97 @@ class MultiWord extends Component
   };
   handleAddNote = () => { };
   handleEditNote = () => { };
-  handleDeleteSynonym = synonym =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
-    var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-    };
-    var selectedSynonyms = token.selectedSynonyms.filter(element =>
-    {
-      return element.value !== synonym.value;
-    });
-    token.selectedSynonyms = selectedSynonyms;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
-    this.props.onUpdateMultiTokens(tokens);
-  };
-  handleSelectSynonym = synonym =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
-    var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-    };
-    var found = token.selectedSynonyms.find(element =>
-    {
-      return element.value === synonym.value;
-    });
-    if (!found)
-    {
-      token.selectedSynonyms.push(synonym);
-      tokens[ parseInt(this.props.match.params.id) ] = token;
-      this.props.onUpdateMultiTokens(tokens);
-    }
-  };
-  refreshSynonyms = () => 
-{
-  console.log(this.props.multiTokens);
-  this.props.multiTokens.forEach(element =>
-    {
-      element.synonyms.forEach((synonym)=> {
-        synonym.tooltip = [];
-        this.props.ex.output.filter((outputLine)=>{
-          var tmpInputDataParsed = outputLine[0].toLowerCase().split(" ");
-          tmpInputDataParsed.map( (token)=>{
-            if(token === (synonym.label.toLowerCase()) && synonym.tooltip.length<3){
-              synonym.tooltip.push(outputLine[0]);
-            }
-          });
-          // console.log(outputLine[0].toLowerCase());
-          // console.log(synonym.label.toLowerCase());
-          // if(outputLine[0].toLowerCase().includes(synonym.label.toLowerCase()) && synonym.tooltip.length<3){
-          //   synonym.tooltip.push(outputLine[0]);
-          // }
-        })
-      });      
-    });
-  }
-  computeSynonyms = label =>
-  {
-    var labels = label.split(" ");
-    var synonyms = [];
-    labels.forEach(label =>
-    {
-      this.props.singleTokens.forEach(token =>
-      {
-        if (token.label === label)
-        {
-          token.synonyms.forEach(synonym =>
-          {
-            token.tooltip = ["synonym appeared there"];
-            synonyms.push(synonym);
-          });
-        }
-      });
-    });
-    return synonyms;
-  };
-  initTokenWithSynonymAlias(index)
-  {
-    var tokens = [ ...this.props.multiTokens ];
-    var token = { ...this.props.multiTokens[ index ] };
+//   handleDeleteSynonym = synonym =>
+//   {
+//     var tokens = [ ...this.props.multiTokens ];
+//     var token = {
+//       ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+//     };
+//     var selectedSynonyms = token.selectedSynonyms.filter(element =>
+//     {
+//       return element.value !== synonym.value;
+//     });
+//     token.selectedSynonyms = selectedSynonyms;
+//     tokens[ parseInt(this.props.match.params.id) ] = token;
+//     this.props.onUpdateMultiTokens(tokens);
+//   };
+//   handleSelectSynonym = synonym =>
+//   {
+//     var tokens = [ ...this.props.multiTokens ];
+//     var token = {
+//       ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+//     };
+//     var found = token.selectedSynonyms.find(element =>
+//     {
+//       return element.value === synonym.value;
+//     });
+//     if (!found)
+//     {
+//       token.selectedSynonyms.push(synonym);
+//       tokens[ parseInt(this.props.match.params.id) ] = token;
+//       this.props.onUpdateMultiTokens(tokens);
+//     }
+//   };
+//   refreshSynonyms = () => 
+// {
+//   console.log(this.props.multiTokens);
+//   this.props.multiTokens.forEach(element =>
+//     {
+//       element.synonyms.forEach((synonym)=> {
+//         synonym.tooltip = [];
+//         this.props.ex.output.filter((outputLine)=>{
+//           var tmpInputDataParsed = outputLine[0].toLowerCase().split(" ");
+//           tmpInputDataParsed.map( (token)=>{
+//             if(token === (synonym.label.toLowerCase()) && synonym.tooltip.length<3){
+//               synonym.tooltip.push(outputLine[0]);
+//             }
+//           });
+//           // console.log(outputLine[0].toLowerCase());
+//           // console.log(synonym.label.toLowerCase());
+//           // if(outputLine[0].toLowerCase().includes(synonym.label.toLowerCase()) && synonym.tooltip.length<3){
+//           //   synonym.tooltip.push(outputLine[0]);
+//           // }
+//         })
+//       });      
+//     });
+//   }
+//   computeSynonyms = label =>
+//   {
+//     var labels = label.split(" ");
+//     var synonyms = [];
+//     labels.forEach(label =>
+//     {
+//       this.props.singleTokens.forEach(token =>
+//       {
+//         if (token.label === label)
+//         {
+//           token.synonyms.forEach(synonym =>
+//           {
+//             token.tooltip = ["synonym appeared there"];
+//             synonyms.push(synonym);
+//           });
+//         }
+//       });
+//     });
+//     return synonyms;
+//   };
+  // initTokenWithSynonymAlias(index)
+  // {
+  //   var tokens = [ ...this.props.multiTokens ];
+  //   var token = { ...this.props.multiTokens[ index ] };
 
-    if (token.synonyms.length < 1)
-    {
-      var synonyms = this.computeSynonyms(token.label);
-      token.synonyms = synonyms;
-      tokens[ index ] = token;
-    }
-    if (!token.alias)
-    {
-      token.alias = token.label;
-    }
-    this.props.onUpdateMultiTokens(tokens);
-  }
+  //   if (token.synonyms.length < 1)
+  //   {
+  //     var synonyms = this.computeSynonyms(token.label);
+  //     token.synonyms = synonyms;
+  //     tokens[ index ] = token;
+  //   }
+  //   if (!token.alias)
+  //   {
+  //     token.alias = token.label;
+  //   }
+  //   this.props.onUpdateMultiTokens(tokens);
+  // }
 }
 const mapStateToProps = createSelector(
   state => state.multiTokens,

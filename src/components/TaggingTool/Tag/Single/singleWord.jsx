@@ -422,7 +422,9 @@ refreshSynonyms = () =>
             if(token === (synonym.label.toLowerCase()) && synonym.tooltip.length<3){
               synonym.tooltip.push(outputLine[0]);
             }
+            return true;
           });
+          return true;
         })
       });      
     });

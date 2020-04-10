@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import "./home.css";
 import text from "../../assets/language/en.js";
 import PouchDB from "pouchdb";
@@ -20,14 +19,15 @@ import Button from "react-bootstrap/Button"
 
 class Home extends Component
 {
-  state = {
-    showModal: false,
-    listOfProjects: [],
-    projectOpened: ''
-  };
+
   constructor(props)
   {
     super(props);
+    this.state = {
+      showModal: false,
+      listOfProjects: [],
+      projectOpened: ''
+    };
   }
 
   componentDidMount()

@@ -25,6 +25,7 @@ class Classification extends Component
   }
   componentDidMount()
   {
+    this.updateClassification();
     if (!Object.keys(this.props.classification.types).length)
     {
       this.props.onClassificationRequest();
@@ -78,15 +79,11 @@ class Classification extends Component
   }
   componentDidUpdate(prevProps)
   {
-     debugger;
     if (prevProps.singleTokens !== this.props.singleTokens)
     {
       this.props.onGetTokensNumber(this.props.singleTokens.length);
       this.updateClassification();
     }
-    // this.updateClassification();
-    // console.log(this.props.classification);
-    // console.log(this.state.classification);
   }
   render()
   {
@@ -100,38 +97,53 @@ class Classification extends Component
             onDelete={ this.handleDelete }
           />
         ) }
-        <Title
+        <div className="classifications-container">
+          <div className="regular-classification">
+          <Title
           title={ text.taggingTool.settings.classification.title }
           informationMessage={
             text.taggingTool.settings.classification.titleInfo
           }
         />
-        <div className="setting-content">
           <div>
-            <div>Classification</div>
             { this.props.classification.types.map((obj, i) => (
+              <div key={i} className="types-container">
               <ClassificationTag
                 key={ i }
                 label={ obj.shortkey + " - " + obj.label }
                 color={ obj.color }
               />
+              </div>
             )) }
-            <br/>
-            <div>Hybrid classification</div>
+
+          </div>
+          <br />
+          <Button
+            onClick={ this.handleContinue }
+            class="btn btn-primary ctn"
+            label="Continue"
+          />
+          </div>
+
+          <div className="hybrid-classification">
+          <Title
+              title="Hybrid classification"
+              informationMessage="These classifications iare used for multi words tokens"
+            />
             { this.state.classification.rules.map((obj, i) => (
-              <div key={i} className="mycustomflexbox">
+              <div key={i} className="rules-container">
                 <ClassificationTag
                 key={ i }
                 label={ obj.shortkey + " - " + obj.label }
                 color={ obj.color }
                 /> 
-                <div className="center"><i class="fas fa-equals"></i></div>
+                <div className="center"><i className="fas fa-equals"></i></div>
                 <ClassificationTag
                 key={i+2000}
                 label={ obj.composedBy[0].shortkey + " - " + obj.composedBy[0].label}
                 color={obj.composedBy[0].color}
                 /> 
-                <div className="center"><i class="fas fa-plus"></i></div>
+                <div className="center"><i className="fas fa-plus"></i></div>
                 <ClassificationTag
                 key={i+1001}
                 label={ obj.composedBy[1].shortkey + " - " + obj.composedBy[1].label}
@@ -140,12 +152,7 @@ class Classification extends Component
               </div>
             )) }
           </div>
-          <Button
-            onClick={ this.handleContinue }
-            class="btn btn-primary ctn"
-            label="Continue"
-          />
-        </div>
+          </div>
       </React.Fragment>
     );
   }
@@ -167,7 +174,8 @@ class Classification extends Component
   {
     if (!this.props.alert.showAlert)
     {
-      this.props.history.push("/taggingTool/settings/tokensNumber");
+      // this.props.history.push("/taggingTool/settings/tokensNumber");
+      this.props.history.push("/taggingTool/settings/overview")
     }
   };
 }

@@ -19,10 +19,10 @@ const links = [
         label: text.home.sidebar.classification,
         link: "/taggingTool/settings/classification"
       },
-      {
-        label: text.home.sidebar.tokensNumber,
-        link: "/taggingTool/settings/tokensNumber"
-      },
+      // {
+      //   label: text.home.sidebar.tokensNumber,
+      //   link: "/taggingTool/settings/tokensNumber"
+      // },
       // {
       //   label: text.home.sidebar.similarity,
       //   link: "/taggingTool/settings/similarity"

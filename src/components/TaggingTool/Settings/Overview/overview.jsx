@@ -7,6 +7,8 @@ import Button from "../../../CommonComponents/Button/button";
 import text from "../../../../assets/language/en.js";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
+import DynamicSlider from "../../../CommonComponents/Sliders/dynamicSlider";
+import { updateSingleTokensNumber } from "../TokensNumber/tokensNumberAction";
 
 class Overview extends Component
 {
@@ -22,14 +24,14 @@ class Overview extends Component
       }
     ],
     secondRow: [
-      {
-        title: text.taggingTool.settings.tokens.name,
-        link: "/taggingTool/settings/tokensNumber",
-        value: "0",
-        left: {},
-        right: {},
-        pie: {}
-      }
+      // {
+      //   title: text.taggingTool.settings.tokens.name,
+      //   link: "/taggingTool/settings/tokensNumber",
+      //   value: "0",
+      //   left: {},
+      //   right: {},
+      //   pie: {}
+      // }
       // ,
       // 
       // {
@@ -64,9 +66,9 @@ class Overview extends Component
       this.props.onClassificationRequest();
     }
     var secondRow = [ ...this.state.secondRow ];
-    secondRow[ 0 ].value = this.props.tokensNumber.maxValue
-      ? (this.props.tokensNumber.value / this.props.tokensNumber.maxValue) * 100
-      : 0;
+    // secondRow[ 0 ].value = this.props.tokensNumber.maxValue
+    //   ? (this.props.tokensNumber.value / this.props.tokensNumber.maxValue) * 100
+    //   : 0;
     // secondRow[ 1 ].value = this.props.similarity;
     // secondRow[ 2 ].value = this.props.pattern;
 
@@ -162,15 +164,20 @@ class Overview extends Component
             </div>
           )) }
           <div className="overview-item hour">
-            <OverviewHeader
+            {/* <OverviewHeader
               title="Estimated Duration"
               link="/taggingTool/settings/tokensNumber"
-            />
+            /> */}
             <div className="overview-content overview-duration">
               <div className="overview-duration-txt">
-                Duration to tag the { this.props.tokensNumber.value } tokens with
+                Estimated duration to tag the { this.props.tokensNumber.value } tokens with
                 these settings { "(format : hh-mm-ss)" }
+                <DynamicSlider
+                slider={ this.props.tokensNumber }
+                onUpdate={ this.handleUpdate }
+              />
               </div>
+              
               <div className="overview-duration-value">
                 { new Date(this.props.tokensNumber.value * 5 * 1000)
                   .toISOString()
@@ -187,6 +194,15 @@ class Overview extends Component
       </div>
     );
   }
+  handleUpdate = e =>
+  {
+    e.preventDefault();
+    e.persist();
+    const tokensNumber = { ...this.props.tokensNumber };
+    var value = e.target.value;
+    tokensNumber.value = value;
+    this.props.onUpdateSingleTokensNumber(tokensNumber);
+  };
   handleContinue = history =>
   {
     history.push("/taggingTool/tag/single");
@@ -216,7 +232,8 @@ const mapStateToProps = createSelector(
   })
 );
 const mapActionsToProps = {
-  onClassificationRequest: classificationRequest
+  onClassificationRequest: classificationRequest,
+  onUpdateSingleTokensNumber: updateSingleTokensNumber
 };
 export default connect(
   mapStateToProps,

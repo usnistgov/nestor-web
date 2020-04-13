@@ -20,7 +20,7 @@
   }
   .overview-item.hour{
     overflow: visible;
-    flex-basis: 66%;
+    flex-basis: 100%;
   }
   .overview-header {
     display: flex;
@@ -61,8 +61,9 @@
     line-height: 36px;
   }
   .overview-duration {
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    padding:30px;
   }
   .overview-classification {
     flex-wrap: wrap;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import text from "../../../assets/language/en.js";
+// import text from "../../../assets/language/en.js";
+import "./dynamicSlider.css";
 
 /* const legend = {
   display: false,
@@ -14,7 +15,7 @@ class DynamicSlider extends Component {
   render() {
     return (
       <React.Fragment>
-        <form>
+        <form className="form">
           <div className="form-group">
             <input
               type="range"
@@ -27,7 +28,10 @@ class DynamicSlider extends Component {
             />
           </div>
         </form>
-        <div className="setting-subtitle">
+        <div className="tokensNumber-label">
+          Number of Tokens
+        </div>
+        {/* <div className="setting-subtitle">
           {text.taggingTool.settings.tokens.subtitle.message1}
           {this.props.slider.value}
           {text.taggingTool.settings.tokens.subtitle.message2}
@@ -38,7 +42,7 @@ class DynamicSlider extends Component {
               ).toFixed(1)
             : 0}
           {text.taggingTool.settings.tokens.subtitle.message3}
-        </div>
+        </div> */}
         {/* <div className="setting-content">
           <Doughnut
             data={this.props.slider.chart.data}

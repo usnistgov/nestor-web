@@ -96,11 +96,18 @@ button {
 .setting-subtitle.classification {
   margin-bottom: 10px;
 }
-.mycustomflexbox{
+.types-container, .rules-container{
   display: flex;
   justify-content: flex-start;
 }
 .center{
   align-self: center;
   margin: 0 10px;
+}
+.classifications-container{
+  display: flex;
+  justify-content: flex-start;
+}
+.regular-classification, .hybrid-classification{
+  margin: 0 50px;
 }

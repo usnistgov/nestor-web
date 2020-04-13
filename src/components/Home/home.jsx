@@ -26,7 +26,8 @@ class Home extends Component
     this.state = {
       showModal: false,
       listOfProjects: [],
-      projectOpened: ''
+      projectOpened: '',
+      lastRow: null
     };
   }
 
@@ -48,18 +49,6 @@ class Home extends Component
       });
       this.setState({ listOfProjects: tmpListOfProjects });
     });
-    if (this.props.dragAndDrops[ 0 ] && this.props.dragAndDrops[ 0 ].file.name)
-    {
-      this.setState({ projectOpened: this.props.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] });
-    }
-  }
-
-  componentWillReceiveProps(nextProps)
-  {
-    if (nextProps.dragAndDrops[ 0 ] && nextProps.dragAndDrops[0].file && nextProps.dragAndDrops[ 0 ].file.name)
-    {
-      this.setState({ projectOpened: nextProps.dragAndDrops[ 0 ].file.name.split(".")[ 0 ] })
-    }
   }
 
   render()
@@ -104,7 +93,7 @@ class Home extends Component
                           <strong>Location</strong> : { obj.originalLocation }
                           <hr />
                           <div className="flexbox">
-                            <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj.name) } disabled={ obj.name === this.state.projectOpened }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
+                            <Button variant="outline-primary" onClick={ () => this.handleOpenProject(obj.name) }> Open&nbsp;&nbsp;<i className="far fa-arrow-alt-circle-right"></i></Button>
                             <Button variant="outline-danger right" onClick={ () => this.handleDeleteProject(obj.name) }> Delete&nbsp;&nbsp;<i className="far fa-trash-alt"></i></Button>
                           </div>
                         </Card.Body>
@@ -171,6 +160,8 @@ class Home extends Component
 
   handleOpenProject(projectName)
   {
+    console.log(this.state.projectOpened);
+    console.log(projectName);
     this.handleHideModal();
     let currentProject;
     window.db.get(projectName)

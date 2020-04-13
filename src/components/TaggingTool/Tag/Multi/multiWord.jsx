@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../TagComponents/tag.css";
 import TagButton from "../TagComponents/tagButton";
 import Note from "../TagComponents/note";
-import Button from "../../../CommonComponents/Button/button";
+import Buttton from "../../../CommonComponents/Button/button";
 import { updateMultiTokens, updateVocab } from "./multiTokensAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -12,7 +12,7 @@ import { ProgressBar } from 'react-bootstrap';
 import { getCompleteness } from '../../Report/reportAction';
 import Alert from "../../../CommonComponents/Alert/alert";
 import { exportOutput } from "../../Export/exportAction";
-
+import Button from 'react-bootstrap/Button'
 
 class MultiWord extends Component
 {
@@ -197,6 +197,16 @@ class MultiWord extends Component
                 />
               )) }
             </div> */}
+            <br/>
+            <div>Composed by</div>
+            { this.props.multiTokens[ parseInt(this.props.match.params.id)].composedWith.map((obj, i) => (
+                <Button
+                  variant="outline-dark"
+                  className="composedwith-button"
+                  key={ i }
+                  onClick={ () => this.handleClickOnSingleToken(obj) }
+                >{obj.label}</Button>
+              )) }
             <Note
               showNote={
                 this.props.multiTokens[ parseInt(this.props.match.params.id) ]
@@ -228,7 +238,7 @@ class MultiWord extends Component
         </div>
 
         <div className="buttons">
-          <Button
+          <Buttton
             onClick={ this.handleContinue }
             class="btn btn-primary"
             label="Continue"
@@ -236,6 +246,10 @@ class MultiWord extends Component
         </div>
       </div>
     );
+  }
+  handleClickOnSingleToken = token => {
+    console.log(token);
+    this.props.history.push("/taggingTool/tag/single/" + token.index);
   }
   handleClickList = token =>
   {
@@ -409,6 +423,16 @@ class MultiWord extends Component
     if (!token.alias)
     {
       token.alias = token.label;
+      var multiTokenSplitted = token.alias.split(" ");
+      console.log(this.props.singleTokens);
+      this.props.singleTokens.map((singleToken) => {
+        if(singleToken.label === multiTokenSplitted[0] || singleToken.label === multiTokenSplitted[1]){
+          console.log(singleToken);
+          console.log(token.label);
+          token.composedWith.push(singleToken);
+        }
+      });
+      console.log(this.props.multiTokens.length);
     }
     this.props.onUpdateMultiTokens(tokens);
   }

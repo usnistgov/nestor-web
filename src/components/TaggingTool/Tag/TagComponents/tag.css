@@ -169,3 +169,11 @@ textarea#note {
   background-color:#6c757d;
   color:#fff;
 }
+
+.composedwith-button{
+  margin-top:10px;
+  margin-bottom:5px;
+  border-width: 2px;
+  color:black;
+  border-color:black;
+}

@@ -6,6 +6,7 @@ import Button from "../../../CommonComponents/Button/button";
 import Alert from "../../../CommonComponents/Alert/alert";
 import text from "../../../../assets/language/en.js";
 import { singleTokensRequest } from "../../Tag/Single/singleTokensAction";
+import { multiTokensRequest } from "../../Tag/Multi/multiTokensAction";
 import { getTokensNumber } from "../TokensNumber/tokensNumberAction";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { connect } from "react-redux";
@@ -57,6 +58,7 @@ class Classification extends Component
         } else if (selectedHeaders.length && this.props.singleTokens.length === 0)
         {
           this.props.onSingleTokensRequest(selectedHeadersLabels);
+          this.props.onMultiTokensRequest(selectedHeadersLabels);
         }
       } else
       {
@@ -207,7 +209,8 @@ const mapActionsToProps = {
   onClassificationRequest: classificationRequest,
   onSingleTokensRequest: singleTokensRequest,
   onGetTokensNumber: getTokensNumber,
-  onUpdateAlert: updateAlert
+  onUpdateAlert: updateAlert,
+  onMultiTokensRequest: multiTokensRequest
 };
 export default connect(
   mapStateToProps,

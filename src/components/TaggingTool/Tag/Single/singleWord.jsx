@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../TagComponents/tag.css";
 import TagButton from "../TagComponents/tagButton";
 import Note from "../TagComponents/note";
-import Button from "../../../CommonComponents/Button/button";
+import Buttton from "../../../CommonComponents/Button/button";
 import { updateSingleTokens, updateVocab } from "./singleTokensAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -13,6 +13,8 @@ import List from "../TagComponents/list";
 import { ProgressBar } from "react-bootstrap";
 import { getCompleteness } from "../../Report/reportAction";
 import { exportOutput } from "../../Export/exportAction";
+import Button from 'react-bootstrap/Button'
+import Modal from "react-bootstrap/Modal"
 
 const fuzz = window.fuzz;
 
@@ -20,11 +22,12 @@ class SingleWord extends Component
 {
   state = {
     showModal: false,
-    showNoClassificationModal: false
+    showNoClassificationModal: false,
+    expanded: false,
+    currentMultiTokens: []
   };
   componentDidMount()
   {
-    //debugger;
     var alert = {
       showAlert: false,
       alertHeader: text.taggingTool.alerts.tag.header,
@@ -46,6 +49,7 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
+    // debugger;
     this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
@@ -55,6 +59,7 @@ class SingleWord extends Component
       );
       this.props.onGetCompleteness();
     }
+    console.log(this.state.currentAppearsIn);
   }
   render()
   {
@@ -220,6 +225,53 @@ class SingleWord extends Component
                 />
               )) }
             </div>
+            <br/>
+            <div>Appears in</div>
+            { this.state.expanded ? 
+            <div className="summary-appearsIn-container">
+              <Modal
+                size="lg"
+                show={ this.state.expanded }
+                onHide={() => this.setState({expanded:false}) }>
+                <Modal.Header closeButton>
+                  <Modal.Title>
+                    <i className="fas fa-list"></i>
+                    &nbsp;
+                    List of Multitokens 
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  All the multiTokens where the singleToken <strong>{this.props.singleTokens[ parseInt(this.props.match.params.id)].label}</strong> appeared are listed below.
+                  You can click on them to tag these multiTokens.
+                  <div className="multiTokens-container"> {this.props.singleTokens[ parseInt(this.props.match.params.id)].appearsIn.map((obj, i) => (
+                    <Button
+                      variant="outline-dark"
+                      className="composedwith-button-modal"
+                      key={ i }
+                      onClick={ () => this.handleClickOnMultiToken(obj) }
+                      >{obj.label}</Button>
+                    ))}
+              </div> 
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={ () => this.setState({expanded:false}) }>
+                  { text.taggingTool.tagging.singleToken.modal.buttonLabel }
+                </Button>
+              </Modal.Footer>
+            </Modal>
+              </div>:
+               <div className="fullwidth"> {this.state.currentMultiTokens.map((obj, i) => (
+                <Button
+                  variant="outline-dark"
+                  className="composedwith-button"
+                  key={ i }
+                  onClick={ () => this.handleClickOnMultiToken(obj) }
+                >{obj.label}</Button>
+              ))}
+              <Button className="button-moremultitokens" variant="link" onClick={() => this.showMoreOrLess()}>
+                More
+              </Button>
+              </div> }
             <Note
               showNote={
                 this.props.singleTokens[ parseInt(this.props.match.params.id) ]
@@ -250,7 +302,7 @@ class SingleWord extends Component
           />
         </div>
         <div className="buttons">
-          <Button
+          <Buttton
             onClick={ this.handleContinue }
             class="btn btn-primary"
             label="Continue"
@@ -258,6 +310,10 @@ class SingleWord extends Component
         </div>
       </div>
     );
+  }
+  handleClickOnMultiToken = multiToken => {
+    console.log(multiToken);
+    this.props.history.push("/taggingTool/tag/multi/" + multiToken.index);
   }
   handleClickList = token =>
   {
@@ -296,6 +352,9 @@ class SingleWord extends Component
       history.push("/taggingTool/tag/single/" + index);
     }
   };
+  showMoreOrLess = () => {
+    this.setState({expanded: !this.state.expanded});
+  }
   handleDeleteNoClassificationAlert = () => {
     this.setState({showNoClassificationModal: false});
   }
@@ -461,6 +520,13 @@ refreshSynonyms = () =>
     {
       token.alias = token.label;
     }
+    this.props.multiTokens.map((multiToken) => {
+      var multiTokenSplitted = multiToken.label.split(" ");
+      if(token.label === multiTokenSplitted[0] || token.label === multiTokenSplitted[1]){
+        token.appearsIn.push(multiToken);
+      }
+    });
+    this.setState({currentMultiTokens: token.appearsIn.slice(0,3)});
     this.props.onUpdateSingleTokens(tokens);
   }
 }
@@ -474,6 +540,7 @@ const mapStateToProps = createSelector(
   state => state.report,
   state => state.dragAndDrops,
   state => state.export,
+  state => state.multiTokens,
   (
     singleTokens,
     classification,
@@ -483,7 +550,8 @@ const mapStateToProps = createSelector(
     similarity,
     report,
     dragAndDrops,
-    ex
+    ex,
+    multiTokens
   ) => ({
     singleTokens,
     classification,
@@ -493,7 +561,8 @@ const mapStateToProps = createSelector(
     similarity,
     report,
     dragAndDrops,
-    ex
+    ex,
+    multiTokens
   })
 );
 const mapActionsToProps = {

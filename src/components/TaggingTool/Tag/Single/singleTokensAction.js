@@ -43,7 +43,8 @@ export function setTokens(tokensList)
       synonyms: [],
       selectedSynonyms: [],
       aliasInput: "",
-      note: { value: "", showNote: false }
+      note: { value: "", showNote: false },
+      appearsIn: []
     });
   });
   return updateSingleTokens(tokens);

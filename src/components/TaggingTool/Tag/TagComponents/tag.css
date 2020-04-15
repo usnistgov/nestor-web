@@ -70,6 +70,7 @@
   color: black;
 }
 .token-view .note {
+  margin-top:10px;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -176,4 +177,29 @@ textarea#note {
   border-width: 2px;
   color:black;
   border-color:black;
+  width:100%;
+}
+.composedwith-button-modal{
+  margin-top:10px;
+  margin-bottom:5px;
+  border-width: 2px;
+  color:black;
+  border-color:black;
+}
+.button-moremultitokens{
+  text-align: right;
+  padding:0px;
+  width:100%;
+}
+.summary-appearsIn-container{
+  display: flex;
+  flex-direction: column;
+}
+.multiTokens-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.fullwidth{
+  width:100%;
 }

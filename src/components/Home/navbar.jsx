@@ -30,10 +30,26 @@ const links = [
     exact: false
   },
 ]
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
 class NavBar extends Component
 {
   state = { projectName: '', showModal: false, hasStartedTagging: false, showSuccessModal:false, customProjectName: "" };
 
+  constructor(props){
+    super(props);
+    this.handleSaveProject = this.handleSaveProject.bind(this);
+  }
   componentDidUpdate(prevProps)
   {
     if(this.props.dragAndDrops[0].projectName !== prevProps.dragAndDrops[0].projectName 
@@ -182,7 +198,6 @@ class NavBar extends Component
     this.setState({ showErrorModal: true });
   };
 
-
   handleSaveProject = () =>
   {
     try
@@ -197,7 +212,6 @@ class NavBar extends Component
       const oldProjectName = this.state.projectName;
       window.db = new PouchDB("testdatabase");
       const projectId = this.state.customProjectName;
-      console.log(dragAndDrops);
       if (dragAndDrops[ 0 ].file.path)
       {
         Papa.parse(dragAndDrops[ 0 ].file, {
@@ -219,6 +233,7 @@ class NavBar extends Component
               return window.db.put(doc);
             }).catch(function (error)
             {
+              console.log(error);
               return window.db.put({
                 "_id": projectId,
                 inputData: jsonToStore,

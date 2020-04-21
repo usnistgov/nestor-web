@@ -147,7 +147,7 @@ class Upload extends Component
       this.props.onUpdateAlert(alert);
     } else
     {
-      history.push("/taggingTool/settings/headers");
+      this.props.history.push("/taggingTool/settings/headers");
     }
   };
   handleDelete = () =>

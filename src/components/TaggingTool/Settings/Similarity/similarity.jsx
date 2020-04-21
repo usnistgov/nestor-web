@@ -31,7 +31,7 @@ class Similarity extends Component {
     );
   }
   handleContinue = history => {
-    history.push("/taggingTool/settings/overview");
+    this.props.history.push("/taggingTool/settings/overview");
   };
   handleUpdate = e => {
     e.preventDefault();

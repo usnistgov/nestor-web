@@ -44,12 +44,14 @@
 button {
   width: 180px;
 }
+
 .btn-outline-primary,
 .btn-outline-danger {
   margin-top: 30px;
   margin-bottom: 30px;
   margin-right: 30px;
 }
+
 
 .classification-container {
   height: 100% !important;

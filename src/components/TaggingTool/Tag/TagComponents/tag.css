@@ -6,7 +6,7 @@
 }
 .buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .buttons-section {
   flex-basis: 10%;
@@ -202,4 +202,12 @@ textarea#note {
 }
 .fullwidth{
   width:100%;
+}
+.back-button{
+  margin-right:auto;
+}
+.btn-continue{
+  margin-right: 0px !important;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }

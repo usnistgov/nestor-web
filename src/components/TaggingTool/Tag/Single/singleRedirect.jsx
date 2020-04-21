@@ -25,7 +25,7 @@ class SingleRedirect extends Component
       {
         index = 0;
       }
-      history.push("/taggingTool/tag/single/" + index);
+      this.props.history.push("/taggingTool/tag/single/" + index);
     } else
     {
       let alert = {

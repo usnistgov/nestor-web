@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../TagComponents/tag.css";
 import TagButton from "../TagComponents/tagButton";
 import Note from "../TagComponents/note";
-import Buttton from "../../../CommonComponents/Button/button";
 import { updateSingleTokens, updateVocab } from "./singleTokensAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -49,7 +48,7 @@ class SingleWord extends Component
   }
   componentDidUpdate(prevProps)
   {
-    // debugger;
+    //  debugger;
     this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
@@ -59,7 +58,6 @@ class SingleWord extends Component
       );
       this.props.onGetCompleteness();
     }
-    console.log(this.state.currentAppearsIn);
   }
   render()
   {
@@ -174,6 +172,26 @@ class SingleWord extends Component
                 />
               )) }
             </div>
+            <div className="buttons">
+              {window.singleTokenHistory.length > 0 && 
+                <Button
+                  size="sm"
+                  onClick={this.handleBack }  
+                  className="back-button"
+                  label="Back to Multi Word"
+                  variant="outline-primary"
+                >
+                  <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Back to Multi Word
+                </Button>}
+              <Button
+                size="sm"
+                onClick={ this.handleContinue }
+                variant="primary"
+                label="Continue"
+                className="btn-continue">
+                  Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
+              </Button>
+            </div>
           </div>
           <div className="token-view">
             <h4>Summary</h4>
@@ -227,7 +245,6 @@ class SingleWord extends Component
             </div>
             <br/>
             <div>Appears in</div>
-            { this.state.expanded ? 
             <div className="summary-appearsIn-container">
               <Modal
                 size="lg"
@@ -259,7 +276,7 @@ class SingleWord extends Component
                 </Button>
               </Modal.Footer>
             </Modal>
-              </div>:
+              </div>
                <div className="fullwidth"> {this.state.currentMultiTokens.map((obj, i) => (
                 <Button
                   variant="outline-dark"
@@ -271,7 +288,7 @@ class SingleWord extends Component
               <Button className="button-moremultitokens" variant="link" onClick={() => this.showMoreOrLess()}>
                 More
               </Button>
-              </div> }
+              </div> 
             <Note
               showNote={
                 this.props.singleTokens[ parseInt(this.props.match.params.id) ]
@@ -301,18 +318,16 @@ class SingleWord extends Component
             list={ this.props.singleTokens }
           />
         </div>
-        <div className="buttons">
-          <Buttton
-            onClick={ this.handleContinue }
-            class="btn btn-primary"
-            label="Continue"
-          />
-        </div>
       </div>
     );
   }
+  handleBack = () => {
+    const backToMultiToken = window.singleTokenHistory[window.singleTokenHistory.length - 1];
+    window.singleTokenHistory = [];
+    this.props.history.push(backToMultiToken);
+  }
   handleClickOnMultiToken = multiToken => {
-    console.log(multiToken);
+    window.multiTokensHistory.push(document.location.pathname);
     this.props.history.push("/taggingTool/tag/multi/" + multiToken.index);
   }
   handleClickList = token =>
@@ -341,15 +356,15 @@ class SingleWord extends Component
       syn.notes = tokens[ i ].notes;
       tokens[ syn.index ] = syn;
     });
-    this.props.onUpdateSingleTokens(JSON.parse(JSON.stringify(tokens)));
+    this.props.onUpdateSingleTokens(tokens);
     var index = tokens.findIndex(element => element.classification.color === "");
     //debugger;
     if (index === -1)
     {
-      history.push("/taggingTool/tag/multi");
+      this.props.history.push("/taggingTool/tag/multi");
     } else
     {
-      history.push("/taggingTool/tag/single/" + index);
+      this.props.history.push("/taggingTool/tag/single/" + index);
     }
   };
   showMoreOrLess = () => {
@@ -520,10 +535,10 @@ refreshSynonyms = () =>
     {
       token.alias = token.label;
     }
-    this.props.multiTokens.map((multiToken) => {
+    this.props.multiTokens.forEach((multiToken) => {
       var multiTokenSplitted = multiToken.label.split(" ");
       if(token.label === multiTokenSplitted[0] || token.label === multiTokenSplitted[1]){
-        token.appearsIn.push(multiToken);
+        token.appearsIn.push(JSON.parse(JSON.stringify(multiToken)));
       }
     });
     this.setState({currentMultiTokens: token.appearsIn.slice(0,3)});

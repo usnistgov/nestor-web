@@ -140,7 +140,7 @@ class TokensNumber extends Component
     if (this.props.tokensNumber.value)
     {
       //put same checkings before redirecting
-      history.push("/taggingTool/settings/overview");
+      this.props.history.push("/taggingTool/settings/overview");
     } else if (!this.props.alert.showAlert)
     {
       var alert = { ...this.props.alert };

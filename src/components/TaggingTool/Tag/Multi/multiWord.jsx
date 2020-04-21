@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../TagComponents/tag.css";
 import TagButton from "../TagComponents/tagButton";
 import Note from "../TagComponents/note";
-import Buttton from "../../../CommonComponents/Button/button";
 import { updateMultiTokens, updateVocab } from "./multiTokensAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -147,6 +146,26 @@ class MultiWord extends Component
                 />
               )) }
             </div>
+            <div className="buttons">
+              {window.multiTokensHistory.length > 0 && 
+                <Button
+                  size="sm"
+                  onClick={this.handleBack }  
+                  className="back-button"
+                  label="Back to Single Word"
+                  variant="outline-primary"
+                >
+                  <i className="fas fa-arrow-left"></i>&nbsp;&nbsp;Back to Single Word
+                </Button>}
+              <Button
+                size="sm"
+                onClick={ this.handleContinue }
+                variant="primary"
+                label="Continue"
+                className="btn-continue">
+                  Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
+              </Button>
+            </div>
           </div>
           <div className="token-view">
           <h4>Summary</h4>
@@ -236,19 +255,16 @@ class MultiWord extends Component
             list={ this.props.multiTokens }
           />
         </div>
-
-        <div className="buttons">
-          <Buttton
-            onClick={ this.handleContinue }
-            class="btn btn-primary"
-            label="Continue"
-          />
-        </div>
       </div>
     );
   }
+  handleBack = () => {
+    const backToSingleToken = window.multiTokensHistory[window.multiTokensHistory.length - 1];
+    window.multiTokensHistory= [];
+    this.props.history.push(backToSingleToken);
+  }
   handleClickOnSingleToken = token => {
-    console.log(token);
+    window.singleTokenHistory.push(document.location.pathname);
     this.props.history.push("/taggingTool/tag/single/" + token.index);
   }
   handleClickList = token =>
@@ -269,10 +285,10 @@ class MultiWord extends Component
     );
     if (index === -1)
     {
-      history.push("/taggingTool/report");
+      this.props.history.push("/taggingTool/report");
     } else
     {
-      history.push("/taggingTool/tag/multi/" + index);
+      this.props.history.push("/taggingTool/tag/multi/" + index);
     }
   };
   handleDeleteNoClassificationAlert = () => {
@@ -424,15 +440,11 @@ class MultiWord extends Component
     {
       token.alias = token.label;
       var multiTokenSplitted = token.alias.split(" ");
-      console.log(this.props.singleTokens);
-      this.props.singleTokens.map((singleToken) => {
+      this.props.singleTokens.forEach((singleToken) => {
         if(singleToken.label === multiTokenSplitted[0] || singleToken.label === multiTokenSplitted[1]){
-          console.log(singleToken);
-          console.log(token.label);
-          token.composedWith.push(singleToken);
+          token.composedWith.push(JSON.parse(JSON.stringify(singleToken)));
         }
       });
-      console.log(this.props.multiTokens.length);
     }
     this.props.onUpdateMultiTokens(tokens);
   }
@@ -448,7 +460,7 @@ const mapStateToProps = createSelector(
     report,
     singleTokens,
     classification,
-    ex
+    ex,
   })
 );
 const mapActionsToProps = {

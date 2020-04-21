@@ -30,7 +30,6 @@ class Classification extends Component
     if (!Object.keys(this.props.classification.types).length)
     {
       this.props.onClassificationRequest();
-      console.log(this.props.classification);
       this.updateClassification();
     }
     if (this.props.dragAndDrops.length)
@@ -164,7 +163,6 @@ class Classification extends Component
       newClassification.rules[0].composedBy= [this.props.classification.types[1],this.props.classification.types[0]];
       newClassification.rules[1].composedBy= [this.props.classification.types[2],this.props.classification.types[0]];
       this.setState({classification: newClassification});
-      console.log(newClassification);
     }
   }
   handleDelete = () =>
@@ -195,14 +193,14 @@ const mapStateToProps = createSelector(
     headers,
     dragAndDrops,
     singleTokens,
-    tokensNumber
+    tokensNumber,
   ) => ({
     alert,
     classification,
     headers,
     dragAndDrops,
     singleTokens,
-    tokensNumber
+    tokensNumber,
   })
 );
 const mapActionsToProps = {

@@ -160,8 +160,6 @@ class Home extends Component
 
   handleOpenProject(projectName)
   {
-    console.log(this.state.projectOpened);
-    console.log(projectName);
     this.handleHideModal();
     let currentProject;
     window.db.get(projectName)
@@ -217,8 +215,12 @@ class Home extends Component
       });
   }
   newProject = () => {
-    this.clearApplicationState(); 
+    this.clearApplicationState();
+    window.onpopstate = function(event) {
+      alert(`location: ${document.location}, state: ${JSON.stringify(event.state)}`)
+    }
     this.props.history.push("/taggingTool/settings/upload");
+
   }
 }
 const mapStateToProps = createSelector(
@@ -232,7 +234,7 @@ const mapStateToProps = createSelector(
     headers,
     tokensNumber,
     projectName,
-    singleTokens
+    singleTokens,
   })
 );
 const mapActionsToProps = {
@@ -245,7 +247,7 @@ const mapActionsToProps = {
   onInitReport: initReport,
   onUpdateVocab: updateVocab,
   onClearAllAttributes: clearAllAttributes,
-  onSetTokens: setTokens
+  onSetTokens: setTokens,
 };
 export default connect(
   mapStateToProps,

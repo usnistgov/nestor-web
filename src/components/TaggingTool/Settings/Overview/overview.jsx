@@ -205,7 +205,7 @@ class Overview extends Component
   };
   handleContinue = history =>
   {
-    history.push("/taggingTool/tag/single");
+    this.props.history.push("/taggingTool/tag/single");
   };
 }
 const mapStateToProps = createSelector(

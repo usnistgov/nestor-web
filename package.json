@@ -74,6 +74,7 @@
     "typescript": "^3.7.5"
   },
   "build": {
+    "version": "1.0.0-beta",
     "appId": "com.nist.nestor",
     "files": [
       "build/**/*",

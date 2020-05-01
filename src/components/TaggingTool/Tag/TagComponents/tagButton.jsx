@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import "./tag.css";
 
-const tooltip = data => (
-  <Tooltip id="tooltip" >
-    { data.map((obj, i) => (
-      <strong key={ i } >{ obj }<br /></strong>
-    )) }
-  </Tooltip>
-);
+/**
+ * TagButton component.
+ * 
+ * @component
+ */
 class TagButton extends Component
 {
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -24,7 +26,7 @@ class TagButton extends Component
         { this.props.showTooltipIcon && (
           <OverlayTrigger
             placement="right"
-            overlay={ tooltip(this.props.tooltip) }
+            overlay={ this.tooltip(this.props.tooltip) }
           >
             <i className="far fa-question-circle" />
           </OverlayTrigger>
@@ -37,6 +39,19 @@ class TagButton extends Component
       </button>
     );
   }
+
+  /**
+   * function that return a tooltip element with message in paramater
+   * @param {string} data The text you want to write in the tooltip of a title
+   * @function
+   */
+   tooltip = data => (
+    <Tooltip id="tooltip" >
+      { data.map((obj, i) => (
+        <strong key={ i } >{ obj }<br /></strong>
+      )) }
+    </Tooltip>
+  );
 }
 
 export default TagButton;

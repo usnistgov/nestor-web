@@ -7,7 +7,18 @@ import { updateAlert } from "../../CommonComponents/Alert/alertAction";
 import { CSVLink } from "react-csv";
 import { exportOutput } from "./exportAction";
 
+/**
+ * Component for export page.
+ * 
+ * @component
+ */
 class Export extends Component {
+
+    /**
+   * A react lifecycle method called when the component did mount.
+   * It checks whether or not to display an alert
+   * and also init the export
+   */
   componentDidMount() {
     if (this.props.singleTokens.length) {
       let alert = {
@@ -26,6 +37,10 @@ class Export extends Component {
       this.props.onUpdateAlert(alert);
     }
   }
+  
+  /**
+   * The render function.
+   */
   render() {
     return (
       <div>

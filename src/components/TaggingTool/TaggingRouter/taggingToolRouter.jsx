@@ -16,8 +16,10 @@ import MultiRedirect from "../Tag/Multi/multiRedirect";
 import SingleRedirect from "../Tag/Single/singleRedirect";
 import Report from "../Report/report";
 import Export from "../Export/export";
-/*import Search from "./tag/search";*/
 
+/**
+ * Constant of all the routes or the tagging tool 
+ */
 const routes = [
   {
     path: "/taggingTool",
@@ -101,6 +103,12 @@ const routes = [
     exact: false
   }
 ];
+
+/**
+ * Component for router of taggingTool.
+ * 
+ * @component
+ */
 const TaggingTool = () => {
   return (
     <div className="tagging-container">

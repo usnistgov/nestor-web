@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-// import text from "../../../assets/language/en.js";
 import "./dynamicSlider.css";
 
-/* const legend = {
-  display: false,
-  position: "top",
-  fullWidth: true,
-  reverse: false,
-  labels: {
-    fontColor: "rgb(255, 99, 132)"
-  }
-}; */
+/**
+ * Component for Dynamic Slider.
+ * 
+ * @component
+ */
 class DynamicSlider extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <React.Fragment>
@@ -31,27 +30,6 @@ class DynamicSlider extends Component {
         <div className="tokensNumber-label">
           Number of Tokens
         </div>
-        {/* <div className="setting-subtitle">
-          {text.taggingTool.settings.tokens.subtitle.message1}
-          {this.props.slider.value}
-          {text.taggingTool.settings.tokens.subtitle.message2}
-          {this.props.slider.maxValue
-            ? (
-                (this.props.slider.value / this.props.slider.maxValue) *
-                100
-              ).toFixed(1)
-            : 0}
-          {text.taggingTool.settings.tokens.subtitle.message3}
-        </div> */}
-        {/* <div className="setting-content">
-          <Doughnut
-            data={this.props.slider.chart.data}
-            legend={legend}
-            options={{
-              maintainAspectRatio: false
-            }}
-          />
-        </div> */}
       </React.Fragment>
     );
   }

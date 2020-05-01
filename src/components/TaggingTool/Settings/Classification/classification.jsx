@@ -13,8 +13,17 @@ import { connect } from "react-redux";
 import { classificationRequest } from "./classificationAction";
 import { createSelector } from "reselect";
 
+/**
+ * Component for Classification page.
+ * 
+ * @component
+ */
 class Classification extends Component
 {
+
+  /** 
+   * @constructor
+   */
   constructor(props){
     super(props);
     this.state={
@@ -24,6 +33,13 @@ class Classification extends Component
       }
     }
   }
+
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It gets the classification rules and types from the 
+   * python script, checks whether or not to display an alert
+   * and then request the singleTokens and the multiTokens
+   */
   componentDidMount()
   {
     this.updateClassification();
@@ -78,6 +94,12 @@ class Classification extends Component
       this.props.onUpdateAlert(alert);
     }
   }
+
+  /**
+   * A react lifecycle method called when the component did update.
+   * It checks if the singleTokens props has changed and then 
+   * get the tokens number with the new singleTokens.
+   */
   componentDidUpdate(prevProps)
   {
     if (prevProps.singleTokens !== this.props.singleTokens)
@@ -86,6 +108,10 @@ class Classification extends Component
       this.updateClassification();
     }
   }
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -157,6 +183,13 @@ class Classification extends Component
       </React.Fragment>
     );
   }
+
+  /**
+   * function that update the component's state classification
+   * to basically display the explanations of the hybrids classifications
+   * composition
+   * @function
+   */
   updateClassification = () => {
     if(this.props.classification.rules.length !==0){
       let newClassification = this.props.classification;
@@ -165,16 +198,25 @@ class Classification extends Component
       this.setState({classification: newClassification});
     }
   }
+
+  /**
+   * function that hide the alert message
+   * @function
+   */
   handleDelete = () =>
   {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
   };
-  handleContinue = history =>
+
+  /**
+   * function that redirect to the overview tab if the alert is not active
+   * @function
+   */
+  handleContinue = () =>
   {
     if (!this.props.alert.showAlert)
     {
-      // this.props.history.push("/taggingTool/settings/tokensNumber");
       this.props.history.push("/taggingTool/settings/overview")
     }
   };

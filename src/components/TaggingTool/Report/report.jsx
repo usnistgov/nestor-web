@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./report.css";
-// import { Bar } from "react-chartjs-2";
 import { getCompleteness, initReport } from "./reportAction";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
@@ -9,19 +8,37 @@ import text from "../../../assets/language/en.js";
 import Alert from "../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../CommonComponents/Alert/alertAction";
 
+/**
+ * Component for report page.
+ * 
+ * @component
+ */
 class Report extends Component
 {
-  state = {
-    bar: {
-      labels: [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.1 ],
-      datasets: [
-        {
-          label: text.taggingTool.report.thirdRow.title,
-          data: this.props.report.ppv
-        }
-      ]
-    }
-  };
+
+  /** 
+   * @constructor
+   */
+  constructor(props){
+    super(props);
+    this.state = {
+      bar: {
+        labels: [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.1 ],
+        datasets: [
+          {
+            label: text.taggingTool.report.thirdRow.title,
+            data: this.props.report.ppv
+          }
+        ]
+      }
+    };
+  }
+
+    /**
+   * A react lifecycle method called when the component did mount.
+   * It checks whether or not to display an alert and also 
+   * get the completeness of the current project
+   */
   componentDidMount()
   {
     //this.props.onInitReport();
@@ -44,6 +61,10 @@ class Report extends Component
       this.props.onUpdateAlert(alert);
     }
   }
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -241,12 +262,7 @@ class Report extends Component
                   </ProgressBar>
                 </div>
               </div>
-              {/* OLD Distribution over MWOs
-              <div className="report-col">
-                <Bar data={ this.state.bar } />
-              </div> */}
             </div>
-            {/* )} */ }
           </div>
         ) }
       </div>

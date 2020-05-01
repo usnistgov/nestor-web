@@ -15,8 +15,20 @@ import
 } from "./tokensNumberAction";
 import { createSelector } from "reselect";
 
+/**
+ * Component for tokensNumber page.
+ * 
+ * @component
+ */
 class TokensNumber extends Component
 {
+
+  /**
+   * A react lifecycle method called when the component did update.
+   * It checks if the singleTokens props has changed and
+   * then get the tokens number to set it in the props
+   *    
+   */
   componentDidUpdate(prevProps)
   {
     if (prevProps.singleTokens !== this.props.singleTokens)
@@ -24,9 +36,13 @@ class TokensNumber extends Component
       this.props.onGetTokensNumber(this.props.singleTokens.length);
     }
   }
+
+  /**
+   * A react lifecycle method called when the component did mount.
+   * it show or hide the alert message. 
+   */
   componentDidMount()
   {
-    ////debugger;
     var alert = {
       showAlert: false,
       alertHeader: text.taggingTool.alerts.upload.header,
@@ -35,13 +51,10 @@ class TokensNumber extends Component
     this.props.onUpdateAlert(alert);
     if (!this.props.tokensNumber.value)
     {
-      //debugger;
       if (this.props.dragAndDrops.length)
       {
-        //debugger;
         if (this.props.dragAndDrops[ 0 ].file)
         {
-          //debugger;
           const headers = [ ...this.props.headers.headers ];
           var selectedHeadersLabels = [];
           var selectedHeaders = headers.filter(header =>
@@ -54,7 +67,6 @@ class TokensNumber extends Component
           });
           if (!selectedHeaders.length && !this.props.alert.showAlert)
           {
-            //debugger;
             let alert = {
               showAlert: true,
               alertHeader: text.taggingTool.alerts.headers.header,
@@ -63,7 +75,6 @@ class TokensNumber extends Component
             this.props.onUpdateAlert(alert);
           } else if (selectedHeaders.length)
           {
-            //debugger;
             if (this.props.singleTokens.length)
             {
               this.props.onSingleTokensRequest(selectedHeadersLabels);
@@ -71,7 +82,6 @@ class TokensNumber extends Component
           }
         } else
         {
-          //debugger;
           let alert = {
             showAlert: true,
             alertHeader: text.taggingTool.alerts.upload.header,
@@ -81,7 +91,6 @@ class TokensNumber extends Component
         }
       } else
       {
-        //debugger;
         let alert = {
           showAlert: true,
           alertHeader: text.taggingTool.alerts.upload.header,
@@ -92,6 +101,9 @@ class TokensNumber extends Component
     }
   }
 
+   /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -120,12 +132,24 @@ class TokensNumber extends Component
       </React.Fragment>
     );
   }
+
+  /**
+   * function that hide the alert message section
+   * @function
+   */
   handleDelete = () =>
   {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
+
+  /**
+   * function that update the value of the tokens NUmber props
+   * on the change in the dynamic slider
+   * @param {event} e event triggered when changing the slider value
+   * @function
+   */
   handleUpdate = e =>
   {
     e.preventDefault();
@@ -135,11 +159,15 @@ class TokensNumber extends Component
     tokensNumber.value = value;
     this.props.onUpdateSingleTokensNumber(tokensNumber);
   };
-  handleContinue = history =>
+
+  /**
+   * function that redirects to the overview  
+   * @function
+   */
+  handleContinue = () =>
   {
     if (this.props.tokensNumber.value)
     {
-      //put same checkings before redirecting
       this.props.history.push("/taggingTool/settings/overview");
     } else if (!this.props.alert.showAlert)
     {

@@ -2,7 +2,16 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./overview.css";
 
+/**
+ * Component for the overview page's header.
+ * 
+ * @component
+ */
 class OverviewHeader extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <div className="overview-header">

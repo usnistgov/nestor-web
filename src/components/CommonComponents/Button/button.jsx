@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 
+/**
+ * Component for button.
+ * 
+ * @component
+ */
 class Button extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <Route

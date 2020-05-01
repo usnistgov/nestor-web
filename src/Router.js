@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Home from "./components/Home/home";
+import HomeComponent from "./components/Home/home";
 import NavBar from "./components/Home/navbar";
 import Error from "./components/CommonComponents/Error/error";
 import Dashboard from "./components/Dashboard/dashboard";
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
 
+/**
+ * routes of the main router of the application
+ */
 const routes = [
   {
     path: "/",
-    component: Home,
+    component: HomeComponent,
     exact: true
   },
   {
@@ -30,8 +33,17 @@ const routes = [
   }
 ];
 
+/**
+ * Router component.
+ * 
+ * @component
+ */
 class Router extends Component
 {
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (

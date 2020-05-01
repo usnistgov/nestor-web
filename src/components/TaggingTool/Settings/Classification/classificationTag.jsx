@@ -1,11 +1,21 @@
 import React, { Component } from "react";
 import "./classificationTag.css";
 
+/**
+ * Component for classificationTag.
+ * 
+ * @component
+ */
 class ClassificationTag extends Component {
+
   styles = {
     borderColor: this.props.color,
     display: this.props.display
   };
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <span>

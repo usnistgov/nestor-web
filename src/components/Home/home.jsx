@@ -17,9 +17,17 @@ import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import Button from "react-bootstrap/Button"
 
-class Home extends Component
+/**
+ * Component for home page.
+ * 
+ * @component
+ */
+class HomeComponent extends Component
 {
 
+  /** 
+   * @constructor
+  */
   constructor(props)
   {
     super(props);
@@ -31,6 +39,10 @@ class Home extends Component
     };
   }
 
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It loads the list of projects from the database
+   */
   componentDidMount()
   {
     window.db = new PouchDB("testdatabase");
@@ -51,6 +63,9 @@ class Home extends Component
     });
   }
 
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -109,15 +124,30 @@ class Home extends Component
         </Modal>
       </div >);
   }
+
+  /**
+   * function called to hide the projects list modal
+   */
   handleHideModal = () =>
   {
     this.setState({ showModal: false });
   };
+
+  /**
+   * function called to show the projects list modal
+   */
   handleShowModal = () =>
   {
     this.setState({ showModal: true });
   };
 
+  /**
+   * function called to delete a project
+   * It deletes the project from the database
+   * and clears the state of the python script if
+   * the deleted project was currently opened
+   * @param {string} projectName project name to be deleted
+   */
   handleDeleteProject(projectName)
   {
     window.db.get(projectName).then(function (doc)
@@ -128,7 +158,6 @@ class Home extends Component
       console.log("an error occured : ".concat(error));
     }).then(() =>
     {
-      // this.handleHideModal();
       if(this.state.projectOpened === projectName){
         this.clearApplicationState();
       }
@@ -139,6 +168,13 @@ class Home extends Component
     });
   }
 
+  /**
+   * function called to clear the state of the application
+   * Basically, it resets all the props to null, among dragAndDrops,
+   * singleTokens, multiTokens, headers, tokensNumber, and call the 
+   * function clearAllattribute from the python script which reset the
+   * global variables to empty in the script.
+   */
   clearApplicationState = () =>
   {
     this.props.onInitFileBox();
@@ -157,7 +193,13 @@ class Home extends Component
     }
   }
 
-
+  /**
+   * function called to open a project from the list
+   * It hides the modal, and then load the project from the database
+   * and set all the props to the values retrieved from the database.
+   * It also redirect to the overview page
+   * @param {string} projectName project name to be opened
+   */
   handleOpenProject(projectName)
   {
     this.handleHideModal();
@@ -214,11 +256,12 @@ class Home extends Component
         this.props.history.push("/taggingTool/settings/overview");
       });
   }
+  /**
+   * function called to create a new project
+   * clear the application state and redirect to upload page
+   */
   newProject = () => {
     this.clearApplicationState();
-    window.onpopstate = function(event) {
-      alert(`location: ${document.location}, state: ${JSON.stringify(event.state)}`)
-    }
     this.props.history.push("/taggingTool/settings/upload");
 
   }
@@ -252,4 +295,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(Home);
+)(HomeComponent);

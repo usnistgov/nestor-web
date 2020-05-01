@@ -10,10 +10,17 @@ import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { updateHeaders } from "../Headers/headersAction";
 import { createSelector } from "reselect";
 
-
+/**
+ * Component for upload page.
+ * 
+ * @component
+ */
 class Upload extends Component
 {
 
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It initialize the dragAndDrops props   */
   componentDidMount()
   {
     window.ipcRenderer.on("asynchronous-reply", (event, arg) =>
@@ -37,6 +44,10 @@ class Upload extends Component
       this.props.onClassificationRequest();
     }
   }
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -66,6 +77,12 @@ class Upload extends Component
       </div>
     );
   }
+
+  /**
+   * function that handle the upload of a new file
+   * @param {file[]} files an array of file type uploaded
+   * @function
+   */
   handleFiles = files =>
   {
     this.props.onUploadFile(
@@ -79,6 +96,12 @@ class Upload extends Component
     this.props.onUpdateFileBox(dragAndDrops);
   };
 
+  /**
+   * function that handle adding a file, updating the props
+   * @param {dragAndDrop} dragAndDrop 
+   * @param {event} e event triggered when adding a file
+   * @function
+   */
   handleAddFile = (dragAndDrop, e) =>
   {
     const dragAndDrops = [ ...this.props.dragAndDrops ];
@@ -138,7 +161,7 @@ class Upload extends Component
     }
     this.props.onUpdateFileBox(dragAndDrops);
   };
-  handleContinue = (dragAndDrop, history) =>
+  handleContinue = (dragAndDrop) =>
   {
     if (!dragAndDrop.file)
     {

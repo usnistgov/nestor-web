@@ -6,8 +6,19 @@ import Alert from "../../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import text from "../../../../assets/language/en.js";
 
+/**
+ * Component for redirecting single tokens.
+ * 
+ * @component
+ */
 class SingleRedirect extends Component
 {
+
+  /**
+   * function which hhandle showing or not an alert about single tokens redirections
+   * and also check where to redirect the user when clicking on continue 
+   * @param {history} history History of navigation
+   */
   handleContinue = history =>
   {
     var alert = {
@@ -36,6 +47,11 @@ class SingleRedirect extends Component
       this.props.onUpdateAlert(alert);
     }
   };
+
+    /**
+   * A react lifecycle method called when the component did update.
+   * if single tokens props changed, execute handleContinue to set the first token.
+   */
   componentDidUpdate(prevProps)
   {
     if (prevProps.singleTokens !== this.props.singleTokens)
@@ -43,10 +59,19 @@ class SingleRedirect extends Component
       this.handleContinue(this.props.history);
     }
   }
+
+    /**
+   * A react lifecycle method called when the component did mount.
+   * execute handleContinue to set the first token.
+   */
   componentDidMount()
   {
     this.handleContinue(this.props.history);
   }
+
+    /**
+   * The render function.
+   */
   render()
   {
     return (

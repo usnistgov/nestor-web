@@ -8,8 +8,16 @@ import { connect } from "react-redux";
 import { updatePattern } from "./patternAction";
 import { createSelector } from "reselect";
 
+/**
+ * Component for pattern page.
+ * 
+ * @component
+ */
 class Pattern extends Component {
 
+  /**
+   * The render function.
+   */
   render() {
     return (
       <React.Fragment>
@@ -22,9 +30,20 @@ class Pattern extends Component {
       </React.Fragment>
     );
   }
-  handleContinue = history => {
+
+  /**
+   * function that redirect to the overview page
+   * @function
+   */
+  handleContinue = () => {
     this.props.history.push("/taggingTool/settings/overview");
   };
+
+  /**
+   * function that update the value of the pattern
+   * @param {event} e event triggered that the change in the dynamic slider
+   * @function
+   */
   handleUpdate = e => {
     e.preventDefault();
     e.persist();

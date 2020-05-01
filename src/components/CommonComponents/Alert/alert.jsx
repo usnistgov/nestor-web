@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 
+/**
+ * Component for alert.
+ * 
+ * @component
+ */
 class Alert extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
-    /*const globalStyle = {
-      color: "#4950579c",
-      backgroundColor: "#ff660078",
-      borderColor: "#4950579c"
-    };*/
     const headerStyle = {
       display: "flex",
       justifyContent: "space-between"

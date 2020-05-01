@@ -9,7 +9,7 @@ import text from "../../../../assets/language/en.js";
 
 class MultiRedirect extends Component
 {
-  handleContinue = history =>
+  handleContinue = () =>
   {
     var alert = {
       showAlert: false,

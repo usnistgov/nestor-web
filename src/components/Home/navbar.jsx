@@ -13,6 +13,9 @@ import PouchDB from "pouchdb";
 import FormControl from "react-bootstrap/FormControl"
 import InputGroup from "react-bootstrap/InputGroup"
 
+/**
+ * constant of the links to home, tagging tool and dashboard page
+ */
 const links = [
   {
     label: text.home.navbar.home,
@@ -29,27 +32,30 @@ const links = [
     link: "/dashboard",
     exact: false
   },
-]
-const getCircularReplacer = () => {
-  const seen = new WeakSet();
-  return (key, value) => {
-    if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) {
-        return;
-      }
-      seen.add(value);
-    }
-    return value;
-  };
-};
+];
+
+/**
+ * Component for home page.
+ * 
+ * @component
+ */
 class NavBar extends Component
 {
-  state = { projectName: '', showModal: false, hasStartedTagging: false, showSuccessModal:false, customProjectName: "" };
 
+  /** 
+   * @constructor
+   */
   constructor(props){
     super(props);
     this.handleSaveProject = this.handleSaveProject.bind(this);
+    this.state = { projectName: '', showModal: false, hasStartedTagging: false, showSuccessModal:false, customProjectName: "" };
   }
+
+  /**
+   * A react lifecycle method called when the component did update.
+   * It checks if the dragAndDrops props changed and set state with right 
+   * project Name and also disable the save button if needed
+   */
   componentDidUpdate(prevProps)
   {
     if(this.props.dragAndDrops[0].projectName !== prevProps.dragAndDrops[0].projectName 
@@ -66,6 +72,12 @@ class NavBar extends Component
     }
   }
 
+  /**
+   * A react lifecycle method to determine whether or not the component should update
+   * It checks if the dragAndDrops changed and return true if it changed 
+   * @param {props} nextProps the new props of the application
+   * @param {props} nextState the next state of the component
+   */
   shouldComponentUpdate(nextProps, nextState)
   {
     if(this.props.dragAndDrops[0] && nextProps.dragAndDrops[0]){
@@ -78,6 +90,9 @@ class NavBar extends Component
     }  
   }
 
+  /**
+   * The render function.
+   */
   render()
   {
     return (<div>
@@ -153,15 +168,27 @@ class NavBar extends Component
     </div >)
   }
 
+  /**
+   * function called to set current project name after changing it through saving modal
+   */
   handleChange = event => {
     this.setState({customProjectName: event.target.value });
   }
 
+  /**
+   * function to determine if save button has to be disabled or not
+   * @returns true if there are singleTokens in props
+   */
   checkIfTagged = () =>
   {
     return  this.props.singleTokens.length === 0;
   }
 
+  /**
+   * function checking the length of the name of the project
+   * and reduce it if it's too long
+   * @returns project name displayed format
+   */
   handleDisplayProjectName = (projectName) =>
   {
     if (projectName.length >= 15)
@@ -173,31 +200,60 @@ class NavBar extends Component
     }
   }
 
+  /**
+   * function called to hide the successfully save modal
+   */
   handleHideSuccessModal = () =>
   {
     this.setState({ showSuccessModal: false });
   };
+
+  /**
+   * function called to show the successfully save modal
+   */
   handleShowSuccessModal = () =>
   {
     this.setState({ showSuccessModal: true });
   };
+
+  /**
+   * function called to hide the saving modal
+   */
   handleHideModal = () =>
   {
     this.setState({ showModal: false});
   };
+
+  /**
+   * function called to show the saving modal
+   */
   handleShowModal = () =>
   {
     this.setState({ showModal: true });
   };
+
+  /**
+   * function called to hide the error while saving modal
+   */
   handleHideErrorModal = () =>
   {
     this.setState({ showErrorModal: false });
   };
+
+  /**
+   * function called to show the error while saving modal
+   */
   handleShowErrorModal = () =>
   {
     this.setState({ showErrorModal: true });
   };
 
+  /**
+   * function called to save the project currently opened
+   * It creates a project object and store all the current props in it
+   * and then save this object into the database.
+   * Then it displays either the success or the error modal
+   */
   handleSaveProject = () =>
   {
     try

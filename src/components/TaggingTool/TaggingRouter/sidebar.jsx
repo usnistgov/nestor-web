@@ -2,6 +2,9 @@ import { NavLink } from "react-router-dom";
 import React from "react";
 import text from "../../../assets/language/en.js";
 
+/**
+ * constant of all the links in the sidebar of the application
+ */
 const links = [
   {
     label: text.home.sidebar.settings,
@@ -62,6 +65,12 @@ const links = [
     links: []
   }
 ];
+
+/**
+ * Component for sidebar.
+ * 
+ * @component
+ */
 const Sidebar = () => {
   return (
     <div className="side-menu">

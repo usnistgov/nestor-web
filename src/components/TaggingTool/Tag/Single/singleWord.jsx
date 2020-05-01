@@ -17,14 +17,33 @@ import Modal from "react-bootstrap/Modal"
 
 const fuzz = window.fuzz;
 
+/**
+ * Component for single word page.
+ * 
+ * @component
+ */
 class SingleWord extends Component
 {
-  state = {
-    showModal: false,
-    showNoClassificationModal: false,
-    expanded: false,
-    currentMultiTokens: []
-  };
+
+  /** 
+   * @constructor
+   */
+  constructor(props){
+    super(props);
+    this.state = {
+      showModal: false,
+      showNoClassificationModal: false,
+      expanded: false,
+      currentMultiTokens: []
+    };
+  }
+
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It inits the single word tokens with the appropriate alias and also
+   * get the completeness of the project to update the progress bar, and update
+   * the alert if needed
+   */
   componentDidMount()
   {
     var alert = {
@@ -37,6 +56,13 @@ class SingleWord extends Component
     this.initTokenWithSynonymAlias(this.props.match.params.id);
     this.props.onGetCompleteness();
   }
+
+  /**
+   * A react lifecycle method to determine whether or not the component should update
+   * @param {props} nextProps the new props of the application
+   * @returns true if single tokens props changed or if the search modal
+   * display has changed
+   */
   shouldComponentUpdate(nextProps)
   {
     //debugger;
@@ -46,9 +72,16 @@ class SingleWord extends Component
       ? true
       : false;
   }
+
+  /**
+   * A react lifecycle method called when the component did update.
+   * Checks whether the props match.id changed and init tokens 
+   * with appropriate alias, get the completeness of the project,
+   * and update the vocab of single grams, and also sets the synonyms
+   * for each singleToken
+   */
   componentDidUpdate(prevProps)
   {
-    //  debugger;
     this.refreshSynonyms();
     if (prevProps.match.params.id !== this.props.match.params.id)
     {
@@ -59,6 +92,10 @@ class SingleWord extends Component
       this.props.onGetCompleteness();
     }
   }
+
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -68,7 +105,7 @@ class SingleWord extends Component
             alertHeader={text.taggingTool.alerts.tag.noClassificationHeader}
             alertMessage={text.taggingTool.alerts.tag.noClassificationMessage}
             styleColor="alert alert-danger"
-            onDelete={this.handleDeleteNoClassificationAlert}
+            onDelete={this.handleHideNoClassificationAlert}
           />
         ) }
         { this.props.alert.showAlert && (
@@ -123,15 +160,6 @@ class SingleWord extends Component
                   }
                   onChange={ this.updateValue }
                 />
-                { false && (
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    onClick={ this.addAlias }
-                  >
-                    { text.taggingTool.tagging.singleToken.addButton }
-                  </button>
-                ) }
               </div>
             </div>
             <br />
@@ -321,21 +349,50 @@ class SingleWord extends Component
       </div>
     );
   }
+
+  /**
+   * function called when clicking on the back to multi Token button
+   * it reset the history of singletokens to empty and then redirect to 
+   * multitokens 
+   * @function
+   */
   handleBack = () => {
     const backToMultiToken = window.singleTokenHistory[window.singleTokenHistory.length - 1];
     window.singleTokenHistory = [];
     this.props.history.push(backToMultiToken);
   }
+
+  /**
+   * function when clicked on a multi token in the composed by section
+   * it update the multiToken History with current path in the application
+   * and redirect to the multi token clicked on
+   * @param {token} token The multi word token token clicked on 
+   * @function
+   */
   handleClickOnMultiToken = multiToken => {
     window.multiTokensHistory.push(document.location.pathname);
     this.props.history.push("/taggingTool/tag/multi/" + multiToken.index);
   }
+
+  /**
+   * function called when clicking on a single word token 
+   * It hides the search modal and redirect to the single token clicked
+   * @param {token} token the token clicked on in the search modal
+   * @function
+   */
   handleClickList = token =>
   {
     this.handleDeleteModal();
     this.props.history.push("/taggingTool/tag/single/" + token.index);
   };
-  handleContinue = history =>
+
+  /**
+   * function called when clicking on the continue button
+   * it checks if a classification has been selected and then redirect 
+   * to the next multi token in the list ranked by tf-idf
+   * @function
+   */
+  handleContinue = () =>
   {
     if(this.props.singleTokens[ parseInt(this.props.match.params.id) ].classification.color === ""){
       this.setState({showNoClassificationModal:true});
@@ -343,22 +400,8 @@ class SingleWord extends Component
     }else{
       this.setState({showNoClassificationModal:false});
     }
-    var i = parseInt(this.props.match.params.id);
     var tokens = [ ...this.props.singleTokens ];
-    tokens[ i ].selectedSynonyms.forEach(synonym =>
-    {
-      var syn = tokens.find(element =>
-      {
-        return element.label === synonym.value;
-      });
-      syn.classification = tokens[ i ].classification;
-      syn.alias = tokens[ i ].alias;
-      syn.notes = tokens[ i ].notes;
-      tokens[ syn.index ] = syn;
-    });
-    this.props.onUpdateSingleTokens(tokens);
     var index = tokens.findIndex(element => element.classification.color === "");
-    //debugger;
     if (index === -1)
     {
       this.props.history.push("/taggingTool/tag/multi");
@@ -367,26 +410,61 @@ class SingleWord extends Component
       this.props.history.push("/taggingTool/tag/single/" + index);
     }
   };
+
+
+  /**
+   * function called when clicked on More button
+   * It basically show or hide the modal of all the
+   * multi word tokens where the current single word token
+   * appeared in
+   * @function
+   */
   showMoreOrLess = () => {
     this.setState({expanded: !this.state.expanded});
   }
-  handleDeleteNoClassificationAlert = () => {
+
+  /**
+   * function that hide the alert message when trying to continue
+   * without classification selected
+   * @function
+   */
+  handleHideNoClassificationAlert = () => {
     this.setState({showNoClassificationModal: false});
   }
+
+    /**
+   * function to hide modal of search among between single words
+   * @function
+   */
   handleDeleteModal = () =>
   {
     this.setState({ showModal: false });
   };
+
+    /**
+   * function to show the modal of search among all the single words 
+   * @function
+   */
   handleShowModal = () =>
   {
     this.setState({ showModal: true });
   };
+
+  /**
+   * function to hide the alert message when no single tokens
+   */
   handleDelete = () =>
   {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
+
+  /** 
+   * function to update the the value of the alias of the current single word token
+   * @param {event} event the event generated when typing in the alias form field
+   * @function
+   */
   updateValue = event =>
   {
     var tokens = [ ...this.props.singleTokens ];
@@ -397,16 +475,12 @@ class SingleWord extends Component
     tokens[ parseInt(this.props.match.params.id) ] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
-  addAlias = () =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
-    var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-    };
-    token.alias = token.aliasInput;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
-    this.props.onUpdateSingleTokens(tokens);
-  };
+
+  /**
+   * function to add a classification to the current single word
+   * @param {classificationTag} classificationTag The classification of the single word
+   * @function
+   */
   handleAddClassification = classificationTag =>
   {
     //classificationTag.style = { borderColor: "black" };
@@ -420,6 +494,11 @@ class SingleWord extends Component
     tokens[ parseInt(this.props.match.params.id) ] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
+
+  /**
+   * function to toggle the text area of the note of the current single word token
+   * @function
+   */
   handleToggle = () =>
   {
     var tokens = [ ...this.props.singleTokens ];
@@ -430,6 +509,12 @@ class SingleWord extends Component
     tokens[ parseInt(this.props.match.params.id) ] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
+
+  /**
+   * function to change the texte of the note 
+   * @param {event} event event generated automatically when typing in the typing area
+   * @function
+   */
   handleChangeNote = event =>
   {
     var tokens = [ ...this.props.singleTokens ];
@@ -442,6 +527,12 @@ class SingleWord extends Component
   };
   handleAddNote = () => { };
   handleEditNote = () => { };
+
+  /**
+   * function to remove a synonym from the selected synonyms
+   * @param {token} synonym the synonym to remove 
+   * @function
+   */
   handleDeleteSynonym = synonym =>
   {
     var tokens = [ ...this.props.singleTokens ];
@@ -462,6 +553,12 @@ class SingleWord extends Component
     tokens[ parseInt(this.props.match.params.id) ] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
+
+  /**
+   * function to add a synonym to the selected synonyms
+   * @param {token} synonym the synonym to add 
+   * @function
+   */
   handleSelectSynonym = synonym =>
   {
     var tokens = [ ...this.props.singleTokens ];
@@ -484,6 +581,11 @@ class SingleWord extends Component
     }
   };
 
+  /**
+   * function to get and set all the tooltips of the synonyms of the
+   * current single Token
+   * @function
+   */
 refreshSynonyms = () => 
 {
   this.props.singleTokens.forEach(element =>
@@ -504,6 +606,10 @@ refreshSynonyms = () =>
     });
   }
 
+  /**
+   * function to set the synonyms of every single word token 
+   * @function 
+   */
   computeSynonyms = label =>
   {
     var synonyms = [];
@@ -520,6 +626,13 @@ refreshSynonyms = () =>
     });
     return synonyms;
   };
+
+  /**
+   * function to init all the singletokens with the appropriate alias,
+   * basically their label, and also set the list of multi tokens which are composed by the
+   * current single word and another single word token
+   * @function
+   */
   initTokenWithSynonymAlias(index)
   {
     var tokens = [ ...this.props.singleTokens ];

@@ -4,12 +4,20 @@ import Title from "../../../CommonComponents/Title/title";
 import Button from "../../../CommonComponents/Button/button";
 import text from "../../../../assets/language/en.js";
 import Slider from "../../../CommonComponents/Sliders/slider";
-
 import { connect } from "react-redux";
 import { updateSimilarity } from "./similarityAction";
 import { createSelector } from "reselect";
 
+/**
+ * Component for similarity page.
+ * 
+ * @component
+ */
 class Similarity extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <React.Fragment>
@@ -30,9 +38,21 @@ class Similarity extends Component {
       </React.Fragment>
     );
   }
-  handleContinue = history => {
+
+  /**
+   * function that redirect to the overview page
+   * @function
+   */
+  handleContinue = () => {
     this.props.history.push("/taggingTool/settings/overview");
   };
+
+  /**
+   * function that updates the value of the similarity props
+   * @param {event} e the event triggered by the change of the value
+   * of the dynamic slider
+   * @function
+   */
   handleUpdate = e => {
     e.preventDefault();
     e.persist();

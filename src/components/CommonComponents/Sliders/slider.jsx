@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 
+/**
+ * Component for Slider.
+ * 
+ * @component
+ */
 class Slider extends Component {
+
+  /**
+   * The render function.
+   */
   render() {
     return (
       <div className="setting-content">

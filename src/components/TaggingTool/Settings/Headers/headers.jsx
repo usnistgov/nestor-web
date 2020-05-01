@@ -11,10 +11,20 @@ import { getHeaders, updateHeaders, headersRequest } from "./headersAction";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import { createSelector } from "reselect";
 
-const empty = [ text.taggingTool.settings.headers.emptyTooltip ];
-
+/**
+ * Component for headers page.
+ * 
+ * @component
+ */
 class Headers extends Component
 {
+
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It update whether or not to display an alert
+   * and request the python script to get the headers to display
+   * or update them if props already have headers
+   */
   componentDidMount()
   {
     var alert = {
@@ -51,6 +61,11 @@ class Headers extends Component
       this.props.onUpdateAlert(alert);
     }
   }
+
+  
+  /**
+   * The render function.
+   */
   render()
   {
     return (
@@ -87,7 +102,7 @@ class Headers extends Component
                 <Header
                   key={ i }
                   header={ header }
-                  tooltip={ empty }
+                  tooltip={ [ text.taggingTool.settings.headers.emptyTooltip ] }
                   label={ header }
                   onCheck={ this.handleCheck }
                   disable={ true }
@@ -105,13 +120,23 @@ class Headers extends Component
     );
   }
 
+  /**
+   * function to hide the alert.
+   * @function
+   */
   handleDelete = () =>
   {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
   };
-  handleContinue = history =>
+
+  /**
+   * function that redirect to the classification page
+   * after a few checks
+   * @function
+   */
+  handleContinue = () =>
   {
     const headers = [ ...this.props.headers.headers ];
     var selectedHeaders = [];
@@ -132,6 +157,13 @@ class Headers extends Component
       this.props.history.push("/taggingTool/settings/classification");
     }
   };
+
+  /**
+   * function that update the headers in props when a header has been 
+   * checked by the user
+   * @param {header} header the header selected 
+   * @function
+   */
   handleCheck = header =>
   {
     if (typeof header === "object")

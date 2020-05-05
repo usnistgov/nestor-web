@@ -1,192 +1,1056 @@
-![](RackMultipart20200504-4-q4gq1e_html_4b9c09a676bd9fef.png)
+**SOFTWARE TECHNICAL SPECIFICATION**
 
-# Nestor User Guide
+**YOUR LOGO**
 
-Developed by
+NESTOR-WEB
 
-**Michael Brundage** : Principal Investigator
+**\
+**
 
-**Thurston Sexton** : Nestor Technical Lead
+Table of Contents {#table-of-contents .TOC-Heading}
+=================
 
-**Sakina Laanani** : Nestor developer (2018-2019)
+[INTRODUCTION 4](#introduction)
 
-**Cedric Bell** : Nestor developer (2019-2020)
+[PURPOSE 4](#purpose)
 
-**Summary**
+[TEAM 4](#team)
 
-**[Introduction](#_rqceq2v601oy) 3**
+[PROJECT SCOPE 4](#project-scope)
 
-**[1. Settings](#_anm47mz8dfah) 4**
+[REFERENCES 4](#references)
 
-[1.1 Home](#_muea2q4gxng1) 4
+[DESCRIPTION 5](#description)
 
-[1.2 Manage projects](#_mxmswx9bilyw) 5
+[FEATURES 5](#features)
 
-[1.3 Upload a file](#_1g1s0vch0v8d) 6
+[PHASES 5](#phases)
 
-[1.4 Select columns](#_iw9mzha3moso) 7
+[TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
+6](#technical-diagram-or-general-architecture)
 
-[1.5 Classification](#_8a5bhnxw57km) 8
+[OPERATING ENVIRONMENT 6](#operating-environment)
 
-[1.6 Overview](#_30l2eez9yqid) 9
+[CONTENT STRUCTURE 6](#content-structure)
 
-**[2. Tagging tool](#_4t5vv33bksp) 10**
+[DESIGN 6](#design)
 
-[2.1 SingleTokens](#_hkl91lixp9u3) 10
+[SOFTWARE USER INTERFACES 8](#software-user-interfaces)
 
-[2.2 Multi Tokens](#_mqr0s79u28n2) 13
+[ASSUMPTIONS / DEPENDENCIES 9](#assumptions-dependencies)
 
-[2.3 Search tokens](#_dop8iefb2soe) 14
+[SYSTEM FEATURES 11](#system-features)
 
-[2.4 Save a project](#_ka0lokggncgj) 15
+[React application 11](#react-application)
 
-**[3. Report](#_qcy34v6atx56) 17**
+[Python APIs description 11](#python-apis-description)
 
-**[4. Export](#_76sofuv3hd79) 18**
+[classification 11](#classification)
 
-**[5. Other information](#_r6iazmgzyny9) 19**
+[upload 12](#upload)
 
-## Introduction
+[headers 12](#headers)
 
-This user guide of the nestor application is addressed to all users who are going to interact with the application in order to give understanding to data sets that previously were too
+[create-output 13](#create-output)
 
-unstructured or filled with jargon to analyze. This document&#39;s main focus is to explain how to use the application.
+[single-tokens 13](#single-tokens)
 
-The Nestor application provides you the ability to import data from a csv file, and to tag the tokens which are the most representative ones, to enable you to have a clearer overview of the data you gave us in input. The goal of this application is to present with a more user friendly design the same features than in another [version](https://nestor.readthedocs.io/en/latest/index.html) previously released.
+[multi-tokens 14](#multi-tokens)
 
-## 1. Settings
+[update-output-file 14](#section-9)
 
-## 1.1 Home
+[update-vocab 15](#update-vocab)
 
-![](RackMultipart20200504-4-q4gq1e_html_8f4e4293b34bdd4a.png)**figure 1 : Home page of Nestor (header in red)**
+[update-data 16](#update-data)
 
-When you open the application, you will see a quick loading screen and then the figure 1 like above. During your use of the application, the header will remain the same and you can navigate to the tagging tool and the dashboard through that header. On this header, there is also a save button which will remain disabled unless you start a new project. Still in the header, you can also see the project&#39;s name you&#39;re currently working on. If you click on the new project button, you will be redirected to the upload page (figure 3). If you click on the manage projects button you will be prompted figure 2.
+[completeness 16](#completeness)
 
-##
+[export 17](#export)
 
+[ADDITIONAL NONFUNCTIONAL REQUIREMENTS
+17](#additional-nonfunctional-requirements)
 
-## 1.2 Manage projects
+[ACCESSIBILITY 17](#accessibility)
 
-![](RackMultipart20200504-4-q4gq1e_html_89743ffd848b1a1c.png)
+[SECURITY 17](#security)
 
-**figure 2 : Manage project popup**
+[PERFORMANCE 17](#performance)
 
-This popup is opened when you click on the Manage projects button in the home page. On this popup, you can select one project from your projects list and then either open or delete it. When you delete one project, it&#39;s not going to be in your project list anymore. When you open a project, you will be redirected to the Overview tab (figure 6) with all the loaded settings and tagged tokens of your previous saving action. If you don&#39;t have any projects yet, you will be prompted to first create one in order to retrieve it in this modal later.
+[SOFTWARE QUALITY 18](#software-quality)
 
-##
+[APPENDICES 19](#appendices)
 
+[APPENDIX A: ANALYSIS DOCUMENTATION
+19](#appendix-a-analysis-documentation)
 
-## 1.3 Upload a file
+[APPENDIX B: ISSUES 19](#appendix-b-issues)
 
-![](RackMultipart20200504-4-q4gq1e_html_7d3179bca18afeec.png)
+INTRODUCTION
+============
 
-**figure 3 : Upload a new file**
+PURPOSE
+-------
 
-In this page, you can click on the &quot;select a file&quot; green button which is going to ask you to select a csv file from your laptop. When you upload a new file successfully, you will see the name of the file you just uploaded right below the green button. You can click on the start button to go to the figure 4 below.
+This application was designed to help manufacturers "tag" their
+maintenance work-order data according to the methods being researched by
+the Knowledge Extraction and Applications project at the NIST
+Engineering Laboratory. The goal of this application is to give
+understanding to data sets that previously were too unstructured or
+filled with jargon to analyze.
 
-##
+This application is an overhaul of the previous native application that
+contained :
 
+• Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
 
-## 1.4 Select columns
+• Unstructured data processing toolkit (sklearn-style)
 
-![](RackMultipart20200504-4-q4gq1e_html_c71c507616026978.png) **figure 4 : Select columns page**
+• Vizualization tools for tagged MWOs-style data (under development)
 
-In this tab, you have to select the columns you want to tag by clicking on them. The columns are basically the headers of the csv file you uploaded before. For now, users are strongly advised to select the columns of natural language in it. The algorithms are not yet strong enough to deal with only numbers or dates. Some improvements are under development to better handle the numbers as tokens. By hovering your mouse on the column&#39;s name, you will see tooltips to preview quickly what is in each column. When you&#39;re done selecting the columns to tag, you can click on Continue to see the figure 5.
+The new application is an electron application that encloses :
 
-## 1.5 Classification
+• Tagging Tool: Human-in-the-loop Annotation Interface (react
+application)
 
-## ![](RackMultipart20200504-4-q4gq1e_html_617691fe57133a78.png)
+• Unstructured data processing toolkit (sklearn-style) (python package)
 
-**Figure 5 : Classification explanation**
+TEAM
+----
 
-This page&#39;s role is to explain how you are supposed to tag the tokens you will see after the settings section. Basically, all the tokens can be regrouped into the concepts of item, solution, problem, unknown and non entity. Moreover, two hybrid classifications are available for the multiTokens : Object Fault which is basically a problem related to an item and an object resolution, which is a solution related to an item. You will see this explanations if you hover these elements ( ![](RackMultipart20200504-4-q4gq1e_html_4c878bde21ba991c.png) ). You can click on the continue button to be redirected to the overview tab (figure 6).
+This toolkit is a part of the Knowledge Extraction and Application for
+Smart Manufacturing (KEA) project, within the Systems Integration
+Division at NIST.
 
-## 1.6 Overview
+**Points of Contact**
 
-![](RackMultipart20200504-4-q4gq1e_html_248b4c4439211a18.png) ![](RackMultipart20200504-4-q4gq1e_html_a102af9ef76d59a2.png)
+• Michael Brundage Principal Investigator
 
-**Figure 6 : overview of your settings**
+• Thurston Sexton Nestor Technical Lead
 
-This page is making the summary of the settings chosen previously on your navigation : the columns or headers, the classification. There is also a duration section, whose goal is just to show you an estimated time of tagging process for a given number of tokens. After clicking on the continue button, you will now go to the tagging tool section. (figure 7)
+**Contributors**
 
-## 2. Tagging tool
+• Michael Brundage: Principal Investigator
 
-## 2.1 SingleTokens
+• Thurston Sexton: Nestor Technical Lead
 
-![](RackMultipart20200504-4-q4gq1e_html_508584faf299d1c2.png)
+• Sakina Laanani: Nestor developer (2018-2019)
 
-**figure 7 : single tokens page**
+• Cedric Bell: Nestor developer (2018-2019)
 
-The tagging tool is separated into two parts : the tagging section and the summary one. The summary gets updated automatically when you&#39;re tagging the current token. On the tagging section, you have the field alias that you can use to rename a token at your convenience. You can also click on any classification you think suits the best with the token. You can also select synonyms which are basically misspellings of the token. You can preview a few sentences on where the synonyms appeared to get the context of use of these potential synonyms by hovering over the icon ![](RackMultipart20200504-4-q4gq1e_html_7aa773851718b904.png) on every synonym.
+PROJECT SCOPE
+-------------
 
-In figure 8, you can see the synonyms selected by a user. The selected synonyms can be deselected if needed. ![](RackMultipart20200504-4-q4gq1e_html_5aa14eecf4e436ee.png)
+The KEA project seeks to better frame data collection and transformation
+systems within smart manufacturing as collaborations between human
+experts and the machines they partner with, to more efficiently utilize
+the digital and human resources available to manufacturers. Kea (nestor
+notabilis) on the other hand, are the world's only alpine parrots,
+finding their home on the southern Island of NZ. Known for their
+intelligence and ability to solve puzzles through the use of tools, they
+will often work together to reach their goals, which is especially
+important in their harsh, mountainous habitat.
 
-**Figure 8 : single tokens with synonyms selected**
+REFERENCES
+----------
 
-In figure 9, an alert message has appeared because the user clicked on continue before selecting a classification. ![](RackMultipart20200504-4-q4gq1e_html_d8ecceb3a274c530.png)
+Previous Nestor documentation
+<https://buildmedia.readthedocs.org/media/pdf/nestor/latest/nestor.pdf>
 
-**Figure 9 : single tokens with alert message**
+DESCRIPTION
+===========
 
-On the figure 10, you can see that the progress bar updates its value right after every click on the continue button. This progress bar shows the capacity of knowledge that the algorithms have on the data. Basically, if you have a percentage of completeness of 40%, it means that on 40% of the rows of the original file you have tagged at least one token. ![](RackMultipart20200504-4-q4gq1e_html_326d41ed3a54083f.png)
+This electron application will be a substitute to the initial native
+application. It will not require any prior installation from the user
+and will be accessible via an executable file for windows machines.
 
-**Figure 10 : progress bar updated**
+Nestor-web features are therefore identical to the previous nestor
+application.
 
-On the summary section, you can see a series of 3 multi tokens in which the single token you&#39;re currently tagging appeared in. This was made to enable any user to navigate more easily from single to multi token. If you click on the More button right below these three multi tokens, you will be able to see a popup containing all the multi words that have the single token you&#39;re working on.
+FEATURES
+--------
 
-## 2.2 Multi Tokens
+List of Nestor-web main features.
 
-![](RackMultipart20200504-4-q4gq1e_html_6d1cbe57626693c1.png)
+Settings
 
-**Figure 11 : multi tokenpage**
+Upload a file
 
-The multi token page is very similar to the single token one. Let&#39;s explain the two differences between them. First, in this page, you will be able to classify the multi words with the hybrid classifications explained previously on the classification section. Secondly, in the summary, the section composed by is the exact reverse of the &quot;appears in&quot; section of the single token page. It is made to make it easier to navigate back and forth between single tokens and multi tokens.
+Extract user selected data
 
-## 2.3 Search tokens
+Set the similarity
 
-![](RackMultipart20200504-4-q4gq1e_html_468ac0aa4f6a7ece.png)
+Get an overview of all settings
 
-**Figure 12 : search feature**
+Tagging
 
-If you&#39;re looking for a specific token you can click on this icon ![](RackMultipart20200504-4-q4gq1e_html_b614dbb08669cd88.png) , it will display then figure 12&#39;s popup. This popup is basically composed by a search bar in which you can type the token you&#39;re looking for or you can choose to classify them by alphabetical order to see figure 13 and then select the first letter of your token and then, your token.
+Extract 'tf-idf' ranked tokens
 
-![](RackMultipart20200504-4-q4gq1e_html_657308bb68f73855.png)
+Get 'fuzzy wuzzy' synonyms for each token
 
-**Figure 13 : search feature - alphabetical filter**
+Tag the tokens
 
-## 2.4 Save a project
+Report
 
-![](RackMultipart20200504-4-q4gq1e_html_16c5de1e803276bd.png)
+Get information on tagged tokens
 
-**Figure 14 : saving action**
+Export
 
-When you&#39;re done choosing the headers settings and that you imported data, you are now able to save your project in a local database instance. The data you imported in this project will only remain in your laptop and will be stored in the AppData directory. On the figure 14, you can change the name of the project you are working on, and then click on save to add it to your list of projects presented in the home page. Default name will be the name of the file you uploaded.
+Export to a csv file the progress in the form of two vocabulary files,
+and 'readable tags' file.
 
-## 3. Report
+Create, save, open and delete projects from imported csv file
 
-![](RackMultipart20200504-4-q4gq1e_html_51e6da5890c1192.png)
+PHASES
+------
 
-**Figure 15 : report page**
+1 : Design Marvel App
 
-This page is currently a quick summary of the situation of the project opened. In this example, the user tagged 1 word with 9 synonyms selected, which are located in 24.58% of the lines of the original file. There are still 1766 potential tokens to tag.
+2 : Create React Application
 
-## 4. Export
+3 : Find Back End
 
-![](RackMultipart20200504-4-q4gq1e_html_d4094fa2f9b08829.png)
+4 : Integrate Front end and Back end with Electron
 
-**Figure 16 : export page**
+TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
+-----------------------------------------
 
-In this page, you are able to download some outputs of the application :
+![](resourcesContributing/media/image1.png){width="4.978472222222222in"
+height="4.727363298337708in"}
 
-- the output file : readable csv of the original data and the tokens tagged.
-- The vocab file single words : list of the single tokens tagged ranked by &#39;tf-idf&#39; with their tag and their score.
-- The vocab file multi words : list of the multi word tokens tagged ranked by &#39;tf-idf&#39; with their tag and their score.
+OPERATING ENVIRONMENT
+---------------------
 
-## 5. Other information
+The application has 3 versions : windows, linux, mac. The application is
+stand alone and doesn't any installation, it will function on any
+machine (as long as it has been packaged for the machine's
+architecture). Currently, due to zerorpc issues, each packaged
+application has to be packaged on the targeted platform.
 
-The Nestor application doesn&#39;t need any network connection and any softwares already installed. All that is needed for the application is already in it.
+CONTENT STRUCTURE
+-----------------
 
-In a decent laptop with regular performances, the application doesn&#39;t have any lag.
+The main components interacting together in this application are :
 
-The storage capacity limit is currently set to the client&#39;s laptop capacity. If you don&#39;t have storage left in your laptop, then you might have some troubles saving a project in Nestor.
+-   Electron main process
 
-![](RackMultipart20200504-4-q4gq1e_html_237499165a11f2b9.gif) ![](RackMultipart20200504-4-q4gq1e_html_6524c2eacb56b809.png)
+-   React source files
+
+-   Python Server
+
+-   Python Package
+
+DESIGN
+------
+
+Nestor web views were designed using Marvel, an application to create a
+prototype of digital products with wireframes.
+
+<https://marvelapp.com/466i27h/screen/48984978>
+
+Screenshots of the application :
+
+  ![](resourcesContributing/media/image2.png){width="3.7708333333333335in" height="1.9988910761154857in"}    ![](resourcesContributing/media/image3.png){width="3.3641447944007in" height="1.779258530183727in"}
+  ---------------------------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
+  ![](resourcesContributing/media/image4.png){width="3.7768569553805773in" height="2.002082239720035in"}     ![](resourcesContributing/media/image5.png){width="3.562607174103237in" height="1.888510498687664in"}
+  ![](resourcesContributing/media/image6.png){width="3.8083902012248467in" height="1.925in"}                 ![](resourcesContributing/media/image7.png){width="3.5208333333333335in" height="1.8706058617672792in"}
+  ![](resourcesContributing/media/image8.png){width="3.502001312335958in" height="1.8631955380577427in"}     ![](resourcesContributing/media/image9.png){width="3.5322200349956256in" height="1.8766557305336833in"}
+  ![](resourcesContributing/media/image10.png){width="3.7774431321084863in" height="2.0069444444444446in"}   ![](resourcesContributing/media/image11.png){width="3.4349956255468066in" height="1.825in"}
+  ![](resourcesContributing/media/image12.png){width="3.6772550306211724in" height="1.9537117235345582in"}   
+
+SOFTWARE USER INTERFACES 
+------------------------
+
+This section concerns the technical choices of the nestor web
+application. For reminder, the application is built with React, python,
+electron and zerorpc.
+
+Why React ?
+
+React is faster than vanilla javascript because of its use of the
+virtual DOM.
+
+React uses jsx components, these reusable components allow the codebase
+to become very modular. Finally the framework is highly maintained by a
+large community.
+
+The application was bootstrapped with the create-react-app project
+because of all the boiler plate code used in it. It contains a
+development server, webpack for bundling files, babel for compiling
+javascript code and jsx code, the hot module reloading. It is possible
+to easily customize configuration for production.
+
+On the server side React is also platform agnostic. Which means we can
+use any options to serve our React application.
+
+The application was designed with a server side Nodejs backend written
+in javascript communicating with a python server written in python as
+well as a javascript front end application.
+
+A system of data persistence has been integrated into the application to
+enable users to save their actions done on the application. The database
+management is made with the technology pouchDb, built on top of the most
+known CouchDB database.
+
+PouchDB is an in-browser database that allows applications to save data
+locally, so that users can enjoy all the features of an app even when
+they\'re offline. Plus, this database is embeddable in an Electron
+requirement which is a must-have requirement for this project due to the
+deployment of the project.
+
+Finally, pouchDB is currently used by many developers and has a really
+large community to deal with potential troubleshouting. The database
+storage is only limited by the client's machine currently, but it can be
+set in the source code.
+
+The communication between the python script (where all the data
+manipulation is done) and the frontend is made by zerorpc sockets. With
+zerorpc technology, we basically create a server for the python script,
+which we are going to call from the frontend part when we need the data.
+
+Why Electron ?
+
+Electron uses Nodejs and that's the reason why it has faster response
+time, fewer server side code, fewer files. Usually, codebases are more
+consistent and highly scalable.
+
+Electron is part of a large ecosystem of open-source libraries that make
+it great for prototyping.
+
+It allowed us to create an offline application that does not need to be
+connected to any server. Electron is the technology that enables us to
+package the application and its different parts (react frontend, python
+script) and to launch these parts at the launching of the application.
+
+Why Python ?
+
+Python is used in the application to use the functions exposed by the
+nestor package. It was a natural choice as it's the most convenient to
+match python with itself in a coding mindset.
+
+Why zerorpc ?
+
+Zerorpc is a technology built on top on zeromq, and is used to ensure
+the communication between the react frontend server and the python
+server. Basically this technology enables us to open socket between the
+two servers.
+
+ASSUMPTIONS / DEPENDENCIES
+--------------------------
+
+Minimum requirements for running an electron application are:
+
+**Software**
+
+**Windows**
+
+-   Both x86 and amd64 (x64) binaries are provided for Windows
+
+**Mac**
+
+-   Only 64bit binaries are provided for macOS, and the minimum macOS
+    > version supported is macOS 10.10.
+
+**Linux**
+
+-   The prebuilt ia32(i686) and x64(amd64) binaries of Electron are
+    > built on Ubuntu 12.04, the arm binary is built against ARM v7 with
+    > hard-float ABI and NEON for Debian Wheezy.
+
+-   Ubuntu 12.04 and later
+
+```{=html}
+<!-- -->
+```
+-   Fedora 21
+
+-   Debian 8
+
+**Hardware**
+
+About RAM and CPU, there are no information about that in Electron\'s
+docs, but Electron is based on Chromium, so it should need nearly the
+same requirements:
+
+**Windows**
+
+-   An Intel Pentium 4 processor or later that\'s SSE2 capable
+
+-   512 MB of RAM
+
+**Mac**
+
+-   An Intel processor that\'s 64-bit
+
+-   512 MB of RAM
+
+**Linux**
+
+-   An Intel Pentium 4 processor or later that\'s SSE2 capable
+
+<https://electronjs.org/docs/tutorial/support>
+
+SYSTEM FEATURES
+===============
+
+React application
+=================
+
+Client-side routing diagram
+
+![](resourcesContributing/media/image13.png){width="7.489583333333333in"
+height="3.9166666666666665in"}
+
+Currently, the routes to the pattern, similarity, and tokens number page
+are blocked on purpose. The react application file structure is grouped
+by routes. Each page is grouped with a css sheet, the actual jsx
+component, the store's reducer and the store's action functions.
+
+Python APIs description
+=======================
+
+classification
+--------------
+
++-----------------+---------------------------------------------------+
+| **Code**        |  def classification(self):                        |
+|                 |                                                   |
+|                 |         return kex.nestorParams                   |
++=================+===================================================+
+| **Description** |  Returns the classification list defined in the   |
+|                 | nestor python package                             |
++-----------------+---------------------------------------------------+
+
+upload
+------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def upload(self, f):                              |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |                                                   |
+|                 |     s = base64.b64decode(f).decode(\'utf-8-sig\') |
+|                 |                                                   |
+|                 |             rows = s.split(\'\\n\')               |
+|                 |                                                   |
+|                 |             del rows\[-1\]                        |
+|                 |                                                   |
+|                 |             da                                    |
+|                 | ta = \[np.array(\[ \'\"{}\"\'.format(x) for x in  |
+|                 |                                                   |
+|                 | list(csv.reader(\[row\], delimiter=\',            |
+|                 | \', quotechar=\'\"\'))\[0\] \]) for row in rows\] |
+|                 |                                                   |
+|                 |             d                                     |
+|                 | = pd.DataFrame(data=data\[1:\],columns=data\[0\]) |
+|                 |                                                   |
+|                 |             d.columns = \[c.                      |
+|                 | replace(\'\"\', \'\') for c in d.columns.values\] |
+|                 |                                                   |
+|                 |             d.fillna(value=\'\"\', inplace=True)  |
+|                 |                                                   |
+|                 |             self.\_\_class\_\_.d                  |
+|                 | f = d.applymap(lambda x: x.replace(\'\"\', \'\')) |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** |  Creates the pandas data frame containing the csv |
+|                 | file uploaded by the user                         |
++-----------------+---------------------------------------------------+
+
+uploadJSON
+----------
+
++-----------------+---------------------------------------------------+
+| **Code**        | ![](resourcesContributi                           |
+|                 | ng/media/image14.png){width="5.812139107611548in" |
+|                 | height="4.2256408573928255in"}                    |
+|                 |                                                   |
+|                 | ![](resourcesContributi                           |
+|                 | ng/media/image15.png){width="6.255958005249344in" |
+|                 | height="4.3461526684164475in"}                    |
++=================+===================================================+
+| **Description** | This function is called when the user opens a     |
+|                 | project from the database. It is creating the     |
+|                 | pandas data frame containing the same data than   |
+|                 | in the csv file uploaded when creating the        |
+|                 | project. Then it returns the singleTokens and     |
+|                 | multiTokens lists scored by 'tf-idf'.             |
++-----------------+---------------------------------------------------+
+
+headers
+-------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def headers(self):                                |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             data = {}                             |
+|                 |                                                   |
+|                 |             tooltips = \[\]                       |
+|                 |                                                   |
+|                 |                                                   |
+|                 |         length = self.\_\_class\_\_.df.shape\[0\] |
+|                 |                                                   |
+|                 |                                                   |
+|                 | tooltips\_length = 5 if (length\>5) else (length) |
+|                 |                                                   |
+|                 |             for index in                          |
+|                 |  range(len(list(self.\_\_class\_\_.df.columns))): |
+|                 |                                                   |
+|                 |                 tooltips.append(\[\])             |
+|                 |                                                   |
+|                 |                 toolt                             |
+|                 | ips\[index\] = (list(self.\_\_class\_\_.df\[list( |
+|                 |                                                   |
+|                 | self.\_\_class\_\_.df.columns)                    |
+|                 | \[index\]\].iloc\[np.arange(tooltips\_length)\])) |
+|                 |                                                   |
+|                 |             data\[\'tooltip\'\] = tooltips        |
+|                 |                                                   |
+|                 |             self.\_\                              |
+|                 | _class\_\_.df.replace(\'\', np.nan, inplace=True) |
+|                 |                                                   |
+|                 |             filtered\_data = self.\_\_c           |
+|                 | lass\_\_.df.dropna(axis=\'columns\', how=\'all\') |
+|                 |                                                   |
+|                 |             d                                     |
+|                 | ata\[\'headers\'\] = list(filtered\_data.columns) |
+|                 |                                                   |
+|                 |             empty\_c                              |
+|                 | olumns = list(set(self.\_\_class\_\_.df.columns). |
+|                 |                                                   |
+|                 | sy                                                |
+|                 | mmetric\_difference(set(filtered\_data.columns))) |
+|                 |                                                   |
+|                 |                                                   |
+|                 |       data\[\'empty\_columns\'\] = empty\_columns |
+|                 |                                                   |
+|                 |             return json.dumps(data)               |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** |  Returns a json containing an array of the        |
+|                 | non-empty columns names in the csv, the first 5   |
+|                 | values for these columns, and an array of columns |
+|                 | names that are empty                              |
++-----------------+---------------------------------------------------+
+
+create-output
+-------------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def create\_output(self, headers):                |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             d = pd.DataF                          |
+|                 | rame(np.empty((self.\_\_class\_\_.df.shape\[0\],  |
+|                 |                                                   |
+|                 | len(self.\_\_class                                |
+|                 | \_\_.classification\_columns)), dtype = np.str),  |
+|                 |                                                   |
+|                 | co                                                |
+|                 | lumns=self.\_\_class\_\_.classification\_columns) |
+|                 |                                                   |
+|                 |             self.\_\_class\_\_.output\_df = p     |
+|                 | d.concat(\[self.\_\_class\_\_.df\[headers\], d\], |
+|                 |                                                   |
+|                 |  axis=1, sort=False)                              |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Creates the readable-tags csv file data frame     |
++-----------------+---------------------------------------------------+
+
+single-tokens
+-------------
+
++-----------------+---------------------------------------------------+
+| **Code**        |  def single\_tokens(self, headers):               |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             \#1. Create the output dataframe      |
+|                 |                                                   |
+|                 |             self.create\_output(headers)          |
+|                 |                                                   |
+|                 |             \#2. Compute single tokens            |
+|                 |                                                   |
+|                 |                                                   |
+|                 |    nlp\_select = kex.NLPSelect(columns = headers) |
+|                 |                                                   |
+|                 |             self.\_\_class\_\_.raw\_te            |
+|                 | xt = nlp\_select.transform(self.\_\_class\_\_.df) |
+|                 |                                                   |
+|                 |             tex = kex.TokenExtractor()            |
+|                 |                                                   |
+|                 |             toks =                                |
+|                 |  tex.fit\_transform(self.\_\_class\_\_.raw\_text) |
+|                 |                                                   |
+|                 |             token                                 |
+|                 | s = \[token for token in (tex.vocab\_).tolist()\] |
+|                 |                                                   |
+|                 |             \#3. Create the vocab dataframe       |
+|                 |                                                   |
+|                 |                                                   |
+|                 |   empty\_array = np.chararray((len(tex.vocab\_))) |
+|                 |                                                   |
+|                 |             empty\_array\[:\] = \'\'              |
+|                 |                                                   |
+|                 |             data = np.column                      |
+|                 | \_stack((tex.vocab\_,empty\_array, empty\_array,  |
+|                 |                                                   |
+|                 | empty\_array,tex.scores\_))                       |
+|                 |                                                   |
+|                 |             self.\_\_clas                         |
+|                 | s\_\_.vocab\_single\_df = pd.DataFrame(data=data, |
+|                 |                                                   |
+|                 |  columns=self.\_\_class\_\_.vocab\_columns)       |
+|                 |                                                   |
+|                 |             return tokens                         |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Returns the single tokens list ordered by tf-idf  |
+|                 | scores                                            |
++-----------------+---------------------------------------------------+
+
+multi-tokens
+------------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def multi\_tokens(self, headers):                 |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             \#1. C                                |
+|                 | reate the output dataframe if it doesnt exist yet |
+|                 |                                                   |
+|                 |                                                   |
+|                 |         if self.\_\_class\_\_.df.shape\[0\] == 0: |
+|                 |                                                   |
+|                 |                 self.create\_output(headers)      |
+|                 |                                                   |
+|                 |             \#2. Compute multi tokens             |
+|                 |                                                   |
+|                 |                                                   |
+|                 |          if (self.\_\_class\_\_.raw\_text.empty): |
+|                 |                                                   |
+|                 |                                                   |
+|                 |    nlp\_select = kex.NLPSelect(columns = headers) |
+|                 |                                                   |
+|                 |                 self.\_\_class\_\_.raw\_te        |
+|                 | xt = nlp\_select.transform(self.\_\_class\_\_.df) |
+|                 |                                                   |
+|                 |             tex = kex.TokenExtractor()            |
+|                 |                                                   |
+|                 |             toks =                                |
+|                 |  tex.fit\_transform(self.\_\_class\_\_.raw\_text) |
+|                 |                                                   |
+|                 |                                                   |
+|                 |    tex2 = kex.TokenExtractor(ngram\_range=(2, 2)) |
+|                 |                                                   |
+|                 |                                                   |
+|                 |         vocab = kex.generate\_vocabulary\_df(tex) |
+|                 |                                                   |
+|                 |             replaced\_text = kex.toke             |
+|                 | n\_to\_alias(self.\_\_class\_\_.raw\_text, vocab) |
+|                 |                                                   |
+|                 |                                                   |
+|                 |       toks2 = tex2.fit\_transform(replaced\_text) |
+|                 |                                                   |
+|                 |             tokens                                |
+|                 |  = \[token for token in (tex2.vocab\_).tolist()\] |
+|                 |                                                   |
+|                 |             \#3. Create the vocab dataframe       |
+|                 |                                                   |
+|                 |                                                   |
+|                 |  empty\_array = np.chararray((len(tex2.vocab\_))) |
+|                 |                                                   |
+|                 |             empty\_array\[:\] = \'\'              |
+|                 |                                                   |
+|                 |                                                   |
+|                 |     data = np.column\_stack((tex2.vocab\_,empty\_ |
+|                 | array, empty\_array, empty\_array,tex2.scores\_)) |
+|                 |                                                   |
+|                 |             self.\                                |
+|                 | _\_class\_\_.vocab\_multi\_df = pd.DataFrame(data |
+|                 | =data, columns=self.\_\_class\_\_.vocab\_columns) |
+|                 |                                                   |
+|                 |             return tokens                         |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Returns the multi tokens list ordered by tf-idf   |
+|                 | scores                                            |
++-----------------+---------------------------------------------------+
+
+update-output-file
+------------------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def update\_output\_file(self, token):            |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             d = pd.DataFrame(\[\])                |
+|                 |                                                   |
+|                 |             d\[\'Column\'\] = self.\_\_cl         |
+|                 | ass\_\_.output\_df\[self.\_\_class\_\_.output\_df |
+|                 |                                                   |
+|                 | .colu                                             |
+|                 | mns\[0:\]\].apply(lambda x: \',\'.join(x),axis=1) |
+|                 |                                                   |
+|                 |             words = \[syn\[\'val                  |
+|                 | ue\'\] for syn in token\[\'selectedSynonyms\'\]\] |
+|                 |                                                   |
+|                 |             words.append(token\[\"label\"\])      |
+|                 |                                                   |
+|                 |             indexes = \[\]                        |
+|                 |                                                   |
+|                 |             for word in words:                    |
+|                 |                                                   |
+|                 |                 df = self.\_\_c                   |
+|                 | lass\_\_.output\_df\[d\[\'Column\'\].str.contains |
+|                 |                                                   |
+|                 | (word, case=False)\]                              |
+|                 |                                                   |
+|                 |                 indexes += list(df.index.values)  |
+|                 |                                                   |
+|                 |             self.\_\_class\_\_.output\_df.loc     |
+|                 | \[:, self.\_\_class\_\_.classification\_columns\] |
+|                 |                                                   |
+|                 |  = self.\_\                                       |
+|                 | _class\_\_.output\_df.loc\[:, self.\_\_class\_\_. |
+|                 |                                                   |
+|                 | classification\_columns\].applym                  |
+|                 | ap(lambda x: x.replace(token\[\'alias\'\], \'\')) |
+|                 |                                                   |
+|                 |             for index in indexes:                 |
+|                 |                                                   |
+|                 |                                                   |
+|                 |     if token\[\'classification\'\] \[\'label\'\]: |
+|                 |                                                   |
+|                 |                         if s                      |
+|                 | elf.\_\_class\_\_.output\_df.iloc\[index\]\[token |
+|                 |                                                   |
+|                 | \[\'classification\'\]                            |
+|                 | \[\'label\'\]\] and self.\_\_class\_\_.output\_df |
+|                 |                                                   |
+|                 | .iloc\[index\]\[token\[\'classifi                 |
+|                 | cation\'\] \[\'label\'\]\] != token\[\'alias\'\]: |
+|                 |                                                   |
+|                 |                                                   |
+|                 |                         self.\_\_class\_\_.output |
+|                 | \_df.set\_value(index, token\[\'classification\'\ |
+|                 | ]\[\'label\'\],self.\_\_class\_\_.output\_df.iloc |
+|                 |                                                   |
+|                 | \[index\]\[token\[\'classification\               |
+|                 | '\] \[\'label\'\]\] + \",\" + token\[\'alias\'\]) |
+|                 |                                                   |
+|                 |                         else:                     |
+|                 |                                                   |
+|                 |                                                   |
+|                 |   self.\_\_class\_\_.output\_df.set\_value(index, |
+|                 |                                                   |
+|                 |  token\[\'classification\'\]\[\'                  |
+|                 | label\'\],token\[\'alias\'\])                     |
+|                 |                                                   |
+|                 |                     else:                         |
+|                 |                                                   |
+|                 |                         self.\_\_class\_\_.ou     |
+|                 | tput\_df.set\_value(index, \'NA\',\'\_untagged\') |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Updates the readable-tags csv file data frame     |
++-----------------+---------------------------------------------------+
+
+update-vocab
+------------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def update\_vocab(self, df, token):               |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             \#1. Update the vocab with the token  |
+|                 |                                                   |
+|                 |             df.iloc\[token\[\'index\'\]\]\[\'N    |
+|                 | E\'\] = token\[\'classification\'\] \[\'label\'\] |
+|                 |                                                   |
+|                 |             df.iloc\[token                        |
+|                 | \[\'index\'\]\]\[\'alias\'\] = token\[\'alias\'\] |
+|                 |                                                   |
+|                 |             df.iloc\[token\[\'index\'\            |
+|                 | ]\]\[\'notes\'\] = token\[\'note\'\]\[\'value\'\] |
+|                 |                                                   |
+|                 |                                                   |
+|                 |           \#2. Update the vocab with its synonyms |
+|                 |                                                   |
+|                 |                                                   |
+|                 |     for synonym in token\[\'selectedSynonyms\'\]: |
+|                 |                                                   |
+|                 |                 indexes = df\[df\[\'              |
+|                 | tokens\'\]==synonym\[\'value\'\]\].index.tolist() |
+|                 |                                                   |
+|                 |                 df.iloc\[indexes\[0\]\]\[\'N      |
+|                 | E\'\] = token\[\'classification\'\] \[\'label\'\] |
+|                 |                                                   |
+|                 |                 df.iloc\                          |
+|                 | [indexes\[0\]\]\[\'alias\'\] = token\[\'alias\'\] |
+|                 |                                                   |
+|                 |                 df.iloc\[indexes\[0\              |
+|                 | ]\]\[\'notes\'\] = token\[\'note\'\]\[\'value\'\] |
+|                 |                                                   |
+|                 |             return df                             |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Updates the vocabs data frame                     |
++-----------------+---------------------------------------------------+
+
+update-data
+-----------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def update\_data(self, token):                    |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             \#1. Update readable file             |
+|                 |                                                   |
+|                 |             self.update\_output\_file(token)      |
+|                 |                                                   |
+|                 |             \#2. Update vocab                     |
+|                 |                                                   |
+|                 |             if (\' \' in token\[\'label\'\]):     |
+|                 |                                                   |
+|                 |                 self.\_                           |
+|                 | \_class\_\_.vocab\_multi\_df = self.update\_vocab |
+|                 |                                                   |
+|                 | (self.\_\_class\_\_.vocab\_multi\_df, token)      |
+|                 |                                                   |
+|                 |             else:                                 |
+|                 |                                                   |
+|                 |                 self.\_\                          |
+|                 | _class\_\_.vocab\_single\_df = self.update\_vocab |
+|                 |                                                   |
+|                 | (self.\_\_class\_\_.vocab\_single\_df, token)     |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Updates the readable tags and the vocabs data     |
+|                 | frames (this function is called every time the    |
+|                 | users tags a new token)                           |
++-----------------+---------------------------------------------------+
+
+completeness
+------------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def completeness(self):                           |
+|                 |                                                   |
+|                 |         try:                                      |
+|                 |                                                   |
+|                 |             tex = kex.TokenExtractor()            |
+|                 |                                                   |
+|                 |             tag\_df = kex.t                       |
+|                 | ag\_extractor(tex, self.\_\_class\_\_.raw\_text,  |
+|                 | vocab\_df=self.\_\_class\_\_.vocab\_single\_df.re |
+|                 | place(r\'\^\\s\*\$\', np.nan, regex=True).set\_in |
+|                 | dex(\'tokens\').astype({\'score\': \'float64\'})) |
+|                 |                                                   |
+|                 |             tag\_pct, tag\_comp                   |
+|                 | , tag\_empt = kex.get\_tag\_completeness(tag\_df) |
+|                 |                                                   |
+|                 |             tag\                                  |
+|                 | _pct\_array = \[tag for tag in tag\_pct.items()\] |
+|                 |                                                   |
+|                 |             return                                |
+|                 | tag\_comp.item(), tag\_empt.item(), tag\_pct\_arr |
+|                 | ay, self.\_\_class\_\_.vocab\_single\_df.groupby( |
+|                 | \"NE\").nunique().alias.sum().item(), self.\_\_cl |
+|                 | ass\_\_.vocab\_single\_df\[self.\_\_class\_\_.voc |
+|                 | ab\_single\_df.NE!=\'\'\].NE.notna().sum().item() |
+|                 |                                                   |
+|                 |         except Exception as e:                    |
+|                 |                                                   |
+|                 |             print(e)                              |
+|                 |                                                   |
+|                 |             sys.stdout.flush()                    |
+|                 |                                                   |
+|                 |             return e                              |
++=================+===================================================+
+| **Description** | Returns the data for the Report page, the         |
+|                 | proportion of complete work orders, the           |
+|                 | proportion of totally empty work orders, the      |
+|                 | total amount of work orders, the ppv, the         |
+|                 | proportion of tagged tokens.                      |
++-----------------+---------------------------------------------------+
+
+export
+------
+
++-----------------+---------------------------------------------------+
+| **Code**        | def export(self):                                 |
+|                 |                                                   |
+|                 |         return lis                                |
+|                 | t(self.\_\_class\_\_.output\_df.columns), self.\_ |
+|                 | \_class\_\_.output\_df.to\_json(orient=\'values\' |
+|                 | , index=True),list(self.\_\_class\_\_.vocab\_sing |
+|                 | le\_df.columns), self.\_\_class\_\_.vocab\_single |
+|                 | \_df.to\_json(orient=\'values\'),list(self.\_\_cl |
+|                 | ass\_\_.vocab\_multi\_df.columns), self.\_\_class |
+|                 | \_\_.vocab\_multi\_df.to\_json(orient=\'values\') |
+|                 |                                                   |
+|                 |                                                   |
++=================+===================================================+
+| **Description** | Returns three data frames, the readable tags, the |
+|                 | single tokens vocab, the multi tokens vocab that  |
+|                 | will be written into csv files to save the users  |
+|                 | progress.                                         |
++-----------------+---------------------------------------------------+
+
+ClearAllAttributes
+------------------
+
+  **Code**          ![](resourcesContributing/media/image16.png){width="5.0028915135608045in" height="2.2628805774278216in"}
+  ----------------- ----------------------------------------------------------------------------------------------------------
+  **Description**   This function clears the states of the script attributes
+
+ADDITIONAL NONFUNCTIONAL REQUIREMENTS
+=====================================
+
+ACCESSIBILITY
+-------------
+
+The application was made to support multi languages.
+
+To add a new language, write a new json translation file under
+src/language.
+
+SECURITY
+--------
+
+Electron applications run as offline application.
+
+Data is permanent during a session, but no data is transmitted to NIST
+servers. The user can use the export functionalities to persist the data
+from a session in csv files that will be downloaded locally to his
+machine.
+
+The data persistence between several sessions ensured by pouchDB, is an
+in-browser database so that the data stays on the client's laptop.
+
+PERFORMANCE
+-----------
+
+Electron applications tends to be large because they bundle most of
+Chromium. Additionally, there is no sharing of resources meaning
+Electron application take up more space and memory than native
+applications which were developed with a specific platform in mind.
+
+SOFTWARE QUALITY
+----------------
+
+The application uses React Redux to manage the store.
+
+The store is organized with reducers that corresponds to components.
+
+const allReducers = combineReducers({
+
+  alert: alertReducer,
+
+  dragAndDrops: uploadReducer,
+
+  headers: headersReducer,
+
+  classification: classificationReducer,
+
+  tokensNumber: tokensNumberReducer,
+
+  similarity: similarityReducer,
+
+  pattern: patternReducer,
+
+  singleTokens: singleTokensReducer,
+
+  multiTokens: multiTokensReducer,
+
+  report: reportReducer,
+
+  export: exportReducer
+
+});
+
+const allStoreEnhancers = compose(applyMiddleware(thunk));
+
+APPENDICES
+==========
+
+APPENDIX A: ANALYSIS DOCUMENTATION
+----------------------------------
+
+Nestor previous documentation :
+<https://nestor.readthedocs.io/en/latest>
+
+GitHub repository Nestor web : <https://github.com/usnistgov/nestor-web>
+
+APPENDIX B: ISSUES
+------------------
+
+Updated board of unresolved issues, pending decisions and next features
+to develop :
+
+<https://gitlab.nist.gov/gitlab/kea/nestor-web/-/boards>

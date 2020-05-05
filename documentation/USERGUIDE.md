@@ -1,4 +1,4 @@
-![](DIR/media/image6.png)
+![](resources/media/image6.png)
 
 # Nestor User Guide
 
@@ -67,7 +67,7 @@ previously released.
 
 ### 1.1 Home 
 
-![](DIR/media/image16.png)
+![](resources/media/image16.png)
 <div align="center"><strong>figure 1 : Home page of Nestor (header
 in red)</strong></div><br/>
 
@@ -86,7 +86,7 @@ projects button you will be prompted [figure 2](#12-manage-projects).
 
 ### 1.2 Manage projects 
 
-![](DIR/media/image22.png)
+![](resources/media/image22.png)
 
 <div align="center"><strong>figure 2 : Manage project popup</strong></div><br/>
 
@@ -104,7 +104,7 @@ one in order to retrieve it in this modal later.
 ### 1.3 Upload a file 
 -----------------
 
-![](DIR/media/image3.png)
+![](resources/media/image3.png)
 
 <div align="center"><strong>figure 3 : Upload a new file</strong></div><br/>
 
@@ -119,7 +119,7 @@ to go to the [figure 4](#14-select-columns) below.
 ### 1.4 Select columns
 ------------------
 
-![](DIR/media/image13.png)
+![](resources/media/image13.png)
 <div align="center"><strong>figure 4 : Select columns page</strong></div><br/>
 
 In this tab, you have to select the columns you want to tag by clicking
@@ -135,7 +135,7 @@ you can click on Continue to see the [figure 5](#15-classification).
 ### 1.5 Classification 
 ------------------
 
-![](DIR/media/image15.png)
+![](resources/media/image15.png)
 -----------------------------------------------------------------------
 
 <div align="center"><strong>Figure 5 : Classification explanation</strong></div><br/>
@@ -147,14 +147,14 @@ non entity. Moreover, two hybrid classifications are available for the
 multiTokens : Object Fault which is basically a problem related to an
 item and an object resolution, which is a solution related to an item.
 You will see this explanations if you hover these elements
-(![](DIR/media/image9.png)). You can click on the continue button to
+(![](resources/media/image9.png)). You can click on the continue button to
 be redirected to the overview tab ([figure 6](#16-overview)).
 
 ### 1.6 Overview
 ------------
 
-![](DIR/media/image2.png)
-![](DIR/media/image10.png)
+![](resources/media/image2.png)
+![](resources/media/image10.png)
 
 <div align="center"><strong>Figure 6 : overview of your settings</strong></div><br/>
 
@@ -170,7 +170,7 @@ the continue button, you will now go to the tagging tool section.
 ### 2.1 SingleTokens
 ----------------
 
-![](DIR/media/image19.png)
+![](resources/media/image19.png)
 
 <div align="center"><strong>figure 7 : single tokens page</strong></div><br/>
 
@@ -183,17 +183,17 @@ token. You can also select synonyms which are basically misspellings of
 the token. You can preview a few sentences on where the synonyms
 appeared to get the context of use of these potential synonyms by
 hovering over the icon
-![](DIR/media/image7.png) on every synonym.
+![](resources/media/image7.png) on every synonym.
 
 In figure 8, you can see the synonyms selected by a user. The selected
 synonyms can be deselected if
-needed.![](DIR/media/image20.png)
+needed.![](resources/media/image20.png)
 
 <div align="center"><strong>Figure 8 : single tokens with synonyms selected</strong></div><br/>
 
 In figure 9, an alert message has appeared because the user clicked on
 continue before selecting a
-classification.![](DIR/media/image11.png)
+classification.![](resources/media/image11.png)
 
 <div align="center"><strong>Figure 9 : single tokens with alert message</strong></div><br/>
 
@@ -202,7 +202,7 @@ right after every click on the continue button. This progress bar shows
 the capacity of knowledge that the algorithms have on the data.
 Basically, if you have a percentage of completeness of 40%, it means
 that on 40% of the rows of the original file you have tagged at least
-one token. ![](DIR/media/image21.png)
+one token. ![](resources/media/image21.png)
 
 <div align="center"><strong>Figure 10 : progress bar updated</strong></div><br/>
 
@@ -216,7 +216,7 @@ single token you're working on.
 ### 2.2 Multi Tokens
 ----------------
 
-![](DIR/media/image17.png)
+![](resources/media/image17.png)
 
 <div align="center"><strong>Figure 11 : multi tokenpage</strong></div><br/>
 
@@ -231,25 +231,25 @@ navigate back and forth between single tokens and multi tokens.
 ### 2.3 Search tokens
 -----------------
 
-![](DIR/media/image18.png)
+![](resources/media/image18.png)
 
 <div align="center"><strong>Figure 12 : search feature</strong></div><br/>
 
 If you're looking for a specific token you can click on this icon
-![](DIR/media/image1.png), it will display then figure 12's popup.
+![](resources/media/image1.png), it will display then figure 12's popup.
 This popup is basically composed by a search bar in which you can type
 the token you're looking for or you can choose to classify them by
 alphabetical order to see figure 13 and then select the first letter of
 your token and then, your token.
 
-![](DIR/media/image14.png)
+![](resources/media/image14.png)
 
 <div align="center"><strong>Figure 13 : search feature - alphabetical filter</strong></div><br/>
 
 ### 2.4 Save a project
 ------------------
 
-![](DIR/media/image4.png)
+![](resources/media/image4.png)
 
 <div align="center"><strong>Figure 14 : saving action</strong></div><br/>
 
@@ -262,7 +262,7 @@ click on save to add it to your list of projects presented in the home
 page. Default name will be the name of the file you uploaded.
 
 ## 3. Report
-![](DIR/media/image5.png)
+![](resources/media/image5.png)
 
 <div align="center"><strong>Figure 15 : report page</strong></div><br/>
 
@@ -273,7 +273,7 @@ There are still 1766 potential tokens to tag.
 
 ## 4. Export
 
-![](DIR/media/image12.png)
+![](resources/media/image12.png)
 
 <div align="center"><strong>Figure 16 : export page</strong></div>
 

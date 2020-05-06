@@ -1,95 +1,83 @@
-**SOFTWARE TECHNICAL SPECIFICATION**
+![](resources/media/image6.png)
 
-**YOUR LOGO**
 
-NESTOR-WEB
+# Nestor technical specifications
 
-**\
-**
+## Table of Contents
 
-Table of Contents {#table-of-contents .TOC-Heading}
-=================
 
-[INTRODUCTION 4](#introduction)
 
-[PURPOSE 4](#purpose)
+[Introduction](#introduction)
+> [Purpose](#purpose)<br/>
+> [Team](#team)<br/>
+> [Project scope](#project-scope)<br/>
+> [References](#references)
 
-[TEAM 4](#team)
+[Description](#description)
 
-[PROJECT SCOPE 4](#project-scope)
+[Features](#features)
 
-[REFERENCES 4](#references)
+[Phases](#phases)
 
-[DESCRIPTION 5](#description)
+[General architecture](#general-architecture)
 
-[FEATURES 5](#features)
+[Operating environment](#operating-environment)
 
-[PHASES 5](#phases)
+[Content structure](#content-structure)
 
-[TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
-6](#technical-diagram-or-general-architecture)
+[Design](#design)
 
-[OPERATING ENVIRONMENT 6](#operating-environment)
+[Software User Interface](#software-user-interface)
 
-[CONTENT STRUCTURE 6](#content-structure)
+[Assumptions / Dependencies](#assumptions-dependencies)
 
-[DESIGN 6](#design)
+[System features](#system-features)
 
-[SOFTWARE USER INTERFACES 8](#software-user-interfaces)
+[React application](#react-application)
 
-[ASSUMPTIONS / DEPENDENCIES 9](#assumptions-dependencies)
+[Python APIs description](#python-apis-description)
 
-[SYSTEM FEATURES 11](#system-features)
+[classification](#classification)
 
-[React application 11](#react-application)
+[upload ](#upload)
 
-[Python APIs description 11](#python-apis-description)
+[headers ](#headers)
 
-[classification 11](#classification)
+[create-output ](#create-output)
 
-[upload 12](#upload)
+[single-tokens ](#single-tokens)
 
-[headers 12](#headers)
+[multi-tokens ](#multi-tokens)
 
-[create-output 13](#create-output)
+[update-output-file](#section-9)
 
-[single-tokens 13](#single-tokens)
+[update-vocab](#update-vocab)
 
-[multi-tokens 14](#multi-tokens)
+[update-data](#update-data)
 
-[update-output-file 14](#section-9)
+[completeness](#completeness)
 
-[update-vocab 15](#update-vocab)
+[export](#export)
 
-[update-data 16](#update-data)
+[ADDITIONAL NONFUNCTIONAL REQUIREMENTS](#additional-nonfunctional-requirements)
 
-[completeness 16](#completeness)
+[ACCESSIBILITY](#accessibility)
 
-[export 17](#export)
+[SECURITY](#security)
 
-[ADDITIONAL NONFUNCTIONAL REQUIREMENTS
-17](#additional-nonfunctional-requirements)
+[PERFORMANCE](#performance)
 
-[ACCESSIBILITY 17](#accessibility)
+[SOFTWARE QUALITY](#software-quality)
 
-[SECURITY 17](#security)
+[APPENDICES](#appendices)
 
-[PERFORMANCE 17](#performance)
+[APPENDIX A: ANALYSIS DOCUMENTATION](#appendix-a-analysis-documentation)
 
-[SOFTWARE QUALITY 18](#software-quality)
+[APPENDIX B: ISSUES](#appendix-b-issues)
 
-[APPENDICES 19](#appendices)
+# INTRODUCTION
 
-[APPENDIX A: ANALYSIS DOCUMENTATION
-19](#appendix-a-analysis-documentation)
-
-[APPENDIX B: ISSUES 19](#appendix-b-issues)
-
-INTRODUCTION
-============
-
-PURPOSE
--------
+## PURPOSE
 
 This application was designed to help manufacturers "tag" their
 maintenance work-order data according to the methods being researched by
@@ -114,8 +102,7 @@ application)
 
 • Unstructured data processing toolkit (sklearn-style) (python package)
 
-TEAM
-----
+## TEAM
 
 This toolkit is a part of the Knowledge Extraction and Application for
 Smart Manufacturing (KEA) project, within the Systems Integration
@@ -135,10 +122,9 @@ Division at NIST.
 
 • Sakina Laanani: Nestor developer (2018-2019)
 
-• Cedric Bell: Nestor developer (2018-2019)
+• Cedric Bell: Nestor developer (2019-2020)
 
-PROJECT SCOPE
--------------
+## PROJECT SCOPE
 
 The KEA project seeks to better frame data collection and transformation
 systems within smart manufacturing as collaborations between human
@@ -150,14 +136,12 @@ intelligence and ability to solve puzzles through the use of tools, they
 will often work together to reach their goals, which is especially
 important in their harsh, mountainous habitat.
 
-REFERENCES
-----------
+## REFERENCES
 
 Previous Nestor documentation
 <https://buildmedia.readthedocs.org/media/pdf/nestor/latest/nestor.pdf>
 
-DESCRIPTION
-===========
+# DESCRIPTION
 
 This electron application will be a substitute to the initial native
 application. It will not require any prior installation from the user
@@ -166,8 +150,7 @@ and will be accessible via an executable file for windows machines.
 Nestor-web features are therefore identical to the previous nestor
 application.
 
-FEATURES
---------
+# FEATURES
 
 List of Nestor-web main features.
 
@@ -200,7 +183,7 @@ and 'readable tags' file.
 
 Create, save, open and delete projects from imported csv file
 
-PHASES
+# PHASES
 ------
 
 1 : Design Marvel App
@@ -211,14 +194,15 @@ PHASES
 
 4 : Integrate Front end and Back end with Electron
 
-TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
------------------------------------------
+5 : cycle of development : integration of new features 
 
-![](resourcesContributing/media/image1.png){width="4.978472222222222in"
-height="4.727363298337708in"}
+# TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
 
-OPERATING ENVIRONMENT
----------------------
+
+![](resourcesContributing/media/image1.png)
+
+# OPERATING ENVIRONMENT
+
 
 The application has 3 versions : windows, linux, mac. The application is
 stand alone and doesn't any installation, it will function on any
@@ -226,8 +210,7 @@ machine (as long as it has been packaged for the machine's
 architecture). Currently, due to zerorpc issues, each packaged
 application has to be packaged on the targeted platform.
 
-CONTENT STRUCTURE
------------------
+# CONTENT STRUCTURE
 
 The main components interacting together in this application are :
 
@@ -239,8 +222,7 @@ The main components interacting together in this application are :
 
 -   Python Package
 
-DESIGN
-------
+# DESIGN
 
 Nestor web views were designed using Marvel, an application to create a
 prototype of digital products with wireframes.
@@ -249,22 +231,21 @@ prototype of digital products with wireframes.
 
 Screenshots of the application :
 
-  ![](resourcesContributing/media/image2.png){width="3.7708333333333335in" height="1.9988910761154857in"}    ![](resourcesContributing/media/image3.png){width="3.3641447944007in" height="1.779258530183727in"}
+  ![](resourcesContributing/media/image2.png)     ![](resourcesContributing/media/image3.png)
   ---------------------------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
-  ![](resourcesContributing/media/image4.png){width="3.7768569553805773in" height="2.002082239720035in"}     ![](resourcesContributing/media/image5.png){width="3.562607174103237in" height="1.888510498687664in"}
-  ![](resourcesContributing/media/image6.png){width="3.8083902012248467in" height="1.925in"}                 ![](resourcesContributing/media/image7.png){width="3.5208333333333335in" height="1.8706058617672792in"}
-  ![](resourcesContributing/media/image8.png){width="3.502001312335958in" height="1.8631955380577427in"}     ![](resourcesContributing/media/image9.png){width="3.5322200349956256in" height="1.8766557305336833in"}
-  ![](resourcesContributing/media/image10.png){width="3.7774431321084863in" height="2.0069444444444446in"}   ![](resourcesContributing/media/image11.png){width="3.4349956255468066in" height="1.825in"}
-  ![](resourcesContributing/media/image12.png){width="3.6772550306211724in" height="1.9537117235345582in"}   
+  ![](resourcesContributing/media/image4.png)     ![](resourcesContributing/media/image5.png)
+  ![](resourcesContributing/media/image6.png)     ![](resourcesContributing/media/image7.png)
+  ![](resourcesContributing/media/image8.png)     ![](resourcesContributing/media/image9.png)
+  ![](resourcesContributing/media/image10.png)    ![](resourcesContributing/media/image11.png)
+  ![](resourcesContributing/media/image12.png)   
 
-SOFTWARE USER INTERFACES 
-------------------------
+# SOFTWARE USER INTERFACES 
 
 This section concerns the technical choices of the nestor web
 application. For reminder, the application is built with React, python,
 electron and zerorpc.
 
-Why React ?
+**Why React ?**
 
 React is faster than vanilla javascript because of its use of the
 virtual DOM.
@@ -291,6 +272,8 @@ enable users to save their actions done on the application. The database
 management is made with the technology pouchDb, built on top of the most
 known CouchDB database.
 
+**Why POuchDB ?**
+
 PouchDB is an in-browser database that allows applications to save data
 locally, so that users can enjoy all the features of an app even when
 they\'re offline. Plus, this database is embeddable in an Electron
@@ -307,7 +290,7 @@ manipulation is done) and the frontend is made by zerorpc sockets. With
 zerorpc technology, we basically create a server for the python script,
 which we are going to call from the frontend part when we need the data.
 
-Why Electron ?
+**Why Electron ?**
 
 Electron uses Nodejs and that's the reason why it has faster response
 time, fewer server side code, fewer files. Usually, codebases are more
@@ -321,25 +304,22 @@ connected to any server. Electron is the technology that enables us to
 package the application and its different parts (react frontend, python
 script) and to launch these parts at the launching of the application.
 
-Why Python ?
+**Why Python ?**
 
 Python is used in the application to use the functions exposed by the
 nestor package. It was a natural choice as it's the most convenient to
 match python with itself in a coding mindset.
 
-Why zerorpc ?
+**Why zerorpc ?**
 
 Zerorpc is a technology built on top on zeromq, and is used to ensure
 the communication between the react frontend server and the python
 server. Basically this technology enables us to open socket between the
 two servers.
 
-ASSUMPTIONS / DEPENDENCIES
---------------------------
+# ASSUMPTIONS / DEPENDENCIES
 
 Minimum requirements for running an electron application are:
-
-**Software**
 
 **Windows**
 
@@ -365,7 +345,6 @@ Minimum requirements for running an electron application are:
 
 -   Debian 8
 
-**Hardware**
 
 About RAM and CPU, there are no information about that in Electron\'s
 docs, but Electron is based on Chromium, so it should need nearly the
@@ -389,27 +368,22 @@ same requirements:
 
 <https://electronjs.org/docs/tutorial/support>
 
-SYSTEM FEATURES
-===============
+# SYSTEM FEATURES
 
-React application
-=================
+## React application
 
 Client-side routing diagram
 
-![](resourcesContributing/media/image13.png){width="7.489583333333333in"
-height="3.9166666666666665in"}
+![](resourcesContributing/media/image13.png)
 
 Currently, the routes to the pattern, similarity, and tokens number page
 are blocked on purpose. The react application file structure is grouped
 by routes. Each page is grouped with a css sheet, the actual jsx
 component, the store's reducer and the store's action functions.
 
-Python APIs description
-=======================
+## Python APIs description
 
 classification
---------------
 
 +-----------------+---------------------------------------------------+
 | **Code**        |  def classification(self):                        |

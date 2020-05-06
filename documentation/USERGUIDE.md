@@ -4,13 +4,10 @@
 
 Developed by
 
-**Michael Brundage** : Principal Investigator
-
-**Thurston Sexton** : Nestor Technical Lead
-
-**Sakina Laanani** : Nestor developer (2018-2019)
-
-**Cedric Bell** : Nestor developer (2019-2020)
+**Michael Brundage** : Principal Investigator<br/>
+**Thurston Sexton** : Nestor Technical Lead<br/>
+**Sakina Laanani** : Nestor developer (2018-2019)<br/>
+**Cedric Bell** : Nestor developer (2019-2020)<br/>
 
 ## Summary 
 

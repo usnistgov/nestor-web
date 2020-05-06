@@ -31,7 +31,7 @@
 >> [create-output](#create-output)<br/>
 >> [single-tokens](#single-tokens)<br/>
 >> [multi-tokens](#multi-tokens)<br/>
->> [update-output-file](#section-9)<br/>
+>> [update-output-file](#update-output-file)<br/>
 >> [update-vocab](#update-vocab)<br/>
 >> [update-data](#update-data)<br/>
 >> [completeness](#completeness)<br/>
@@ -45,11 +45,11 @@
 
 [Appendices](#appendices)
 > [ Appendix A: Analysis documentation](#appendix-a-analysis-documentation)<br/>
-> [ Appendix B: Issues](#appendix-b-issues) (TODO : remove)
+> [ Appendix B: Issues](#appendix-b-issues)
 
-# INTRODUCTION
+# Introduction
 
-## PURPOSE
+## Purpose
 
 This application was designed to help manufacturers "tag" their
 maintenance work-order data according to the methods being researched by
@@ -69,7 +69,7 @@ The new application is an electron application that encloses :
 * Tagging Tool: Human-in-the-loop Annotation Interface (react application)
 * Unstructured data processing toolkit (sklearn-style) (python package)
 
-## TEAM
+## Team
 
 This toolkit is a part of the Knowledge Extraction and Application for
 Smart Manufacturing (KEA) project, within the Systems Integration
@@ -86,7 +86,7 @@ Division at NIST.
 * Sakina Laanani: Nestor developer (2018-2019)
 * Cedric Bell: Nestor developer (2019-2020)
 
-## PROJECT SCOPE
+## Project scope
 
 The KEA project seeks to better frame data collection and transformation
 systems within smart manufacturing as collaborations between human
@@ -98,12 +98,12 @@ intelligence and ability to solve puzzles through the use of tools, they
 will often work together to reach their goals, which is especially
 important in their harsh, mountainous habitat.
 
-## REFERENCES
+## References
 
 Previous Nestor documentation
 <https://buildmedia.readthedocs.org/media/pdf/nestor/latest/nestor.pdf>
 
-# DESCRIPTION
+# Description
 
 This electron application will be a substitute to the initial native
 application. It will not require any prior installation from the user
@@ -112,7 +112,7 @@ and will be accessible via an executable file for windows machines.
 Nestor-web features are therefore identical to the previous nestor
 application.
 
-## FEATURES
+## Features
 
 *  List of Nestor-web main features.
 *  Settings
@@ -306,555 +306,346 @@ by routes. Each page is grouped with a css sheet, the actual jsx
 component, the store's reducer and the store's action functions.
 
 ## Python APIs description
- TODO : remove or at least rewrite this section
+
 ### Classification
 
-+-----------------+---------------------------------------------------+
-| **Code**        |  def classification(self):                        |
-|                 |                                                   |
-|                 |         return kex.nestorParams                   |
-+=================+===================================================+
-| **Description** |  Returns the classification list defined in the   |
-|                 | nestor python package                             |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def classification(self): 
+        return kex.nestorParams
+```
+**Description** : Returns the classification list defined in the nestor python package.
 
 ### upload
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def upload(self, f):                              |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |                                                   |
-|                 |     s = base64.b64decode(f).decode(\'utf-8-sig\') |
-|                 |                                                   |
-|                 |             rows = s.split(\'\\n\')               |
-|                 |                                                   |
-|                 |             del rows\[-1\]                        |
-|                 |                                                   |
-|                 |             da                                    |
-|                 | ta = \[np.array(\[ \'\"{}\"\'.format(x) for x in  |
-|                 |                                                   |
-|                 | list(csv.reader(\[row\], delimiter=\',            |
-|                 | \', quotechar=\'\"\'))\[0\] \]) for row in rows\] |
-|                 |                                                   |
-|                 |             d                                     |
-|                 | = pd.DataFrame(data=data\[1:\],columns=data\[0\]) |
-|                 |                                                   |
-|                 |             d.columns = \[c.                      |
-|                 | replace(\'\"\', \'\') for c in d.columns.values\] |
-|                 |                                                   |
-|                 |             d.fillna(value=\'\"\', inplace=True)  |
-|                 |                                                   |
-|                 |             self.\_\_class\_\_.d                  |
-|                 | f = d.applymap(lambda x: x.replace(\'\"\', \'\')) |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** |  Creates the pandas data frame containing the csv |
-|                 | file uploaded by the user                         |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def upload(self, f):
+        try:
+            s = base64.b64decode(f).decode('utf-8-sig')
+            rows = s.split('\n')
+            del rows[-1]
+            data = [np.array([ '"{}"'.format(x) for x in 
+list(csv.reader([row], delimiter=',', quotechar='"'))[0] ]) for row in rows]
+            d = pd.DataFrame(data=data[1:],columns=data[0])
+            d.columns = [c.replace('"', '') for c in d.columns.values]
+            d.fillna(value='"', inplace=True)
+            self.__class__.df = d.applymap(lambda x: x.replace('"', ''))
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Description	 Creates the pandas data frame containing the csv file uploaded by the user.
 
 ### uploadJSON
 
-+-----------------+---------------------------------------------------+
-| **Code**        | ![](resourcesContributi                           |
-|                 | ng/media/image14.png){width="5.812139107611548in" |
-|                 | height="4.2256408573928255in"}                    |
-|                 |                                                   |
-|                 | ![](resourcesContributi                           |
-|                 | ng/media/image15.png){width="6.255958005249344in" |
-|                 | height="4.3461526684164475in"}                    |
-+=================+===================================================+
-| **Description** | This function is called when the user opens a     |
-|                 | project from the database. It is creating the     |
-|                 | pandas data frame containing the same data than   |
-|                 | in the csv file uploaded when creating the        |
-|                 | project. Then it returns the singleTokens and     |
-|                 | multiTokens lists scored by 'tf-idf'.             |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def uploadJSON(self, jsonstring, headers):
+        try:
+            rows = jsonstring.split('\n')
+            del rows[-1]
+            data = [np.array(['"{}"'.format(x) for x in list(csv.reader(
+                [row], delimiter=',', quotechar='"'))[0]]) for row in rows]
+            d = pd.DataFrame(data=data[1:], columns=data[0])
+            d.columns = [c.replace('"', '') for c in d.columns.values]
+            d.fillna(value='"', inplace=True)
+            self.__class__.df = d.applymap(lambda x: x.replace('"', ''))
+
+            # 1. Create the output dataframe
+            self.create_output(headers)
+            # 2. Compute single tokens
+            nlp_select = kex.NLPSelect(columns=headers)
+            self.__class__.raw_text = nlp_select.transform(self.__class__.df)
+            tex = kex.TokenExtractor()
+            toks = tex.fit_transform(self.__class__.raw_text)
+            tokens = [token for token in (tex.vocab_).tolist()]
+            # 3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack(
+                (tex.vocab_, empty_array, empty_array, empty_array, tex.scores_))
+            self.__class__.vocab_single_df = pd.DataFrame(
+                data=data, columns=self.__class__.vocab_columns)
+
+            # 2. Compute multi tokens
+            if (self.__class__.raw_text.empty):
+                nlp_select = kex.NLPSelect(columns=headers)
+                self.__class__.raw_text = nlp_select.transform(
+                    self.__class__.df)
+            tex2 = kex.TokenExtractor(ngram_range=(2, 2))
+            vocab = kex.generate_vocabulary_df(tex)
+            replaced_text = kex.token_to_alias(self.__class__.raw_text, vocab)
+            toks2 = tex2.fit_transform(replaced_text)
+            tokens = [token for token in (tex2.vocab_).tolist()]
+            # 3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex2.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack(
+                (tex2.vocab_, empty_array, empty_array, empty_array, tex2.scores_))
+            self.__class__.vocab_multi_df = pd.DataFrame(
+                data=data, columns=self.__class__.vocab_columns)
+            return tokens
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : This function is called when the user opens a project from the database.
+It is creating the pandas data frame containing the same data than in the csv file uploaded when creating the project.
+Then it returns the singleTokens and multiTokens lists scored by ‘tf-idf’.
+
 
 ### headers
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def headers(self):                                |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             data = {}                             |
-|                 |                                                   |
-|                 |             tooltips = \[\]                       |
-|                 |                                                   |
-|                 |                                                   |
-|                 |         length = self.\_\_class\_\_.df.shape\[0\] |
-|                 |                                                   |
-|                 |                                                   |
-|                 | tooltips\_length = 5 if (length\>5) else (length) |
-|                 |                                                   |
-|                 |             for index in                          |
-|                 |  range(len(list(self.\_\_class\_\_.df.columns))): |
-|                 |                                                   |
-|                 |                 tooltips.append(\[\])             |
-|                 |                                                   |
-|                 |                 toolt                             |
-|                 | ips\[index\] = (list(self.\_\_class\_\_.df\[list( |
-|                 |                                                   |
-|                 | self.\_\_class\_\_.df.columns)                    |
-|                 | \[index\]\].iloc\[np.arange(tooltips\_length)\])) |
-|                 |                                                   |
-|                 |             data\[\'tooltip\'\] = tooltips        |
-|                 |                                                   |
-|                 |             self.\_\                              |
-|                 | _class\_\_.df.replace(\'\', np.nan, inplace=True) |
-|                 |                                                   |
-|                 |             filtered\_data = self.\_\_c           |
-|                 | lass\_\_.df.dropna(axis=\'columns\', how=\'all\') |
-|                 |                                                   |
-|                 |             d                                     |
-|                 | ata\[\'headers\'\] = list(filtered\_data.columns) |
-|                 |                                                   |
-|                 |             empty\_c                              |
-|                 | olumns = list(set(self.\_\_class\_\_.df.columns). |
-|                 |                                                   |
-|                 | sy                                                |
-|                 | mmetric\_difference(set(filtered\_data.columns))) |
-|                 |                                                   |
-|                 |                                                   |
-|                 |       data\[\'empty\_columns\'\] = empty\_columns |
-|                 |                                                   |
-|                 |             return json.dumps(data)               |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** |  Returns a json containing an array of the        |
-|                 | non-empty columns names in the csv, the first 5   |
-|                 | values for these columns, and an array of columns |
-|                 | names that are empty                              |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def headers(self):
+        try:
+            data = {}
+            tooltips = []
+            length = self.__class__.df.shape[0]
+            tooltips_length = 5 if (length>5) else (length)
+            for index in range(len(list(self.__class__.df.columns))):
+                tooltips.append([])
+                tooltips[index] = (list(self.__class__.df[list(
+self.__class__.df.columns)[index]].iloc[np.arange(tooltips_length)]))
+            data['tooltip'] = tooltips
+            self.__class__.df.replace('', np.nan, inplace=True)
+            filtered_data = self.__class__.df.dropna(axis='columns', how='all')
+            data['headers'] = list(filtered_data.columns)
+            empty_columns = list(set(self.__class__.df.columns).
+symmetric_difference(set(filtered_data.columns)))
+            data['empty_columns'] = empty_columns
+            return json.dumps(data)
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+
+
+```
+**Description** : Returns a json containing an array of the non-empty columns 
+names in the csv, the first 5 values for these columns, and an array of columns
+names that are empty
 
 ### create-output
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def create\_output(self, headers):                |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             d = pd.DataF                          |
-|                 | rame(np.empty((self.\_\_class\_\_.df.shape\[0\],  |
-|                 |                                                   |
-|                 | len(self.\_\_class                                |
-|                 | \_\_.classification\_columns)), dtype = np.str),  |
-|                 |                                                   |
-|                 | co                                                |
-|                 | lumns=self.\_\_class\_\_.classification\_columns) |
-|                 |                                                   |
-|                 |             self.\_\_class\_\_.output\_df = p     |
-|                 | d.concat(\[self.\_\_class\_\_.df\[headers\], d\], |
-|                 |                                                   |
-|                 |  axis=1, sort=False)                              |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Creates the readable-tags csv file data frame     |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def create_output(self, headers):
+        try:
+            d = pd.DataFrame(np.empty((self.__class__.df.shape[0], 
+len(self.__class__.classification_columns)), dtype = np.str), 
+columns=self.__class__.classification_columns)
+            self.__class__.output_df = pd.concat([self.__class__.df[headers], d],
+ axis=1, sort=False)
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Creates the readable-tags csv file data frame 
 
 ### single-tokens
 
+**Code** :
+```python
+def single_tokens(self, headers):
+        try:
+            #1. Create the output dataframe
+            self.create_output(headers)
+            #2. Compute single tokens
+            nlp_select = kex.NLPSelect(columns = headers)
+            self.__class__.raw_text = nlp_select.transform(self.__class__.df)
+            tex = kex.TokenExtractor()
+            toks = tex.fit_transform(self.__class__.raw_text)
+            tokens = [token for token in (tex.vocab_).tolist()]
+            #3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack((tex.vocab_,empty_array, empty_array, 
+empty_array,tex.scores_))
+            self.__class__.vocab_single_df = pd.DataFrame(data=data,
+ columns=self.__class__.vocab_columns)
+            return tokens
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
 
-+-----------------+---------------------------------------------------+
-| **Code**        |  def single\_tokens(self, headers):               |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             \#1. Create the output dataframe      |
-|                 |                                                   |
-|                 |             self.create\_output(headers)          |
-|                 |                                                   |
-|                 |             \#2. Compute single tokens            |
-|                 |                                                   |
-|                 |                                                   |
-|                 |    nlp\_select = kex.NLPSelect(columns = headers) |
-|                 |                                                   |
-|                 |             self.\_\_class\_\_.raw\_te            |
-|                 | xt = nlp\_select.transform(self.\_\_class\_\_.df) |
-|                 |                                                   |
-|                 |             tex = kex.TokenExtractor()            |
-|                 |                                                   |
-|                 |             toks =                                |
-|                 |  tex.fit\_transform(self.\_\_class\_\_.raw\_text) |
-|                 |                                                   |
-|                 |             token                                 |
-|                 | s = \[token for token in (tex.vocab\_).tolist()\] |
-|                 |                                                   |
-|                 |             \#3. Create the vocab dataframe       |
-|                 |                                                   |
-|                 |                                                   |
-|                 |   empty\_array = np.chararray((len(tex.vocab\_))) |
-|                 |                                                   |
-|                 |             empty\_array\[:\] = \'\'              |
-|                 |                                                   |
-|                 |             data = np.column                      |
-|                 | \_stack((tex.vocab\_,empty\_array, empty\_array,  |
-|                 |                                                   |
-|                 | empty\_array,tex.scores\_))                       |
-|                 |                                                   |
-|                 |             self.\_\_clas                         |
-|                 | s\_\_.vocab\_single\_df = pd.DataFrame(data=data, |
-|                 |                                                   |
-|                 |  columns=self.\_\_class\_\_.vocab\_columns)       |
-|                 |                                                   |
-|                 |             return tokens                         |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Returns the single tokens list ordered by tf-idf  |
-|                 | scores                                            |
-+-----------------+---------------------------------------------------+
+```
+**Description** : Description	Returns the single tokens list ordered by tf-idf scores 
 
 ### multi-tokens
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def multi\_tokens(self, headers):                 |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             \#1. C                                |
-|                 | reate the output dataframe if it doesnt exist yet |
-|                 |                                                   |
-|                 |                                                   |
-|                 |         if self.\_\_class\_\_.df.shape\[0\] == 0: |
-|                 |                                                   |
-|                 |                 self.create\_output(headers)      |
-|                 |                                                   |
-|                 |             \#2. Compute multi tokens             |
-|                 |                                                   |
-|                 |                                                   |
-|                 |          if (self.\_\_class\_\_.raw\_text.empty): |
-|                 |                                                   |
-|                 |                                                   |
-|                 |    nlp\_select = kex.NLPSelect(columns = headers) |
-|                 |                                                   |
-|                 |                 self.\_\_class\_\_.raw\_te        |
-|                 | xt = nlp\_select.transform(self.\_\_class\_\_.df) |
-|                 |                                                   |
-|                 |             tex = kex.TokenExtractor()            |
-|                 |                                                   |
-|                 |             toks =                                |
-|                 |  tex.fit\_transform(self.\_\_class\_\_.raw\_text) |
-|                 |                                                   |
-|                 |                                                   |
-|                 |    tex2 = kex.TokenExtractor(ngram\_range=(2, 2)) |
-|                 |                                                   |
-|                 |                                                   |
-|                 |         vocab = kex.generate\_vocabulary\_df(tex) |
-|                 |                                                   |
-|                 |             replaced\_text = kex.toke             |
-|                 | n\_to\_alias(self.\_\_class\_\_.raw\_text, vocab) |
-|                 |                                                   |
-|                 |                                                   |
-|                 |       toks2 = tex2.fit\_transform(replaced\_text) |
-|                 |                                                   |
-|                 |             tokens                                |
-|                 |  = \[token for token in (tex2.vocab\_).tolist()\] |
-|                 |                                                   |
-|                 |             \#3. Create the vocab dataframe       |
-|                 |                                                   |
-|                 |                                                   |
-|                 |  empty\_array = np.chararray((len(tex2.vocab\_))) |
-|                 |                                                   |
-|                 |             empty\_array\[:\] = \'\'              |
-|                 |                                                   |
-|                 |                                                   |
-|                 |     data = np.column\_stack((tex2.vocab\_,empty\_ |
-|                 | array, empty\_array, empty\_array,tex2.scores\_)) |
-|                 |                                                   |
-|                 |             self.\                                |
-|                 | _\_class\_\_.vocab\_multi\_df = pd.DataFrame(data |
-|                 | =data, columns=self.\_\_class\_\_.vocab\_columns) |
-|                 |                                                   |
-|                 |             return tokens                         |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Returns the multi tokens list ordered by tf-idf   |
-|                 | scores                                            |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def multi_tokens(self, headers):
+        try:
+            #1. Create the output dataframe if it doesnt exist yet
+            if self.__class__.df.shape[0] == 0:
+                self.create_output(headers)
+            #2. Compute multi tokens
+            if (self.__class__.raw_text.empty):
+                nlp_select = kex.NLPSelect(columns = headers)
+                self.__class__.raw_text = nlp_select.transform(self.__class__.df)
+            tex = kex.TokenExtractor()
+            toks = tex.fit_transform(self.__class__.raw_text)
+            tex2 = kex.TokenExtractor(ngram_range=(2, 2))
+            vocab = kex.generate_vocabulary_df(tex)
+            replaced_text = kex.token_to_alias(self.__class__.raw_text, vocab)
+            toks2 = tex2.fit_transform(replaced_text)
+            tokens = [token for token in (tex2.vocab_).tolist()]
+            #3. Create the vocab dataframe
+            empty_array = np.chararray((len(tex2.vocab_)))
+            empty_array[:] = ''
+            data = np.column_stack((tex2.vocab_,empty_array, empty_array, empty_array,tex2.scores_))
+            self.__class__.vocab_multi_df = pd.DataFrame(data=data, columns=self.__class__.vocab_columns)
+            return tokens
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Returns the multi tokens list ordered by tf-idf scores
 
 ### update-output-file
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def update\_output\_file(self, token):            |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             d = pd.DataFrame(\[\])                |
-|                 |                                                   |
-|                 |             d\[\'Column\'\] = self.\_\_cl         |
-|                 | ass\_\_.output\_df\[self.\_\_class\_\_.output\_df |
-|                 |                                                   |
-|                 | .colu                                             |
-|                 | mns\[0:\]\].apply(lambda x: \',\'.join(x),axis=1) |
-|                 |                                                   |
-|                 |             words = \[syn\[\'val                  |
-|                 | ue\'\] for syn in token\[\'selectedSynonyms\'\]\] |
-|                 |                                                   |
-|                 |             words.append(token\[\"label\"\])      |
-|                 |                                                   |
-|                 |             indexes = \[\]                        |
-|                 |                                                   |
-|                 |             for word in words:                    |
-|                 |                                                   |
-|                 |                 df = self.\_\_c                   |
-|                 | lass\_\_.output\_df\[d\[\'Column\'\].str.contains |
-|                 |                                                   |
-|                 | (word, case=False)\]                              |
-|                 |                                                   |
-|                 |                 indexes += list(df.index.values)  |
-|                 |                                                   |
-|                 |             self.\_\_class\_\_.output\_df.loc     |
-|                 | \[:, self.\_\_class\_\_.classification\_columns\] |
-|                 |                                                   |
-|                 |  = self.\_\                                       |
-|                 | _class\_\_.output\_df.loc\[:, self.\_\_class\_\_. |
-|                 |                                                   |
-|                 | classification\_columns\].applym                  |
-|                 | ap(lambda x: x.replace(token\[\'alias\'\], \'\')) |
-|                 |                                                   |
-|                 |             for index in indexes:                 |
-|                 |                                                   |
-|                 |                                                   |
-|                 |     if token\[\'classification\'\] \[\'label\'\]: |
-|                 |                                                   |
-|                 |                         if s                      |
-|                 | elf.\_\_class\_\_.output\_df.iloc\[index\]\[token |
-|                 |                                                   |
-|                 | \[\'classification\'\]                            |
-|                 | \[\'label\'\]\] and self.\_\_class\_\_.output\_df |
-|                 |                                                   |
-|                 | .iloc\[index\]\[token\[\'classifi                 |
-|                 | cation\'\] \[\'label\'\]\] != token\[\'alias\'\]: |
-|                 |                                                   |
-|                 |                                                   |
-|                 |                         self.\_\_class\_\_.output |
-|                 | \_df.set\_value(index, token\[\'classification\'\ |
-|                 | ]\[\'label\'\],self.\_\_class\_\_.output\_df.iloc |
-|                 |                                                   |
-|                 | \[index\]\[token\[\'classification\               |
-|                 | '\] \[\'label\'\]\] + \",\" + token\[\'alias\'\]) |
-|                 |                                                   |
-|                 |                         else:                     |
-|                 |                                                   |
-|                 |                                                   |
-|                 |   self.\_\_class\_\_.output\_df.set\_value(index, |
-|                 |                                                   |
-|                 |  token\[\'classification\'\]\[\'                  |
-|                 | label\'\],token\[\'alias\'\])                     |
-|                 |                                                   |
-|                 |                     else:                         |
-|                 |                                                   |
-|                 |                         self.\_\_class\_\_.ou     |
-|                 | tput\_df.set\_value(index, \'NA\',\'\_untagged\') |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Updates the readable-tags csv file data frame     |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def update_output_file(self, token):
+        try:
+            d = pd.DataFrame([])
+            d['Column'] = self.__class__.output_df[self.__class__.output_df
+.columns[0:]].apply(lambda x: ','.join(x),axis=1)
+            words = [syn['value'] for syn in token['selectedSynonyms']]
+            words.append(token["label"])
+            indexes = []
+            for word in words:
+                df = self.__class__.output_df[d['Column'].str.contains
+(word, case=False)]
+                indexes += list(df.index.values)
+            self.__class__.output_df.loc[:, self.__class__.classification_columns]
+ = self.__class__.output_df.loc[:, self.__class__.
+classification_columns].applymap(lambda x: x.replace(token['alias'], ''))
+            for index in indexes:
+                    if token['classification'] ['label']:
+                        if self.__class__.output_df.iloc[index][token
+['classification'] ['label']] and self.__class__.output_df
+.iloc[index][token['classification'] ['label']] != token['alias']:
+                            self.__class__.output_df.set_value(index, token['classification']['label'],self.__class__.output_df.iloc
+[index][token['classification'] ['label']] + "," + token['alias'])
+                        else:
+                            self.__class__.output_df.set_value(index,
+ token['classification']['label'],token['alias'])                    
+                    else:
+                        self.__class__.output_df.set_value(index, 'NA','_untagged')
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Updates the readable-tags csv file data frame 
 
 ### update-vocab
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def update\_vocab(self, df, token):               |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             \#1. Update the vocab with the token  |
-|                 |                                                   |
-|                 |             df.iloc\[token\[\'index\'\]\]\[\'N    |
-|                 | E\'\] = token\[\'classification\'\] \[\'label\'\] |
-|                 |                                                   |
-|                 |             df.iloc\[token                        |
-|                 | \[\'index\'\]\]\[\'alias\'\] = token\[\'alias\'\] |
-|                 |                                                   |
-|                 |             df.iloc\[token\[\'index\'\            |
-|                 | ]\]\[\'notes\'\] = token\[\'note\'\]\[\'value\'\] |
-|                 |                                                   |
-|                 |                                                   |
-|                 |           \#2. Update the vocab with its synonyms |
-|                 |                                                   |
-|                 |                                                   |
-|                 |     for synonym in token\[\'selectedSynonyms\'\]: |
-|                 |                                                   |
-|                 |                 indexes = df\[df\[\'              |
-|                 | tokens\'\]==synonym\[\'value\'\]\].index.tolist() |
-|                 |                                                   |
-|                 |                 df.iloc\[indexes\[0\]\]\[\'N      |
-|                 | E\'\] = token\[\'classification\'\] \[\'label\'\] |
-|                 |                                                   |
-|                 |                 df.iloc\                          |
-|                 | [indexes\[0\]\]\[\'alias\'\] = token\[\'alias\'\] |
-|                 |                                                   |
-|                 |                 df.iloc\[indexes\[0\              |
-|                 | ]\]\[\'notes\'\] = token\[\'note\'\]\[\'value\'\] |
-|                 |                                                   |
-|                 |             return df                             |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Updates the vocabs data frame                     |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def update_vocab(self, df, token):
+        try:
+            #1. Update the vocab with the token
+            df.iloc[token['index']]['NE'] = token['classification'] ['label']
+            df.iloc[token['index']]['alias'] = token['alias']
+            df.iloc[token['index']]['notes'] = token['note']['value']
+            #2. Update the vocab with its synonyms
+            for synonym in token['selectedSynonyms']:
+                indexes = df[df['tokens']==synonym['value']].index.tolist()
+                df.iloc[indexes[0]]['NE'] = token['classification'] ['label']
+                df.iloc[indexes[0]]['alias'] = token['alias']
+                df.iloc[indexes[0]]['notes'] = token['note']['value']
+            return df
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Updates the vocabs data frame
 
-### update-data
+### Update data
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def update\_data(self, token):                    |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             \#1. Update readable file             |
-|                 |                                                   |
-|                 |             self.update\_output\_file(token)      |
-|                 |                                                   |
-|                 |             \#2. Update vocab                     |
-|                 |                                                   |
-|                 |             if (\' \' in token\[\'label\'\]):     |
-|                 |                                                   |
-|                 |                 self.\_                           |
-|                 | \_class\_\_.vocab\_multi\_df = self.update\_vocab |
-|                 |                                                   |
-|                 | (self.\_\_class\_\_.vocab\_multi\_df, token)      |
-|                 |                                                   |
-|                 |             else:                                 |
-|                 |                                                   |
-|                 |                 self.\_\                          |
-|                 | _class\_\_.vocab\_single\_df = self.update\_vocab |
-|                 |                                                   |
-|                 | (self.\_\_class\_\_.vocab\_single\_df, token)     |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Updates the readable tags and the vocabs data     |
-|                 | frames (this function is called every time the    |
-|                 | users tags a new token)                           |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def update_data(self, token):
+        try:
+            #1. Update readable file
+            self.update_output_file(token)
+            #2. Update vocab
+            if (' ' in token['label']):
+                self.__class__.vocab_multi_df = self.update_vocab
+(self.__class__.vocab_multi_df, token) 
+            else:
+                self.__class__.vocab_single_df = self.update_vocab
+(self.__class__.vocab_single_df, token)
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+
+**Description** : Updates the readable tags and the vocabs data frames
+(this function is called every time the users tags a new token) 
 
 ### completeness
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def completeness(self):                           |
-|                 |                                                   |
-|                 |         try:                                      |
-|                 |                                                   |
-|                 |             tex = kex.TokenExtractor()            |
-|                 |                                                   |
-|                 |             tag\_df = kex.t                       |
-|                 | ag\_extractor(tex, self.\_\_class\_\_.raw\_text,  |
-|                 | vocab\_df=self.\_\_class\_\_.vocab\_single\_df.re |
-|                 | place(r\'\^\\s\*\$\', np.nan, regex=True).set\_in |
-|                 | dex(\'tokens\').astype({\'score\': \'float64\'})) |
-|                 |                                                   |
-|                 |             tag\_pct, tag\_comp                   |
-|                 | , tag\_empt = kex.get\_tag\_completeness(tag\_df) |
-|                 |                                                   |
-|                 |             tag\                                  |
-|                 | _pct\_array = \[tag for tag in tag\_pct.items()\] |
-|                 |                                                   |
-|                 |             return                                |
-|                 | tag\_comp.item(), tag\_empt.item(), tag\_pct\_arr |
-|                 | ay, self.\_\_class\_\_.vocab\_single\_df.groupby( |
-|                 | \"NE\").nunique().alias.sum().item(), self.\_\_cl |
-|                 | ass\_\_.vocab\_single\_df\[self.\_\_class\_\_.voc |
-|                 | ab\_single\_df.NE!=\'\'\].NE.notna().sum().item() |
-|                 |                                                   |
-|                 |         except Exception as e:                    |
-|                 |                                                   |
-|                 |             print(e)                              |
-|                 |                                                   |
-|                 |             sys.stdout.flush()                    |
-|                 |                                                   |
-|                 |             return e                              |
-+=================+===================================================+
-| **Description** | Returns the data for the Report page, the         |
-|                 | proportion of complete work orders, the           |
-|                 | proportion of totally empty work orders, the      |
-|                 | total amount of work orders, the ppv, the         |
-|                 | proportion of tagged tokens.                      |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def completeness(self):
+        try:
+            tex = kex.TokenExtractor()
+            tag_df = kex.tag_extractor(tex, self.__class__.raw_text, vocab_df=self.__class__.vocab_single_df.replace(r'^\s*$', np.nan, regex=True).set_index('tokens').astype({'score': 'float64'}))
+            tag_pct, tag_comp, tag_empt = kex.get_tag_completeness(tag_df)
+            tag_pct_array = [tag for tag in tag_pct.items()]
+            return tag_comp.item(), tag_empt.item(), tag_pct_array, self.__class__.vocab_single_df.groupby("NE").nunique().alias.sum().item(), self.__class__.vocab_single_df[self.__class__.vocab_single_df.NE!=''].NE.notna().sum().item()
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : Description	Returns the data for the Report page,
+the proportion of complete work orders, the proportion of totally empty work 
+orders, the total amount of work orders, the ppv, the proportion of tagged tokens. 
 
 ### export
 
-+-----------------+---------------------------------------------------+
-| **Code**        | def export(self):                                 |
-|                 |                                                   |
-|                 |         return lis                                |
-|                 | t(self.\_\_class\_\_.output\_df.columns), self.\_ |
-|                 | \_class\_\_.output\_df.to\_json(orient=\'values\' |
-|                 | , index=True),list(self.\_\_class\_\_.vocab\_sing |
-|                 | le\_df.columns), self.\_\_class\_\_.vocab\_single |
-|                 | \_df.to\_json(orient=\'values\'),list(self.\_\_cl |
-|                 | ass\_\_.vocab\_multi\_df.columns), self.\_\_class |
-|                 | \_\_.vocab\_multi\_df.to\_json(orient=\'values\') |
-|                 |                                                   |
-|                 |                                                   |
-+=================+===================================================+
-| **Description** | Returns three data frames, the readable tags, the |
-|                 | single tokens vocab, the multi tokens vocab that  |
-|                 | will be written into csv files to save the users  |
-|                 | progress.                                         |
-+-----------------+---------------------------------------------------+
+**Code** :
+```python
+def export(self):
+        return list(self.__class__.output_df.columns), self.__class__.output_df.to_json(orient='values', index=True),list(self.__class__.vocab_single_df.columns), self.__class__.vocab_single_df.to_json(orient='values'),list(self.__class__.vocab_multi_df.columns), self.__class__.vocab_multi_df.to_json(orient='values')
+
+```
+**Description** : Description	Returns three data frames, the readable tags,
+the single tokens vocab, the multi tokens vocab that will be written into csv 
+files to save the users progress.
 
 ### ClearAllAttributes
 
-  **Code**          ![](resourcesContributing/media/image16.png){width="5.0028915135608045in" height="2.2628805774278216in"}
-  ----------------- ----------------------------------------------------------------------------------------------------------
-  **Description**   This function clears the states of the script attributes
+**Code** :
+```python
+    def clearAllAttributes(self):
+        try:
+            self.__class__.df = pd.DataFrame([])
+            self.__class__.vocab_single_df = pd.DataFrame([])
+            self.__class__.vocab_multi_df = pd.DataFrame([])
+            self.__class__.output_df = pd.DataFrame([])
+            self.__class__.raw_text = pd.Series(0, [])
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+```
+**Description** : This function clears the states of the script attributes 
 
 ## Additional nonfunctional requirements
 
@@ -886,39 +677,14 @@ applications which were developed with a specific platform in mind.
 
 ### Software quality
 
-TODO : talk about the documentation and rewrite this section 
+The application uses React Redux to manage the store. The store is organized 
+with reducers that corresponds to components. You can find more informations 
+about React-Redux [here](https://react-redux.js.org/).
 
-The application uses React Redux to manage the store.
+You can find the documentation of this project by generating it through the 
+process explained in the `README.md` file of this project. 
 
-The store is organized with reducers that corresponds to components.
 
-const allReducers = combineReducers({
-
-  alert: alertReducer,
-
-  dragAndDrops: uploadReducer,
-
-  headers: headersReducer,
-
-  classification: classificationReducer,
-
-  tokensNumber: tokensNumberReducer,
-
-  similarity: similarityReducer,
-
-  pattern: patternReducer,
-
-  singleTokens: singleTokensReducer,
-
-  multiTokens: multiTokensReducer,
-
-  report: reportReducer,
-
-  export: exportReducer
-
-});
-
-const allStoreEnhancers = compose(applyMiddleware(thunk));
 
 # Appendices
 

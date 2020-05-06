@@ -1,4 +1,4 @@
-Nestor Web Application
+# Nestor Web Application
 
 This software was developed at the National Institute of Standards and
 Technology by employees of the Federal Government in the course of their
@@ -13,7 +13,7 @@ freely provided that any derivative works bear some notice that they are
 derived from it, and any modified versions bear some notice that they
 have been modified.
 
-Requirements
+# Requirements
 
 Available in command line : pip, node, npm
 
@@ -24,16 +24,25 @@ Run
     a.  *for windows only* `pip install pypiwin32`
 3. `npm install`
 
-Dev Mode
 
-Run
-:`npm run-script electron-dev`
+# Useful commands 
 
-Build
-:`npm run-script build`
+To start the application in development mode :
 
-Package python
-:`pyinstaller --additional-hooks-dir=. python/api.py --distpath pythondist`
+`npm run electron-dev`
 
-Package
-:`./node_modules/.bin/electron-packager . --icon=build/icon.ico --overwrite`
+To package the application for your current host architecture : 
+
+`npm run dist`
+
+After this command, you will find an executable of the application in the `dist` folder
+
+To create the documentation of the applciation :
+
+`npm run docs`
+
+This last command will create a `doc/` folder on the root folder of the project.
+In this new folder, you will find many `.html` files. You can view the 
+documentation by opening **index.html** in the browser of your choice.
+
+

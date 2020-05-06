@@ -13,67 +13,39 @@
 > [Project scope](#project-scope)<br/>
 > [References](#references)
 
-[Description](#description)
+[Description](#description)<br/>
+> [Features](#features)<br/>
+> [Phases](#phases)<br/>
+> [General architecture](#general-architecture)<br/>
+> [Operating environment](#operating-environment)<br/>
+> [Content structure](#content-structure)<br/>
+> [Design](#design)<br/>
+> [Software User Interface](#software-user-interfaces)<br/>
+> [Assumptions / Dependencies](#assumptions-dependencies)<br/>
+> [System features](#system-features)<br/>
+> [React application](#react-application)<br/>
+> [Python APIs description](#python-apis-description)
+>> [classification](#classification)<br/>
+>> [upload](#upload)<br/>
+>> [headers](#headers)<br/>
+>> [create-output](#create-output)<br/>
+>> [single-tokens](#single-tokens)<br/>
+>> [multi-tokens](#multi-tokens)<br/>
+>> [update-output-file](#section-9)<br/>
+>> [update-vocab](#update-vocab)<br/>
+>> [update-data](#update-data)<br/>
+>> [completeness](#completeness)<br/>
+>> [export](#export)<br/>
 
-[Features](#features)
+> [Additional nonfunctional requirements](#additional-nonfunctional-requirements)<br/>
+>> [Accessibility](#accessibility)<br/>
+>> [Security](#security)<br/>
+>> [Performance](#performance)<br/>
+>> [Software quality](#software-quality)<br/>
 
-[Phases](#phases)
-
-[General architecture](#general-architecture)
-
-[Operating environment](#operating-environment)
-
-[Content structure](#content-structure)
-
-[Design](#design)
-
-[Software User Interface](#software-user-interface)
-
-[Assumptions / Dependencies](#assumptions-dependencies)
-
-[System features](#system-features)
-
-[React application](#react-application)
-
-[Python APIs description](#python-apis-description)
-
-[classification](#classification)
-
-[upload ](#upload)
-
-[headers ](#headers)
-
-[create-output ](#create-output)
-
-[single-tokens ](#single-tokens)
-
-[multi-tokens ](#multi-tokens)
-
-[update-output-file](#section-9)
-
-[update-vocab](#update-vocab)
-
-[update-data](#update-data)
-
-[completeness](#completeness)
-
-[export](#export)
-
-[ADDITIONAL NONFUNCTIONAL REQUIREMENTS](#additional-nonfunctional-requirements)
-
-[ACCESSIBILITY](#accessibility)
-
-[SECURITY](#security)
-
-[PERFORMANCE](#performance)
-
-[SOFTWARE QUALITY](#software-quality)
-
-[APPENDICES](#appendices)
-
-[APPENDIX A: ANALYSIS DOCUMENTATION](#appendix-a-analysis-documentation)
-
-[APPENDIX B: ISSUES](#appendix-b-issues)
+[Appendices](#appendices)
+> [ Appendix A: Analysis documentation](#appendix-a-analysis-documentation)<br/>
+> [ Appendix B: Issues](#appendix-b-issues) (TODO : remove)
 
 # INTRODUCTION
 
@@ -88,19 +60,14 @@ filled with jargon to analyze.
 
 This application is an overhaul of the previous native application that
 contained :
-
-• Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
-
-• Unstructured data processing toolkit (sklearn-style)
-
-• Vizualization tools for tagged MWOs-style data (under development)
+* Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
+* Unstructured data processing toolkit (sklearn-style)
+* Vizualization tools for tagged MWOs-style data (under development)
 
 The new application is an electron application that encloses :
 
-• Tagging Tool: Human-in-the-loop Annotation Interface (react
-application)
-
-• Unstructured data processing toolkit (sklearn-style) (python package)
+* Tagging Tool: Human-in-the-loop Annotation Interface (react application)
+* Unstructured data processing toolkit (sklearn-style) (python package)
 
 ## TEAM
 
@@ -110,19 +77,14 @@ Division at NIST.
 
 **Points of Contact**
 
-• Michael Brundage Principal Investigator
-
-• Thurston Sexton Nestor Technical Lead
+*  Michael Brundage Principal Investigator
+*  Thurston Sexton Nestor Technical Lead
 
 **Contributors**
-
-• Michael Brundage: Principal Investigator
-
-• Thurston Sexton: Nestor Technical Lead
-
-• Sakina Laanani: Nestor developer (2018-2019)
-
-• Cedric Bell: Nestor developer (2019-2020)
+* Michael Brundage: Principal Investigator
+* Thurston Sexton: Nestor Technical Lead
+* Sakina Laanani: Nestor developer (2018-2019)
+* Cedric Bell: Nestor developer (2019-2020)
 
 ## PROJECT SCOPE
 
@@ -150,59 +112,37 @@ and will be accessible via an executable file for windows machines.
 Nestor-web features are therefore identical to the previous nestor
 application.
 
-# FEATURES
+## FEATURES
 
-List of Nestor-web main features.
+*  List of Nestor-web main features.
+*  Settings
+*  Upload a file
+*  Extract user selected data
+*  Set the similarity
+*  Get an overview of all settings
+*  Tagging
+*  Extract 'tf-idf' ranked tokens
+*  Get 'fuzzy wuzzy' synonyms for each token
+*  Tag the tokens
+*  Report
+*  Get information on tagged tokens
+*  Export
+*  Export to a csv file the progress in the form of two vocabulary files, and 'readable tags' file.
+*  Create, save, open and delete projects from imported csv file
 
-Settings
+## Phases
 
-Upload a file
+1.  Design Marvel App
+2.  Create React Application
+3.  Find Back End
+4.  Integrate Front end and Back end with Electron
+5.  Cycle of development : integration of new features 
 
-Extract user selected data
-
-Set the similarity
-
-Get an overview of all settings
-
-Tagging
-
-Extract 'tf-idf' ranked tokens
-
-Get 'fuzzy wuzzy' synonyms for each token
-
-Tag the tokens
-
-Report
-
-Get information on tagged tokens
-
-Export
-
-Export to a csv file the progress in the form of two vocabulary files,
-and 'readable tags' file.
-
-Create, save, open and delete projects from imported csv file
-
-# PHASES
-------
-
-1 : Design Marvel App
-
-2 : Create React Application
-
-3 : Find Back End
-
-4 : Integrate Front end and Back end with Electron
-
-5 : cycle of development : integration of new features 
-
-# TECHNICAL DIAGRAM or GENERAL ARCHITECTURE
-
+## General Architecture
 
 ![](resourcesContributing/media/image1.png)
 
-# OPERATING ENVIRONMENT
-
+## Operating environment
 
 The application has 3 versions : windows, linux, mac. The application is
 stand alone and doesn't any installation, it will function on any
@@ -210,19 +150,15 @@ machine (as long as it has been packaged for the machine's
 architecture). Currently, due to zerorpc issues, each packaged
 application has to be packaged on the targeted platform.
 
-# CONTENT STRUCTURE
+# Content structure 
 
 The main components interacting together in this application are :
+*  Electron main process
+*  React source files
+*  Python Server
+*  Python Package
 
--   Electron main process
-
--   React source files
-
--   Python Server
-
--   Python Package
-
-# DESIGN
+## Design
 
 Nestor web views were designed using Marvel, an application to create a
 prototype of digital products with wireframes.
@@ -232,14 +168,13 @@ prototype of digital products with wireframes.
 Screenshots of the application :
 
   ![](resourcesContributing/media/image2.png)     ![](resourcesContributing/media/image3.png)
-  ---------------------------------------------------------------------------------------------------------- ---------------------------------------------------------------------------------------------------------
   ![](resourcesContributing/media/image4.png)     ![](resourcesContributing/media/image5.png)
   ![](resourcesContributing/media/image6.png)     ![](resourcesContributing/media/image7.png)
   ![](resourcesContributing/media/image8.png)     ![](resourcesContributing/media/image9.png)
   ![](resourcesContributing/media/image10.png)    ![](resourcesContributing/media/image11.png)
   ![](resourcesContributing/media/image12.png)   
 
-# SOFTWARE USER INTERFACES 
+## Software user interfaces
 
 This section concerns the technical choices of the nestor web
 application. For reminder, the application is built with React, python,
@@ -317,33 +252,24 @@ the communication between the react frontend server and the python
 server. Basically this technology enables us to open socket between the
 two servers.
 
-# ASSUMPTIONS / DEPENDENCIES
+## Assumptions / Dependencies
 
 Minimum requirements for running an electron application are:
 
 **Windows**
 
--   Both x86 and amd64 (x64) binaries are provided for Windows
+* Both x86 and amd64 (x64) binaries are provided for Windows
 
 **Mac**
 
--   Only 64bit binaries are provided for macOS, and the minimum macOS
-    > version supported is macOS 10.10.
+* Only 64bit binaries are provided for macOS, and the minimum macOS version supported is macOS 10.10.
 
 **Linux**
 
--   The prebuilt ia32(i686) and x64(amd64) binaries of Electron are
-    > built on Ubuntu 12.04, the arm binary is built against ARM v7 with
-    > hard-float ABI and NEON for Debian Wheezy.
-
--   Ubuntu 12.04 and later
-
-```{=html}
-<!-- -->
-```
--   Fedora 21
-
--   Debian 8
+* The prebuilt ia32(i686) and x64(amd64) binaries of Electron are built on Ubuntu 12.04, the arm binary is built against ARM v7 with hard-float ABI and NEON for Debian Wheezy.
+* Ubuntu 12.04 and later
+* Fedora 21
+* Debian 8
 
 
 About RAM and CPU, there are no information about that in Electron\'s
@@ -352,23 +278,21 @@ same requirements:
 
 **Windows**
 
--   An Intel Pentium 4 processor or later that\'s SSE2 capable
-
--   512 MB of RAM
+* An Intel Pentium 4 processor or later that\'s SSE2 capable
+* 512 MB of RAM
 
 **Mac**
 
--   An Intel processor that\'s 64-bit
-
--   512 MB of RAM
+* An Intel processor that\'s 64-bit
+* 512 MB of RAM
 
 **Linux**
 
--   An Intel Pentium 4 processor or later that\'s SSE2 capable
+* An Intel Pentium 4 processor or later that\'s SSE2 capable
 
-<https://electronjs.org/docs/tutorial/support>
+More information available [here](#<https://electronjs.org/docs/tutorial/support>)
 
-# SYSTEM FEATURES
+# System features
 
 ## React application
 
@@ -382,8 +306,8 @@ by routes. Each page is grouped with a css sheet, the actual jsx
 component, the store's reducer and the store's action functions.
 
 ## Python APIs description
-
-classification
+ TODO : remove or at least rewrite this section
+### Classification
 
 +-----------------+---------------------------------------------------+
 | **Code**        |  def classification(self):                        |
@@ -394,8 +318,7 @@ classification
 |                 | nestor python package                             |
 +-----------------+---------------------------------------------------+
 
-upload
-------
+### upload
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def upload(self, f):                              |
@@ -438,8 +361,7 @@ upload
 |                 | file uploaded by the user                         |
 +-----------------+---------------------------------------------------+
 
-uploadJSON
-----------
+### uploadJSON
 
 +-----------------+---------------------------------------------------+
 | **Code**        | ![](resourcesContributi                           |
@@ -458,8 +380,7 @@ uploadJSON
 |                 | multiTokens lists scored by 'tf-idf'.             |
 +-----------------+---------------------------------------------------+
 
-headers
--------
+### headers
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def headers(self):                                |
@@ -523,8 +444,7 @@ headers
 |                 | names that are empty                              |
 +-----------------+---------------------------------------------------+
 
-create-output
--------------
+### create-output
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def create\_output(self, headers):                |
@@ -556,8 +476,8 @@ create-output
 | **Description** | Creates the readable-tags csv file data frame     |
 +-----------------+---------------------------------------------------+
 
-single-tokens
--------------
+### single-tokens
+
 
 +-----------------+---------------------------------------------------+
 | **Code**        |  def single\_tokens(self, headers):               |
@@ -615,8 +535,7 @@ single-tokens
 |                 | scores                                            |
 +-----------------+---------------------------------------------------+
 
-multi-tokens
-------------
+### multi-tokens
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def multi\_tokens(self, headers):                 |
@@ -691,8 +610,7 @@ multi-tokens
 |                 | scores                                            |
 +-----------------+---------------------------------------------------+
 
-update-output-file
-------------------
+### update-output-file
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def update\_output\_file(self, token):            |
@@ -778,8 +696,7 @@ update-output-file
 | **Description** | Updates the readable-tags csv file data frame     |
 +-----------------+---------------------------------------------------+
 
-update-vocab
-------------
+### update-vocab
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def update\_vocab(self, df, token):               |
@@ -828,8 +745,7 @@ update-vocab
 | **Description** | Updates the vocabs data frame                     |
 +-----------------+---------------------------------------------------+
 
-update-data
------------
+### update-data
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def update\_data(self, token):                    |
@@ -869,8 +785,7 @@ update-data
 |                 | users tags a new token)                           |
 +-----------------+---------------------------------------------------+
 
-completeness
-------------
+### completeness
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def completeness(self):                           |
@@ -913,8 +828,7 @@ completeness
 |                 | proportion of tagged tokens.                      |
 +-----------------+---------------------------------------------------+
 
-export
-------
+### export
 
 +-----------------+---------------------------------------------------+
 | **Code**        | def export(self):                                 |
@@ -936,26 +850,22 @@ export
 |                 | progress.                                         |
 +-----------------+---------------------------------------------------+
 
-ClearAllAttributes
-------------------
+### ClearAllAttributes
 
   **Code**          ![](resourcesContributing/media/image16.png){width="5.0028915135608045in" height="2.2628805774278216in"}
   ----------------- ----------------------------------------------------------------------------------------------------------
   **Description**   This function clears the states of the script attributes
 
-ADDITIONAL NONFUNCTIONAL REQUIREMENTS
-=====================================
+## Additional nonfunctional requirements
 
-ACCESSIBILITY
--------------
+### Accessibility
 
 The application was made to support multi languages.
 
 To add a new language, write a new json translation file under
 src/language.
 
-SECURITY
---------
+### Security
 
 Electron applications run as offline application.
 
@@ -967,16 +877,16 @@ machine.
 The data persistence between several sessions ensured by pouchDB, is an
 in-browser database so that the data stays on the client's laptop.
 
-PERFORMANCE
------------
+### Performance
 
 Electron applications tends to be large because they bundle most of
 Chromium. Additionally, there is no sharing of resources meaning
 Electron application take up more space and memory than native
 applications which were developed with a specific platform in mind.
 
-SOFTWARE QUALITY
-----------------
+### Software quality
+
+TODO : talk about the documentation and rewrite this section 
 
 The application uses React Redux to manage the store.
 
@@ -1010,18 +920,16 @@ const allReducers = combineReducers({
 
 const allStoreEnhancers = compose(applyMiddleware(thunk));
 
-APPENDICES
-==========
+# Appendices
 
-APPENDIX A: ANALYSIS DOCUMENTATION
-----------------------------------
+## Appendix A: Analysis Documentation
 
 Nestor previous documentation :
 <https://nestor.readthedocs.io/en/latest>
 
 GitHub repository Nestor web : <https://github.com/usnistgov/nestor-web>
 
-APPENDIX B: ISSUES
+## Appendix B: Issues
 ------------------
 
 Updated board of unresolved issues, pending decisions and next features

@@ -1,7 +1,7 @@
 export const SET_ASSETS_STATS = "dashboard:setAssetsStats";
 export const SET_SELECTED_ASSET = "dashboard:setSelectedAsset";
 
-export function getAssetsStats() {
+export function getAssetsStats(oldAssetSelected) {
     return dispatch => {
         const zerorpc = window.zero;
         let client = new zerorpc.Client();
@@ -10,12 +10,12 @@ export function getAssetsStats() {
             if (error) {
                 console.log(error);
             } else {
-                dispatch(setAssetsStats(res));
+                dispatch(setAssetsStats(res, oldAssetSelected));
             }
         });
     }
 }
-function setAssetsStats(assetsStats) {
+function setAssetsStats(assetsStats, oldAssetSelected) {
     const assetsStatsFormatted = [];
     assetsStats.forEach(assetStat => {
         assetsStatsFormatted.push({
@@ -28,18 +28,12 @@ function setAssetsStats(assetsStats) {
         payload: {
             dashboard: {
                 assetsStats: assetsStatsFormatted,
-                assetSelected: {
-                    label: '',
-                    mostFoundItems: [],
-                    mostFoundSolutions: [],
-                    mostFoundProblems: [],
-                    problemsRelated: ''
-                }
+                assetSelected: oldAssetSelected
             }
         }
     }
 }
-export function getAssetSelected(headers, assetName, problemsRelated) {
+export function getAssetSelected(oldAssetsStats, headers, assetName, problemsRelated) {
     return dispatch => {
         const zerorpc = window.zero;
         let client = new zerorpc.Client();
@@ -48,12 +42,12 @@ export function getAssetSelected(headers, assetName, problemsRelated) {
             if (error) {
                 console.log(error);
             } else {
-                dispatch(setAssetSelected(assetName, problemsRelated, res));
+                dispatch(setAssetSelected(oldAssetsStats, assetName, problemsRelated, res));
             }
         });
     }
 }
-function setAssetSelected(assetName, problemsRelated, mostFoundWords) {
+function setAssetSelected(oldAssetsStats, assetName, problemsRelated, mostFoundWords) {
     var mostFoundItems = [];
     var mostFoundProblems = [];
     var mostFoundSolutions = [];
@@ -86,7 +80,8 @@ function setAssetSelected(assetName, problemsRelated, mostFoundWords) {
                     mostFoundItems: mostFoundItems,
                     mostFoundProblems: mostFoundProblems,
                     mostFoundSolutions: mostFoundSolutions
-                }
+                },
+                assetsStats: oldAssetsStats
             }
         }
     }

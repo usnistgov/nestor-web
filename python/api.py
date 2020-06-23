@@ -285,13 +285,12 @@ class Api(object):
 
     def getAssetSelected(self, headers, assetName):
         try:
-            # todo : les tokens retournes
-            # concernent pas forcement lasset selectionne
-            # implementer le save des nouvelles props
             data = {}
             problems = []
             items = []
             solutions = []
+            print(self.__class__.dashboardHeaders['machineName'])
+            sys.stdout.flush()
             for index, row in self.__class__.output_df.iterrows():
                 for key in self.__class__.dashboardHeaders['machineName']:
                     if(row[key] == assetName):
@@ -326,6 +325,7 @@ class Api(object):
             self.__class__.vocab_multi_df = pd.DataFrame([])
             self.__class__.output_df = pd.DataFrame([])
             self.__class__.raw_text = pd.Series(0, [])
+            self.__class__.dashboardHeaders = {}
         except Exception as e:
             print(e)
             sys.stdout.flush()

@@ -4,7 +4,7 @@ import { getAssetSelected, getAssetsStats } from "./dashboardAction";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
 import {
-  BarChart, Bar, Label, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, Line, LineChart, Area, AreaChart
+  BarChart, Bar, Label, XAxis, YAxis, CartesianGrid, Tooltip
 } from 'recharts';
 import { Tabs, Tab } from "react-bootstrap";
 
@@ -39,7 +39,10 @@ class Dashboard extends Component {
    * It loads the stats of the assets
    */
   componentDidMount() {
-    this.props.onGetAssetsStats();
+    console.log(this.props.dashboard);
+    if (this.props.dashboard.assetsStats.length === 0) {
+      this.props.onGetAssetsStats(this.props.dashboard.assetSelected);
+    }
     if (this.props.dashboard.assetsStats) {
       const newAssetsStats = this.props.dashboard.assetsStats;
       this.setState({ assetsStats: newAssetsStats });
@@ -189,7 +192,8 @@ class Dashboard extends Component {
     selectedHeaders.forEach(header => {
       selectedHeadersLabels.push(header.label);
     });
-    this.props.onGetAssetSelected(selectedHeadersLabels, event.asset, event.value);
+    console.log(this.props);
+    this.props.onGetAssetSelected(this.props.dashboard.assetsStats, selectedHeadersLabels, event.asset, event.value);
   }
 }
 

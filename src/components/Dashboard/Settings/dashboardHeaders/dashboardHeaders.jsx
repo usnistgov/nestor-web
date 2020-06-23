@@ -22,6 +22,7 @@ class dashboardHeaders extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.dashboardSettings);
         if (this.props.dashboardSettings.length < 2) {
             this.props.onGetDashboardHeaders();
         }
@@ -29,9 +30,17 @@ class dashboardHeaders extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.state.dashboardSettings.length !== this.props.dashboardSettings.length) {
+            console.log(this.state.dashboardSettings);
+            console.log(this.props.dashboardSettings);
             this.setState({ dashboardSettings: this.props.dashboardSettings });
         }
     }
+
+    // shouldComponentUpdate() {
+    //     console.log(this.state);
+    //     console.log(this.props);
+    //     return false;
+    // }
 
     render() {
 
@@ -147,6 +156,7 @@ class dashboardHeaders extends Component {
     }
 
     handleContinue = () => {
+        console.log(this.props);
         this.props.history.push("/dashboard/vizualisation");
     }
 }

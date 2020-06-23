@@ -17,7 +17,7 @@ class Header extends Component
    */
    tooltip = data => (
     <Tooltip id="tooltip">
-      { data.map((obj, i) => (
+      { data && data.map((obj, i) => (
         <strong key={ i }>{ obj }<br /></strong>
       )) }
     </Tooltip>

@@ -18,18 +18,17 @@ import { createSelector } from "reselect";
  * 
  * @component
  */
-class Classification extends Component
-{
+class Classification extends Component {
 
   /** 
    * @constructor
    */
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      classification:{
-        rules:[],
-        types:[]
+    this.state = {
+      classification: {
+        rules: [],
+        types: []
       }
     }
   }
@@ -40,43 +39,34 @@ class Classification extends Component
    * python script, checks whether or not to display an alert
    * and then request the singleTokens and the multiTokens
    */
-  componentDidMount()
-  {
+  componentDidMount() {
     this.updateClassification();
-    if (!Object.keys(this.props.classification.types).length)
-    {
+    if (!Object.keys(this.props.classification.types).length) {
       this.props.onClassificationRequest();
       this.updateClassification();
     }
-    if (this.props.dragAndDrops.length)
-    {
-      if (this.props.dragAndDrops[ 0 ].file)
-      {
-        const headers = [ ...this.props.headers.headers ];
+    if (this.props.dragAndDrops.length) {
+      if (this.props.dragAndDrops[0].file) {
+        const headers = [...this.props.headers.headers];
         var selectedHeadersLabels = [];
-        var selectedHeaders = headers.filter(header =>
-        {
+        var selectedHeaders = headers.filter(header => {
           return header.checked === true;
         });
-        selectedHeaders.forEach(header =>
-        {
+        selectedHeaders.forEach(header => {
           selectedHeadersLabels.push(header.label);
         });
-        if (!selectedHeaders.length && !this.props.alert.showAlert)
-        {
+        if (!selectedHeaders.length && !this.props.alert.showAlert) {
           let alert = {
             showAlert: true,
             alertHeader: text.taggingTool.alerts.headers.header,
             alertMessage: text.taggingTool.alerts.headers.message
           };
           this.props.onUpdateAlert(alert);
-        } else if (selectedHeaders.length && this.props.singleTokens.length === 0)
-        {
+        } else if (selectedHeaders.length && this.props.singleTokens.length === 0) {
           this.props.onSingleTokensRequest(selectedHeadersLabels);
           this.props.onMultiTokensRequest(selectedHeadersLabels);
         }
-      } else
-      {
+      } else {
         let alert = {
           showAlert: true,
           alertHeader: text.taggingTool.alerts.upload.header,
@@ -84,8 +74,7 @@ class Classification extends Component
         };
         this.props.onUpdateAlert(alert);
       }
-    } else
-    {
+    } else {
       let alert = {
         showAlert: true,
         alertHeader: text.taggingTool.alerts.upload.header,
@@ -100,10 +89,8 @@ class Classification extends Component
    * It checks if the singleTokens props has changed and then 
    * get the tokens number with the new singleTokens.
    */
-  componentDidUpdate(prevProps)
-  {
-    if (prevProps.singleTokens !== this.props.singleTokens)
-    {
+  componentDidUpdate(prevProps) {
+    if (prevProps.singleTokens !== this.props.singleTokens) {
       this.props.onGetTokensNumber(this.props.singleTokens.length);
       this.updateClassification();
     }
@@ -112,74 +99,73 @@ class Classification extends Component
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <React.Fragment>
-        { this.props.alert.showAlert && (
+        {this.props.alert.showAlert && (
           <Alert
-            alertHeader={ this.props.alert.alertHeader }
-            alertMessage={ this.props.alert.alertMessage }
+            alertHeader={this.props.alert.alertHeader}
+            alertMessage={this.props.alert.alertMessage}
             styleColor="alert alert-danger"
-            onDelete={ this.handleDelete }
+            onDelete={this.handleDelete}
           />
-        ) }
+        )}
         <div className="classifications-container">
           <div className="regular-classification">
-          <Title
-          title={ text.taggingTool.settings.classification.title }
-          informationMessage={
-            text.taggingTool.settings.classification.titleInfo
-          }
-        />
-          <div>
-            { this.props.classification.types.map((obj, i) => (
-              <div key={i} className="types-container">
-              <ClassificationTag
-                key={ i }
-                label={ obj.shortkey + " - " + obj.label }
-                color={ obj.color }
-              />
-              </div>
-            )) }
+            <Title
+              title={text.taggingTool.settings.classification.title}
+              informationMessage={
+                text.taggingTool.settings.classification.titleInfo
+              }
+            />
+            <div>
+              {this.props.classification.types.map((obj, i) => (
+                <div key={i} className="types-container">
+                  <ClassificationTag
+                    key={i}
+                    label={obj.shortkey + " - " + obj.label}
+                    color={obj.color}
+                  />
+                </div>
+              ))}
 
-          </div>
-          <br />
-          <Button
-            onClick={ this.handleContinue }
-            class="btn btn-primary ctn"
-            label="Continue"
-          />
+            </div>
+            <br />
+            <Button
+              onClick={this.handleContinue}
+              class="btn btn-primary ctn"
+              label="Continue"
+            />
           </div>
 
           <div className="hybrid-classification">
-          <Title
+            <Title
               title="Hybrid classification"
               informationMessage="These classifications iare used for multi words tokens"
             />
-            { this.state.classification.rules.map((obj, i) => (
+            {this.state.classification.rules.map((obj, i) => (
               <div key={i} className="rules-container">
                 <ClassificationTag
-                key={ i }
-                label={ obj.shortkey + " - " + obj.label }
-                color={ obj.color }
-                /> 
+                  key={i}
+                  label={obj.shortkey + " - " + obj.label}
+                  color={obj.color}
+                />
                 <div className="center"><i className="fas fa-equals"></i></div>
                 <ClassificationTag
-                key={i+2000}
-                label={ obj.composedBy[0].shortkey + " - " + obj.composedBy[0].label}
-                color={obj.composedBy[0].color}
-                /> 
+                  key={i + 2000}
+                  label={obj.composedBy[0].shortkey + " - " + obj.composedBy[0].label}
+                  color={obj.composedBy[0].color}
+                />
                 <div className="center"><i className="fas fa-plus"></i></div>
                 <ClassificationTag
-                key={i+1001}
-                label={ obj.composedBy[1].shortkey + " - " + obj.composedBy[1].label}
-                color={obj.composedBy[1].color}
+                  key={i + 1001}
+                  label={obj.composedBy[1].shortkey + " - " + obj.composedBy[1].label}
+                  color={obj.composedBy[1].color}
                 />
               </div>
-            )) }
+            ))}
           </div>
-          </div>
+        </div>
       </React.Fragment>
     );
   }
@@ -191,11 +177,11 @@ class Classification extends Component
    * @function
    */
   updateClassification = () => {
-    if(this.props.classification.rules.length !==0){
+    if (this.props.classification.rules.length !== 0) {
       let newClassification = this.props.classification;
-      newClassification.rules[0].composedBy= [this.props.classification.types[1],this.props.classification.types[0]];
-      newClassification.rules[1].composedBy= [this.props.classification.types[2],this.props.classification.types[0]];
-      this.setState({classification: newClassification});
+      newClassification.rules[0].composedBy = [this.props.classification.types[1], this.props.classification.types[0]];
+      newClassification.rules[1].composedBy = [this.props.classification.types[2], this.props.classification.types[0]];
+      this.setState({ classification: newClassification });
     }
   }
 
@@ -203,8 +189,7 @@ class Classification extends Component
    * function that hide the alert message
    * @function
    */
-  handleDelete = () =>
-  {
+  handleDelete = () => {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
   };
@@ -213,10 +198,8 @@ class Classification extends Component
    * function that redirect to the overview tab if the alert is not active
    * @function
    */
-  handleContinue = () =>
-  {
-    if (!this.props.alert.showAlert)
-    {
+  handleContinue = () => {
+    if (!this.props.alert.showAlert) {
       this.props.history.push("/taggingTool/settings/overview")
     }
   };

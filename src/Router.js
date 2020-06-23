@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import HomeComponent from "./components/Home/home";
 import NavBar from "./components/Home/navbar";
 import Error from "./components/CommonComponents/Error/error";
-import Dashboard from "./components/Dashboard/dashboard";
+import Dashboard from "./components/Dashboard/dashboardRouter/dashboardRouter";
 import TaggingTool from "./components/TaggingTool/TaggingRouter/taggingToolRouter";
 
 /**
@@ -38,28 +38,26 @@ const routes = [
  * 
  * @component
  */
-class Router extends Component
-{
+class Router extends Component {
 
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <BrowserRouter>
         <React.Fragment>
           <NavBar />
           <div className="content">
             <Switch>
-              { routes.map((obj, i) => (
+              {routes.map((obj, i) => (
                 <Route
-                  key={ i }
-                  exact={ obj.exact }
-                  path={ obj.path }
-                  component={ obj.component }
+                  key={i}
+                  exact={obj.exact}
+                  path={obj.path}
+                  component={obj.component}
                 />
-              )) }
+              ))}
             </Switch>
           </div>
           <Redirect to="/" />

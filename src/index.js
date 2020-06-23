@@ -18,6 +18,8 @@ import singleTokensReducer from "./components/TaggingTool/Tag/Single/singleToken
 import multiTokensReducer from "./components/TaggingTool/Tag/Multi/multiTokensReducer";
 import reportReducer from "./components/TaggingTool/Report/reportReducer";
 import exportReducer from "./components/TaggingTool/Export/exportReducer";
+import dashboardReducer from "./components/Dashboard/vizualization/dashboardReducer"
+import dashboardHeadersReducer from "./components/Dashboard/Settings/dashboardHeaders/dashboardHeadersReducer";
 
 const allReducers = combineReducers({
   alert: alertReducer,
@@ -30,7 +32,9 @@ const allReducers = combineReducers({
   singleTokens: singleTokensReducer,
   multiTokens: multiTokensReducer,
   report: reportReducer,
-  export: exportReducer
+  export: exportReducer,
+  dashboard: dashboardReducer,
+  dashboardSettings: dashboardHeadersReducer
 });
 const allStoreEnhancers = compose(applyMiddleware(thunk));
 
@@ -66,7 +70,20 @@ const store = createStore(
       output: [],
       single: [],
       multi: []
-    }
+    },
+    dashboard: {
+      assetsStats: [],
+      assetSelected: {
+        label: "",
+        problemsRelated: "",
+        mostFoundProblems: [],
+        mostFoundSolutions: [],
+        mostFoundItems: []
+      }
+    },
+    dashboardSettings: [
+      { rowLabel: '', checkboxes: [{ label: '', checked: false }], tooltip: [] }
+    ]
   },
   allStoreEnhancers
 );

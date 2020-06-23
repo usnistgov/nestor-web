@@ -17,7 +17,7 @@ class Title extends Component {
         {this.props.title}
         <OverlayTrigger
           placement="bottom"
-          overlay={this.Tooltiptooltip(this.props.informationMessage)}
+          overlay={this.tooltip(this.props.informationMessage)}
         >
           <i className="fas fa-info-circle" />
         </OverlayTrigger>

@@ -22,13 +22,12 @@ const fuzz = window.fuzz;
  * 
  * @component
  */
-class SingleWord extends Component
-{
+class SingleWord extends Component {
 
   /** 
    * @constructor
    */
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showModal: false,
@@ -44,8 +43,7 @@ class SingleWord extends Component
    * get the completeness of the project to update the progress bar, and update
    * the alert if needed
    */
-  componentDidMount()
-  {
+  componentDidMount() {
     var alert = {
       showAlert: false,
       alertHeader: text.taggingTool.alerts.tag.header,
@@ -63,8 +61,7 @@ class SingleWord extends Component
    * @returns true if single tokens props changed or if the search modal
    * display has changed
    */
-  shouldComponentUpdate(nextProps)
-  {
+  shouldComponentUpdate(nextProps) {
     //debugger;
     return nextProps.singleTokens !== this.props.singleTokens ||
       nextProps.match.params.id !== this.props.match.params.id ||
@@ -80,14 +77,12 @@ class SingleWord extends Component
    * and update the vocab of single grams, and also sets the synonyms
    * for each singleToken
    */
-  componentDidUpdate(prevProps)
-  {
+  componentDidUpdate(prevProps) {
     this.refreshSynonyms();
-    if (prevProps.match.params.id !== this.props.match.params.id)
-    {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
       this.props.onUpdateVocab(
-        this.props.singleTokens[ prevProps.match.params.id ]
+        this.props.singleTokens[prevProps.match.params.id]
       );
       this.props.onGetCompleteness();
     }
@@ -96,26 +91,25 @@ class SingleWord extends Component
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <div className="tag-container">
-        { this.state.showNoClassificationModal && (
-          <Alert 
+        {this.state.showNoClassificationModal && (
+          <Alert
             alertHeader={text.taggingTool.alerts.tag.noClassificationHeader}
             alertMessage={text.taggingTool.alerts.tag.noClassificationMessage}
             styleColor="alert alert-danger"
             onDelete={this.handleHideNoClassificationAlert}
           />
-        ) }
-        { this.props.alert.showAlert && (
+        )}
+        {this.props.alert.showAlert && (
           <Alert
-            alertHeader={ this.props.alert.alertHeader }
-            alertMessage={ this.props.alert.alertMessage }
+            alertHeader={this.props.alert.alertHeader}
+            alertMessage={this.props.alert.alertMessage}
             styleColor="alert alert-success"
-            onDelete={ this.handleDelete }
+            onDelete={this.handleDelete}
           />
-        ) }
+        )}
         <div className="tag-section">
           <div className="token-tagging-section">
             <ProgressBar
@@ -142,10 +136,10 @@ class SingleWord extends Component
                     100
                   ).toFixed(2) + " % Complete"
               }
-              key={ 1 }
+              key={1}
             />
             <br />
-            <h4>{this.props.singleTokens[ parseInt(this.props.match.params.id) ].label}</h4>
+            <h4>{this.props.singleTokens[parseInt(this.props.match.params.id)].label}</h4>
             <div>Alias</div>
             <div className="alias">
               <div>
@@ -158,53 +152,53 @@ class SingleWord extends Component
                       parseInt(this.props.match.params.id)
                     ].alias
                   }
-                  onChange={ this.updateValue }
+                  onChange={this.updateValue}
                 />
               </div>
             </div>
             <br />
             <div>Classification</div>
             <div className="classification-tags">
-              <br/>
-              { this.props.classification.types.map((obj, i) => (
+              <br />
+              {this.props.classification.types.map((obj, i) => (
                 <TagButton
-                  key={ i }
-                  value={ obj.label }
-                  shortkey={ obj.shortkey }
-                  showTooltipIcon={ false }
-                  showCloseIcon={ false }
-                  tooltip={ "" }
-                  color={ obj.color }
-                  style={ { borderColor: obj.color } }
-                  onClick={ this.handleAddClassification }
+                  key={i}
+                  value={obj.label}
+                  shortkey={obj.shortkey}
+                  showTooltipIcon={false}
+                  showCloseIcon={false}
+                  tooltip={""}
+                  color={obj.color}
+                  style={{ borderColor: obj.color }}
+                  onClick={this.handleAddClassification}
                 />
-              )) }
+              ))}
             </div>
             <div>
-              { text.taggingTool.tagging.singleToken.synonymSectionTitle }
+              {text.taggingTool.tagging.singleToken.synonymSectionTitle}
             </div>
             <div className="synonyms-tags">
-              { this.props.singleTokens[
+              {this.props.singleTokens[
                 parseInt(this.props.match.params.id)
               ].synonyms.map((obj, i) => (
                 <TagButton
-                  key={ i }
-                  value={ obj.label }
-                  shortkey={ "" }
-                  showTooltipIcon={ true }
-                  showCloseIcon={ false }
-                  tooltip={ obj.tooltip }
-                  color={ "black" }
-                  style={ { borderColor: "black" } }
-                  onClick={ this.handleSelectSynonym }
+                  key={i}
+                  value={obj.label}
+                  shortkey={""}
+                  showTooltipIcon={true}
+                  showCloseIcon={false}
+                  tooltip={obj.tooltip}
+                  color={"black"}
+                  style={{ borderColor: "black" }}
+                  onClick={this.handleSelectSynonym}
                 />
-              )) }
+              ))}
             </div>
             <div className="buttons">
-              {window.singleTokenHistory.length > 0 && 
+              {window.singleTokenHistory.length > 0 &&
                 <Button
                   size="sm"
-                  onClick={this.handleBack }  
+                  onClick={this.handleBack}
                   className="back-button"
                   label="Back to Multi Word"
                   variant="outline-primary"
@@ -213,137 +207,137 @@ class SingleWord extends Component
                 </Button>}
               <Button
                 size="sm"
-                onClick={ this.handleContinue }
+                onClick={this.handleContinue}
                 variant="primary"
                 label="Continue"
                 className="btn-continue">
-                  Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
+                Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
               </Button>
             </div>
           </div>
           <div className="token-view">
             <h4>Summary</h4>
             <input
-                  type="text"
-                  className="form-control"
-                  value={
-                    this.props.singleTokens[
-                      parseInt(this.props.match.params.id)
-                    ].alias
-                  }
-                  readOnly
-                />
-            { this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-              .classification.label ? <div
-              className="badge"
-              style={ {
-                borderColor: this.props.singleTokens[
+              type="text"
+              className="form-control"
+              value={
+                this.props.singleTokens[
                   parseInt(this.props.match.params.id)
-                ].classification.color
-              } }
-            >
-              {
-                this.props.singleTokens[ parseInt(this.props.match.params.id) ]
-                  .classification.value
+                ].alias
               }
-            </div> : <div
-                  className="badge-no-classification"
-                >
-                  No classification
+              readOnly
+            />
+            {this.props.singleTokens[parseInt(this.props.match.params.id)]
+              .classification.label ? <div
+                className="badge"
+                style={{
+                  borderColor: this.props.singleTokens[
+                    parseInt(this.props.match.params.id)
+                  ].classification.color
+                }}
+              >
+                {
+                  this.props.singleTokens[parseInt(this.props.match.params.id)]
+                    .classification.value
+                }
+              </div> : <div
+                className="badge-no-classification"
+              >
+                No classification
                 </div>}
             <div>
-              { text.taggingTool.tagging.singleToken.synonymSectionTitle }
+              {text.taggingTool.tagging.singleToken.synonymSectionTitle}
             </div>
             <div className="synonyms-tags selected">
-              { this.props.singleTokens[
+              {this.props.singleTokens[
                 parseInt(this.props.match.params.id)
               ].selectedSynonyms.map((obj, i) => (
                 <TagButton
-                  key={ i }
-                  value={ obj.value }
-                  shortkey={ "" }
-                  showTooltipIcon={ true }
-                  showCloseIcon={ true }
-                  tooltip={ obj.tooltip }
-                  color={ "black" }
-                  style={ { borderColor: "black" } }
-                  onClick={ this.handleDeleteSynonym }
+                  key={i}
+                  value={obj.value}
+                  shortkey={""}
+                  showTooltipIcon={true}
+                  showCloseIcon={true}
+                  tooltip={obj.tooltip}
+                  color={"black"}
+                  style={{ borderColor: "black" }}
+                  onClick={this.handleDeleteSynonym}
                 />
-              )) }
+              ))}
             </div>
-            <br/>
+            <br />
             <div>Appears in</div>
             <div className="summary-appearsIn-container">
               <Modal
                 size="lg"
-                show={ this.state.expanded }
-                onHide={() => this.setState({expanded:false}) }>
+                show={this.state.expanded}
+                onHide={() => this.setState({ expanded: false })}>
                 <Modal.Header closeButton>
                   <Modal.Title>
                     <i className="fas fa-list"></i>
                     &nbsp;
-                    List of Multitokens 
+                    List of Multitokens
                   </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  All the multiTokens where the singleToken <strong>{this.props.singleTokens[ parseInt(this.props.match.params.id)].label}</strong> appeared are listed below.
+                  All the multiTokens where the singleToken <strong>{this.props.singleTokens[parseInt(this.props.match.params.id)].label}</strong> appeared are listed below.
                   You can click on them to tag these multiTokens.
-                  <div className="multiTokens-container"> {this.props.singleTokens[ parseInt(this.props.match.params.id)].appearsIn.map((obj, i) => (
-                    <Button
-                      variant="outline-dark"
-                      className="composedwith-button-modal"
-                      key={ i }
-                      onClick={ () => this.handleClickOnMultiToken(obj) }
-                      >{obj.label}</Button>
-                    ))}
-              </div> 
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={ () => this.setState({expanded:false}) }>
-                  { text.taggingTool.tagging.singleToken.modal.buttonLabel }
-                </Button>
-              </Modal.Footer>
-            </Modal>
-              </div>
-               <div className="fullwidth"> {this.state.currentMultiTokens.map((obj, i) => (
-                <Button
-                  variant="outline-dark"
-                  className="composedwith-button"
-                  key={ i }
-                  onClick={ () => this.handleClickOnMultiToken(obj) }
-                >{obj.label}</Button>
-              ))}
+                  <div className="multiTokens-container"> {this.props.singleTokens[parseInt(this.props.match.params.id)].appearsIn.map((obj, i) => (
+                  <Button
+                    variant="outline-dark"
+                    className="composedwith-button-modal"
+                    key={i}
+                    onClick={() => this.handleClickOnMultiToken(obj)}
+                  >{obj.label}</Button>
+                ))}
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => this.setState({ expanded: false })}>
+                    {text.taggingTool.tagging.singleToken.modal.buttonLabel}
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </div>
+            <div className="fullwidth"> {this.state.currentMultiTokens.map((obj, i) => (
+              <Button
+                variant="outline-dark"
+                className="composedwith-button"
+                key={i}
+                onClick={() => this.handleClickOnMultiToken(obj)}
+              >{obj.label}</Button>
+            ))}
               <Button className="button-moremultitokens" variant="link" onClick={() => this.showMoreOrLess()}>
                 More
               </Button>
-              </div> 
+            </div>
             <Note
               showNote={
-                this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+                this.props.singleTokens[parseInt(this.props.match.params.id)]
                   .note.showNote
               }
               value={
-                this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+                this.props.singleTokens[parseInt(this.props.match.params.id)]
                   .note.value
               }
-              onClick={ this.handleToggle }
-              onAdd={ this.handleAddNote }
-              onChangeNote={ this.handleChangeNote }
-              disabled={ false }
-              onEdit={ this.handleEditNote }
+              onClick={this.handleToggle}
+              onAdd={this.handleAddNote}
+              onChangeNote={this.handleChangeNote}
+              disabled={false}
+              onEdit={this.handleEditNote}
             />
           </div>
           <div className="side-bar">
             <i
               className="far fa-window-maximize"
-              onClick={ this.handleShowModal }
+              onClick={this.handleShowModal}
             />
           </div>
           <List
-            showModal={ this.state.showModal }
-            onDelete={ this.handleDeleteModal }
-            onClick={ this.handleClickList }
-            list={ this.props.singleTokens }
+            showModal={this.state.showModal}
+            onDelete={this.handleDeleteModal}
+            onClick={this.handleClickList}
+            list={this.props.singleTokens}
           />
         </div>
       </div>
@@ -380,8 +374,7 @@ class SingleWord extends Component
    * @param {token} token the token clicked on in the search modal
    * @function
    */
-  handleClickList = token =>
-  {
+  handleClickList = token => {
     this.handleDeleteModal();
     this.props.history.push("/taggingTool/tag/single/" + token.index);
   };
@@ -392,21 +385,18 @@ class SingleWord extends Component
    * to the next multi token in the list ranked by tf-idf
    * @function
    */
-  handleContinue = () =>
-  {
-    if(this.props.singleTokens[ parseInt(this.props.match.params.id) ].classification.color === ""){
-      this.setState({showNoClassificationModal:true});
+  handleContinue = () => {
+    if (this.props.singleTokens[parseInt(this.props.match.params.id)].classification.color === "") {
+      this.setState({ showNoClassificationModal: true });
       return null;
-    }else{
-      this.setState({showNoClassificationModal:false});
+    } else {
+      this.setState({ showNoClassificationModal: false });
     }
-    var tokens = [ ...this.props.singleTokens ];
+    var tokens = [...this.props.singleTokens];
     var index = tokens.findIndex(element => element.classification.color === "");
-    if (index === -1)
-    {
+    if (index === -1) {
       this.props.history.push("/taggingTool/tag/multi");
-    } else
-    {
+    } else {
       this.props.history.push("/taggingTool/tag/single/" + index);
     }
   };
@@ -420,7 +410,7 @@ class SingleWord extends Component
    * @function
    */
   showMoreOrLess = () => {
-    this.setState({expanded: !this.state.expanded});
+    this.setState({ expanded: !this.state.expanded });
   }
 
   /**
@@ -429,32 +419,29 @@ class SingleWord extends Component
    * @function
    */
   handleHideNoClassificationAlert = () => {
-    this.setState({showNoClassificationModal: false});
+    this.setState({ showNoClassificationModal: false });
   }
 
-    /**
-   * function to hide modal of search among between single words
-   * @function
-   */
-  handleDeleteModal = () =>
-  {
+  /**
+ * function to hide modal of search among between single words
+ * @function
+ */
+  handleDeleteModal = () => {
     this.setState({ showModal: false });
   };
 
-    /**
-   * function to show the modal of search among all the single words 
-   * @function
-   */
-  handleShowModal = () =>
-  {
+  /**
+ * function to show the modal of search among all the single words 
+ * @function
+ */
+  handleShowModal = () => {
     this.setState({ showModal: true });
   };
 
   /**
    * function to hide the alert message when no single tokens
    */
-  handleDelete = () =>
-  {
+  handleDelete = () => {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
@@ -465,14 +452,13 @@ class SingleWord extends Component
    * @param {event} event the event generated when typing in the alias form field
    * @function
    */
-  updateValue = event =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
+  updateValue = event => {
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
     token.alias = event.target.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
 
@@ -481,17 +467,16 @@ class SingleWord extends Component
    * @param {classificationTag} classificationTag The classification of the single word
    * @function
    */
-  handleAddClassification = classificationTag =>
-  {
+  handleAddClassification = classificationTag => {
     //classificationTag.style = { borderColor: "black" };
-    var tokens = [ ...this.props.singleTokens ];
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
     token.classification.color = classificationTag.color;
     token.classification.label = classificationTag.shortkey;
     token.classification.value = classificationTag.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
 
@@ -499,14 +484,13 @@ class SingleWord extends Component
    * function to toggle the text area of the note of the current single word token
    * @function
    */
-  handleToggle = () =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
+  handleToggle = () => {
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
     token.note.showNote = !token.note.showNote;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
 
@@ -515,14 +499,13 @@ class SingleWord extends Component
    * @param {event} event event generated automatically when typing in the typing area
    * @function
    */
-  handleChangeNote = event =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
+  handleChangeNote = event => {
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
     token.note.value = event.target.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
   handleAddNote = () => { };
@@ -533,24 +516,21 @@ class SingleWord extends Component
    * @param {token} synonym the synonym to remove 
    * @function
    */
-  handleDeleteSynonym = synonym =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
+  handleDeleteSynonym = synonym => {
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
-    var selectedSynonyms = token.selectedSynonyms.filter(element =>
-    {
+    var selectedSynonyms = token.selectedSynonyms.filter(element => {
       return element.value !== synonym.value;
     });
     var synonyms = this.computeSynonyms(token.label);
-    var synonymToBeAdded = synonyms.filter(element =>
-    {
+    var synonymToBeAdded = synonyms.filter(element => {
       return element.label === synonym.value;
-    })[ 0 ];
+    })[0];
     token.synonyms.push(synonymToBeAdded);
     token.selectedSynonyms = selectedSynonyms;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
   };
 
@@ -559,24 +539,20 @@ class SingleWord extends Component
    * @param {token} synonym the synonym to add 
    * @function
    */
-  handleSelectSynonym = synonym =>
-  {
-    var tokens = [ ...this.props.singleTokens ];
+  handleSelectSynonym = synonym => {
+    var tokens = [...this.props.singleTokens];
     var token = {
-      ...this.props.singleTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.singleTokens[parseInt(this.props.match.params.id)]
     };
-    var found = token.selectedSynonyms.find(element =>
-    {
+    var found = token.selectedSynonyms.find(element => {
       return element.value === synonym.value;
     });
-    if (!found)
-    {
+    if (!found) {
       token.selectedSynonyms.push(synonym);
-      token.synonyms = token.synonyms.filter(element =>
-      {
+      token.synonyms = token.synonyms.filter(element => {
         return element.label !== synonym.value;
       });
-      tokens[ parseInt(this.props.match.params.id) ] = token;
+      tokens[parseInt(this.props.match.params.id)] = token;
       this.props.onUpdateSingleTokens(tokens);
     }
   };
@@ -586,23 +562,22 @@ class SingleWord extends Component
    * current single Token
    * @function
    */
-refreshSynonyms = () => 
-{
-  this.props.singleTokens.forEach(element =>
-    {
-      element.synonyms.forEach((synonym)=> {
+  refreshSynonyms = () => {
+    const indexOfHeaderToTag = this.props.headers.headers.findIndex((header) => header.checked);
+    this.props.singleTokens.forEach(element => {
+      element.synonyms.forEach((synonym) => {
         synonym.tooltip = [];
-        this.props.ex.output.filter((outputLine)=>{
-          var tmpInputDataParsed = outputLine[0].toLowerCase().split(" ");
-          tmpInputDataParsed.map( (token)=>{
-            if(token === (synonym.label.toLowerCase()) && synonym.tooltip.length<3){
-              synonym.tooltip.push(outputLine[0]);
+        this.props.ex.output.filter((outputLine) => {
+          var tmpInputDataParsed = outputLine[indexOfHeaderToTag].toLowerCase().split(" ");
+          tmpInputDataParsed.map((token) => {
+            if (token === (synonym.label.toLowerCase()) && synonym.tooltip.length < 3) {
+              synonym.tooltip.push(outputLine[indexOfHeaderToTag]);
             }
             return true;
           });
           return true;
         })
-      });      
+      });
     });
   }
 
@@ -610,16 +585,13 @@ refreshSynonyms = () =>
    * function to set the synonyms of every single word token 
    * @function 
    */
-  computeSynonyms = label =>
-  {
+  computeSynonyms = label => {
     var synonyms = [];
-    this.props.singleTokens.forEach(element =>
-    {
+    this.props.singleTokens.forEach(element => {
       if (
         fuzz.ratio(label, element.label) > this.props.pattern &&
         element.label !== label
-      )
-      {
+      ) {
         element.tooltip = ["synonym appeared there"];
         synonyms.push(element);
       }
@@ -633,28 +605,25 @@ refreshSynonyms = () =>
    * current single word and another single word token
    * @function
    */
-  initTokenWithSynonymAlias(index)
-  {
-    var tokens = [ ...this.props.singleTokens ];
-    var token = { ...this.props.singleTokens[ index ] };
+  initTokenWithSynonymAlias(index) {
+    var tokens = [...this.props.singleTokens];
+    var token = { ...this.props.singleTokens[index] };
     // if the token doesn't have synonyms and it doesn't have any selected synonyms
-    if (token.synonyms.length < 1 && token.selectedSynonyms.length === 0)
-    {
+    if (token.synonyms.length < 1 && token.selectedSynonyms.length === 0) {
       var synonyms = this.computeSynonyms(token.label);
       token.synonyms = synonyms;
-      tokens[ index ] = token;
+      tokens[index] = token;
     }
-    if (!token.alias)
-    {
+    if (!token.alias) {
       token.alias = token.label;
     }
     this.props.multiTokens.forEach((multiToken) => {
       var multiTokenSplitted = multiToken.label.split(" ");
-      if(token.label === multiTokenSplitted[0] || token.label === multiTokenSplitted[1]){
+      if (token.label === multiTokenSplitted[0] || token.label === multiTokenSplitted[1]) {
         token.appearsIn.push(JSON.parse(JSON.stringify(multiToken)));
       }
     });
-    this.setState({currentMultiTokens: token.appearsIn.slice(0,3)});
+    this.setState({ currentMultiTokens: token.appearsIn.slice(0, 3) });
     this.props.onUpdateSingleTokens(tokens);
   }
 }
@@ -669,6 +638,7 @@ const mapStateToProps = createSelector(
   state => state.dragAndDrops,
   state => state.export,
   state => state.multiTokens,
+  state => state.headers,
   (
     singleTokens,
     classification,
@@ -679,7 +649,8 @@ const mapStateToProps = createSelector(
     report,
     dragAndDrops,
     ex,
-    multiTokens
+    multiTokens,
+    headers
   ) => ({
     singleTokens,
     classification,
@@ -690,7 +661,8 @@ const mapStateToProps = createSelector(
     report,
     dragAndDrops,
     ex,
-    multiTokens
+    multiTokens,
+    headers
   })
 );
 const mapActionsToProps = {

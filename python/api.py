@@ -8,6 +8,7 @@ import json
 import pandas as pd
 import numpy as np
 import base64
+from collections import Counter
 
 
 class Api(object):
@@ -18,6 +19,7 @@ class Api(object):
     raw_text = pd.Series(0, [])
     vocab_columns = ['tokens', 'NE', 'alias', 'notes', 'score']
     classification_columns = ['I', 'P', 'PI', 'S', 'SI', 'U', 'X', 'NA']
+    dashboardHeaders = {}
 
     def classification(self):
         return kex.nestorParams
@@ -115,8 +117,9 @@ class Api(object):
         try:
             d = pd.DataFrame(np.empty((self.__class__.df.shape[0], len(
                 self.__class__.classification_columns)), dtype=np.str), columns=self.__class__.classification_columns)
+            data = json.loads(self.headers())
             self.__class__.output_df = pd.concat(
-                [self.__class__.df[headers], d], axis=1, sort=False)
+                [self.__class__.df[data['headers']], d], axis=1, sort=False)
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -125,6 +128,8 @@ class Api(object):
     def single_tokens(self, headers):
         try:
             # 1. Create the output dataframe
+            print(headers)
+            sys.stdout.flush()
             self.create_output(headers)
             # 2. Compute single tokens
             nlp_select = kex.NLPSelect(columns=headers)
@@ -255,6 +260,61 @@ class Api(object):
     def export(self):
         return list(self.__class__.output_df.columns), self.__class__.output_df.to_json(orient='values', index=True), list(self.__class__.vocab_single_df.columns), self.__class__.vocab_single_df.to_json(orient='values'), list(self.__class__.vocab_multi_df.columns), self.__class__.vocab_multi_df.to_json(orient='values')
 
+    def updateDashboardHeaders(self, dashboardHeader):
+        try:
+            self.__class__.dashboardHeaders = dashboardHeader
+            return json.dumps(self.__class__.dashboardHeaders)
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+
+    def getAssetsStats(self):
+        try:
+            d = []
+            for key in self.__class__.dashboardHeaders['machineName']:
+                for index, row in self.__class__.output_df.iterrows():
+                    if(row['P'] > ''):
+                        d.append(row[key])
+            tmp = Counter(d)
+            return [list(i) for i in tmp.items()]
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
+
+    def getAssetSelected(self, headers, assetName):
+        try:
+            # todo : les tokens retournes
+            # concernent pas forcement lasset selectionne
+            # implementer le save des nouvelles props
+            data = {}
+            problems = []
+            items = []
+            solutions = []
+            for index, row in self.__class__.output_df.iterrows():
+                for key in self.__class__.dashboardHeaders['machineName']:
+                    if(row[key] == assetName):
+                        if(row['I'] > ''):
+                            newTokens = row['I'].split(',')
+                            for word in newTokens:
+                                items.append(word)
+                        elif(row['S'] > ''):
+                            newTokens = row['S'].split(',')
+                            for word in newTokens:
+                                solutions.append(word)
+                        elif(row['P'] > ''):
+                            newTokens = row['P'].split(',')
+                            for word in newTokens:
+                                problems.append(word)
+            data['problems'] = [list(i) for i in Counter(problems).items()]
+            data['solutions'] = [list(i) for i in Counter(solutions).items()]
+            data['items'] = [list(i) for i in Counter(items).items()]
+            return json.dumps(data)
+        except Exception as e:
+            print(e)
+            sys.stdout.flush()
+            return e
 
     def clearAllAttributes(self):
         try:
@@ -267,6 +327,7 @@ class Api(object):
             print(e)
             sys.stdout.flush()
             return e
+
 
 def main():
 

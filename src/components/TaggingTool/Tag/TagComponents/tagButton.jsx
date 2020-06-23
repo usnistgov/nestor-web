@@ -7,35 +7,33 @@ import "./tag.css";
  * 
  * @component
  */
-class TagButton extends Component
-{
+class TagButton extends Component {
 
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <button
         type="button"
         className="btn"
-        style={ this.props.style }
-        onClick={ () => this.props.onClick(this.props) }
+        style={this.props.style}
+        onClick={() => this.props.onClick(this.props)}
       >
-        { this.props.value }
-        { this.props.showTooltipIcon && (
+        {this.props.value}
+        {this.props.showTooltipIcon && (
           <OverlayTrigger
             placement="right"
-            overlay={ this.tooltip(this.props.tooltip) }
+            overlay={this.tooltip(this.props.tooltip)}
           >
             <i className="far fa-question-circle" />
           </OverlayTrigger>
-        ) }
-        { this.props.showCloseIcon && (
+        )}
+        {this.props.showCloseIcon && (
           <i
             className="fa fa-times-circle"
           />
-        ) }
+        )}
       </button>
     );
   }
@@ -45,11 +43,11 @@ class TagButton extends Component
    * @param {string} data The text you want to write in the tooltip of a title
    * @function
    */
-   tooltip = data => (
+  tooltip = data => (
     <Tooltip id="tooltip" >
-      { data.map((obj, i) => (
-        <strong key={ i } >{ obj }<br /></strong>
-      )) }
+      {data.map((obj, i) => (
+        <strong key={i} >{obj}<br /></strong>
+      ))}
     </Tooltip>
   );
 }

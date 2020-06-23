@@ -16,8 +16,7 @@ import { createSelector } from "reselect";
  * 
  * @component
  */
-class Headers extends Component
-{
+class Headers extends Component {
 
   /**
    * A react lifecycle method called when the component did mount.
@@ -25,25 +24,20 @@ class Headers extends Component
    * and request the python script to get the headers to display
    * or update them if props already have headers
    */
-  componentDidMount()
-  {
+  componentDidMount() {
     var alert = {
       showAlert: false,
       alertHeader: text.taggingTool.alerts.upload.header,
       alertMessage: text.taggingTool.alerts.upload.message
     };
     this.props.onUpdateAlert(alert);
-    if (this.props.dragAndDrops[0].file.name)
-    {
-      if (this.props.headers.headers.length)
-      {
-        const emptyColumns = [ ...this.props.headers.emptyColumns ];
+    if (this.props.dragAndDrops[0].file.name) {
+      if (this.props.headers.headers.length) {
+        const emptyColumns = [...this.props.headers.emptyColumns];
         this.props.onUpdateHeaders(this.props.headers.headers, emptyColumns);
-      } else if (this.props.dragAndDrops[ 0 ].file)
-      {
+      } else if (this.props.dragAndDrops[0].file) {
         this.props.onHeadersRequest();
-      } else
-      {
+      } else {
         let alert = {
           showAlert: true,
           alertHeader: text.taggingTool.alerts.upload.header,
@@ -51,8 +45,7 @@ class Headers extends Component
         };
         this.props.onUpdateAlert(alert);
       }
-    } else
-    {
+    } else {
       let alert = {
         showAlert: true,
         alertHeader: text.taggingTool.alerts.upload.header,
@@ -62,57 +55,56 @@ class Headers extends Component
     }
   }
 
-  
+
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <React.Fragment>
-        { this.props.alert.showAlert && (
+        {this.props.alert.showAlert && (
           <Alert
-            alertHeader={ this.props.alert.alertHeader }
-            alertMessage={ this.props.alert.alertMessage }
+            alertHeader={this.props.alert.alertHeader}
+            alertMessage={this.props.alert.alertMessage}
             styleColor="alert alert-danger"
-            onDelete={ this.handleDelete }
+            onDelete={this.handleDelete}
           />
-        ) }
+        )}
         <Title
-          title={ text.taggingTool.settings.headers.title }
-          informationMessage={ text.taggingTool.settings.headers.titleInfo }
+          title={text.taggingTool.settings.headers.title}
+          informationMessage={text.taggingTool.settings.headers.titleInfo}
         />
         <div className="setting-content">
-          { this.props.headers.headers.map((header, i) => (
+          {this.props.headers.headers.map((header, i) => (
             <Header
-              key={ i }
-              header={ header }
-              tooltip={ header.tooltip }
-              label={ header.label }
-              onCheck={ this.handleCheck }
-              disable={ false }
+              key={i}
+              header={header}
+              tooltip={header.tooltip}
+              label={header.label}
+              onCheck={this.handleCheck}
+              disable={false}
             />
-          )) }
-          { this.props.headers.emptyColumns.length > 0 && (
+          ))}
+          {this.props.headers.emptyColumns.length > 0 && (
             <div>
               <div className="subtitle-headers">
-                { text.taggingTool.settings.headers.subtitle }
+                {text.taggingTool.settings.headers.subtitle}
               </div>
-              { this.props.headers.emptyColumns.map((header, i) => (
+              {this.props.headers.emptyColumns.map((header, i) => (
                 <Header
-                  key={ i }
-                  header={ header }
-                  tooltip={ [ text.taggingTool.settings.headers.emptyTooltip ] }
-                  label={ header }
-                  onCheck={ this.handleCheck }
-                  disable={ true }
+                  key={i}
+                  header={header}
+                  tooltip={[text.taggingTool.settings.headers.emptyTooltip]}
+                  label={header}
+                  onCheck={this.handleCheck}
+                  disable={true}
                 />
-              )) }
+              ))}
             </div>
-          ) }
+          )}
         </div>
         <Button
-          onClick={ this.handleContinue }
+          onClick={this.handleContinue}
           class="btn btn-primary ctn"
           label="Continue"
         />
@@ -124,8 +116,7 @@ class Headers extends Component
    * function to hide the alert.
    * @function
    */
-  handleDelete = () =>
-  {
+  handleDelete = () => {
     const alert = { ...this.props.alert };
     alert.showAlert = false;
     this.props.onUpdateAlert(alert);
@@ -136,24 +127,20 @@ class Headers extends Component
    * after a few checks
    * @function
    */
-  handleContinue = () =>
-  {
-    const headers = [ ...this.props.headers.headers ];
+  handleContinue = () => {
+    const headers = [...this.props.headers.headers];
     var selectedHeaders = [];
-    selectedHeaders = headers.filter(header =>
-    {
+    selectedHeaders = headers.filter(header => {
       return header.checked === true;
     });
-    if (!selectedHeaders.length && !this.props.alert.showAlert)
-    {
+    if (!selectedHeaders.length && !this.props.alert.showAlert) {
       var alert = {
         showAlert: true,
         alertHeader: text.taggingTool.alerts.headers.header,
         alertMessage: text.taggingTool.alerts.headers.message
       };
       this.props.onUpdateAlert(alert);
-    } else if (selectedHeaders.length)
-    {
+    } else if (selectedHeaders.length) {
       this.props.history.push("/taggingTool/settings/classification");
     }
   };
@@ -164,21 +151,17 @@ class Headers extends Component
    * @param {header} header the header selected 
    * @function
    */
-  handleCheck = header =>
-  {
-    if (typeof header === "object")
-    {
-      const headers = [ ...this.props.headers.headers ];
-      const emptyColumns = [ ...this.props.headers.emptyColumns ];
+  handleCheck = header => {
+    if (typeof header === "object") {
+      const headers = [...this.props.headers.headers];
+      const emptyColumns = [...this.props.headers.emptyColumns];
       const index = headers.indexOf(header);
-      headers[ index ] = { ...header };
+      headers[index] = { ...header };
 
-      if (headers[ index ].checked)
-      {
-        headers[ index ].checked = false;
-      } else
-      {
-        headers[ index ].checked = true;
+      if (headers[index].checked) {
+        headers[index].checked = false;
+      } else {
+        headers[index].checked = true;
       }
       this.props.onUpdateHeaders(headers, emptyColumns);
     }

@@ -70,23 +70,28 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard-container">
-        {this.state.assetsStats && <BarChart
-          width={500}
-          height={300}
-          data={this.state.assetsStats}
-          margin={{
-            top: 5, right: 30, left: 20, bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="asset">
-            <Label value="Assets" offset={0} position="insideBottom" />
-          </XAxis>
-          <YAxis>
-            <Label angle={-90} value="Number of problems" offset={0} position="insideBottomLeft" />
-          </YAxis>
-          <Tooltip />
-          <defs>
+        {this.state.assetsStats &&
+          <div>
+            Asset : {this.state.assetSelected.label}<br />
+          Problems related : {this.state.assetSelected.problemsRelated}<br />
+
+            <BarChart
+              width={500}
+              height={300}
+              data={this.state.assetsStats}
+              margin={{
+                top: 5, right: 30, left: 20, bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="asset">
+                <Label value="Assets" offset={0} position="insideBottom" />
+              </XAxis>
+              <YAxis width={70}>
+                <Label angle={-90} value="Number of problems" offset={20} position="insideBottomLeft" />
+              </YAxis>
+              <Tooltip />
+              {/* <defs>
             <linearGradient id="problemsRelated" x1="0%" y1="100%" x2="0%" y2="0%">
               <stop offset="0%" stopColor="#540d6e" />
               <stop offset="25%" stopColor="#c14bbb" />
@@ -94,21 +99,20 @@ class Dashboard extends Component {
               <stop offset="75%" stopColor="#ff8317" />
               <stop offset="100%" stopColor="#ffdd21" />
             </linearGradient>
-          </defs>
-          {/* <Area onClick={this.onBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
+          </defs> */}
+              {/* <Area onClick={this.onBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
             stroke="url(#problemsRelated)" fill="url(#problemsRelated)"
           /> */}
-          <Bar onClick={this.onBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
-            fill="red"
-          />
-        </BarChart>}
+              <Bar onClick={this.onBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
+                fill="red"
+              />
+            </BarChart>
+          </div>}
         <div>
-          Asset : {this.state.assetSelected.label}<br />
-          Problems related : {this.state.assetSelected.problemsRelated}<br />
           <Tabs variant="tabs" >
             <Tab eventKey="problems" title="problems">
               <div>
-                <BarChart width={400} height={300} data={this.state.assetSelected.mostFoundProblems}>
+                <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundProblems}>
                   {/* <Bar dataKey="value" startAngle={180} endAngle={0} data={this.state.assetSelected.mostFoundProblems} cx={200} cy={200} outerRadius={80} label>
                     {
                       this.state.assetSelected.mostFoundProblems.map((entry, index) => <Cell key={index} fill={this.state.colors[index]} />)
@@ -118,7 +122,7 @@ class Dashboard extends Component {
                   <XAxis dataKey="token">
 
                   </XAxis>
-                  <YAxis>
+                  <YAxis width={70}>
                     <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
                   </YAxis>
                   <Tooltip />
@@ -131,12 +135,12 @@ class Dashboard extends Component {
             </Tab>
             <Tab eventKey="items" title="items">
               <div>
-                <BarChart width={400} height={300} data={this.state.assetSelected.mostFoundItems}>
+                <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundItems}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="token">
                   </XAxis>
-                  <YAxis>
-                    <Label angle={-90} value="scores" offset={0} position="insideBottomLeft" />
+                  <YAxis width={70}>
+                    <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
                   </YAxis>
                   <Tooltip />
                   <Bar name="scores" dataKey="value"
@@ -148,12 +152,12 @@ class Dashboard extends Component {
             </Tab>
             <Tab eventKey="solutions" title="solutions">
               <div>
-                <BarChart width={400} height={300} data={this.state.assetSelected.mostFoundSolutions}>
+                <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundSolutions}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="token">
                   </XAxis>
-                  <YAxis>
-                    <Label angle={-90} value="scores" offset={0} position="insideBottomLeft" />
+                  <YAxis width={70}>
+                    <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
                   </YAxis>
                   <Tooltip />
                   <Bar name="scores" dataKey="value"

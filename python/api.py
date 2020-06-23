@@ -307,9 +307,12 @@ class Api(object):
                             newTokens = row['P'].split(',')
                             for word in newTokens:
                                 problems.append(word)
-            data['problems'] = [list(i) for i in Counter(problems).items()]
-            data['solutions'] = [list(i) for i in Counter(solutions).items()]
-            data['items'] = [list(i) for i in Counter(items).items()]
+            data['problems'] = [list(i) for i in Counter(
+                problems).most_common(5)]
+            data['solutions'] = [list(i) for i in Counter(
+                solutions).most_common(5)]
+            data['items'] = [list(i)
+                             for i in Counter(items).most_common(5)]
             return json.dumps(data)
         except Exception as e:
             print(e)

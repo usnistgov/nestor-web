@@ -289,8 +289,6 @@ class Api(object):
             problems = []
             items = []
             solutions = []
-            print(self.__class__.dashboardHeaders['machineName'])
-            sys.stdout.flush()
             for index, row in self.__class__.output_df.iterrows():
                 for key in self.__class__.dashboardHeaders['machineName']:
                     if(row[key] == assetName):

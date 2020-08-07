@@ -216,11 +216,10 @@ class HomeComponent extends Component {
         tokensNumber.value = parseInt(currentProject.tokensNumber.value);
         tokensNumber.maxValue = currentProject.tokensNumber.maxValue;
         let selectedHeadersLabels = [];
-        console.log(result.dashboard);
-        console.log(result.dashboardSettings);
         const dashboard = this.props.dashboard;
         dashboard.assetsStats = currentProject.dashboard.assetsStats;
         dashboard.assetSelected = currentProject.dashboard.assetSelected;
+        this.prepareSettingsToUpdate(currentProject.dashboardSettings);
         this.props.onDisplayDashboardHeaders(currentProject.dashboardSettings);
         headers.headers.filter((header) => {
           if (header.checked) {
@@ -317,7 +316,8 @@ const mapActionsToProps = {
   onUpdateVocab: updateVocab,
   onClearAllAttributes: clearAllAttributes,
   onSetTokens: setTokens,
-  onDisplayDashboardHeaders: displayDashboardHeaders
+  onDisplayDashboardHeaders: displayDashboardHeaders,
+  onUpdateDashboardHeaders: updateDashboardHeaders
 };
 export default connect(
   mapStateToProps,

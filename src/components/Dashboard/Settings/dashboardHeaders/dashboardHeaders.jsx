@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import Table from "react-bootstrap/Table"
 import Form from 'react-bootstrap/Form'
-import Title from "../../../CommonComponents/Title/title"
 import { updateDashboardHeaders, getDashboardHeaders } from "./dashboardHeadersAction"
 import Button from "../../../CommonComponents/Button/button"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "./dashboardHeaders.css"
 import Alert from "../../../CommonComponents/Alert/alert";
+import { Card } from "react-bootstrap";
 
 class dashboardHeaders extends Component {
 
@@ -30,8 +30,6 @@ class dashboardHeaders extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.state.dashboardSettings.length !== this.props.dashboardSettings.length) {
-            console.log(this.state.dashboardSettings);
-            console.log(this.props.dashboardSettings);
             this.setState({ dashboardSettings: this.props.dashboardSettings });
         }
     }
@@ -42,52 +40,56 @@ class dashboardHeaders extends Component {
             <React.Fragment>
                 {this.props.dashboardSettings.length > 1 ?
                     <div>
-                        <div>
-                            <Title
-                                title="Please map the headers of your data to the following columns below :"
-                                informationMessage="This mapping will help us build an accurate dashboard tool"
-                            />
-                            <Table hover responsive>
-                                <thead>
-                                    <tr>
-                                        {this.state.tableHeaders.map((header, i) => (
-                                            <th key={i}>{header}</th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.props.dashboardSettings.map((setting, i) => (
-                                        <tr key={i}>
-                                            <td>
-                                                <OverlayTrigger
-                                                    placement="right"
-                                                    delay={{ show: 250, hide: 400 }}
-                                                    overlay={this.renderTooltip(setting.tooltip)}>
-                                                    <div className="dataHeader">
-                                                        {setting.rowLabel}
-                                                    </div>
-                                                </OverlayTrigger>
-                                            </td>
-                                            {setting.checkboxes && setting.checkboxes.map((checkbox, j) => (
-                                                <td key={j}>
-                                                    {this.state.dashboardSettings[i] &&
-                                                        this.state.dashboardSettings[i].checkboxes[j] &&
-                                                        setting.checkboxes[j] && <Form.Check
-                                                            name={i}
-                                                            custom
-                                                            type="radio"
-                                                            label=""
-                                                            id={checkbox.label + " " + setting.rowLabel}
-                                                            onChange={() => this.handleChange(i, j)}
-                                                            checked={this.state.dashboardSettings[i].checkboxes[j].checked}
-                                                        />}
-                                                </td>
+                        <Card className="table-container">
+                            <Card.Header as="h5">
+                                Please map the headers of your data to the following columns below :
+                            </Card.Header>
+                            <Card.Body>
+                                <div>
+                                    <Table hover bordered striped responsive>
+                                        <thead>
+                                            <tr>
+                                                {this.state.tableHeaders.map((header, i) => (
+                                                    <th key={i}>{header}</th>
+                                                ))}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.props.dashboardSettings.map((setting, i) => (
+                                                <tr key={i}>
+                                                    <td>
+                                                        <OverlayTrigger
+                                                            placement="right"
+                                                            delay={{ show: 250, hide: 400 }}
+                                                            overlay={this.renderTooltip(setting.tooltip)}>
+                                                            <div className="dataHeader">
+                                                                {setting.rowLabel}
+                                                            </div>
+                                                        </OverlayTrigger>
+                                                    </td>
+                                                    {setting.checkboxes && setting.checkboxes.map((checkbox, j) => (
+                                                        <td key={j}>
+                                                            {this.state.dashboardSettings[i] &&
+                                                                this.state.dashboardSettings[i].checkboxes[j] &&
+                                                                setting.checkboxes[j] && <Form.Check
+                                                                    name={i}
+                                                                    custom
+                                                                    type="radio"
+                                                                    label=""
+                                                                    id={checkbox.label + " " + setting.rowLabel}
+                                                                    onChange={() => this.handleChange(i, j)}
+                                                                    checked={this.state.dashboardSettings[i].checkboxes[j].checked}
+                                                                />}
+                                                        </td>
+                                                    ))}
+                                                </tr>
                                             ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        </div>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </Card.Body>
+                        </Card>
+
                         <Button
                             onClick={this.handleContinue}
                             class="btn btn-primary ctn"
@@ -158,7 +160,6 @@ class dashboardHeaders extends Component {
     }
 
     handleContinue = () => {
-        console.log(this.props);
         this.props.history.push("/dashboard/vizualisation");
     }
 }

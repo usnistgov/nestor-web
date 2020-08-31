@@ -92,7 +92,7 @@ class NavBar extends Component {
    */
   render() {
     return (<div>
-      <Navbar bg="light" variant="light">
+      <Navbar bg="light" variant="light" className="navbar-shadow">
         <Navbar.Brand>
           <img src={logo} width="40" height="40" alt="logo" />
         </Navbar.Brand>
@@ -253,8 +253,6 @@ class NavBar extends Component {
       window.db = new PouchDB("testdatabase");
       const projectId = this.state.customProjectName;
       const dashboard = this.props.dashboard;
-      console.log(this.props.dashboard);
-      console.log(this.props.dashboardSettings);
       const dashboardSettings = this.props.dashboardSettings;
       if (dragAndDrops[0].file.path) {
         Papa.parse(dragAndDrops[0].file, {

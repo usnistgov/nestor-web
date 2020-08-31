@@ -1,5 +1,6 @@
 export const SET_ASSETS_STATS = "dashboard:setAssetsStats";
 export const SET_SELECTED_ASSET = "dashboard:setSelectedAsset";
+export const SET_SELECTED_PROBLEM = "dashboard:setProblemSelected";
 
 export function getAssetsStats(oldAssetSelected) {
     return dispatch => {
@@ -47,7 +48,7 @@ export function getAssetSelected(oldAssetsStats, headers, assetName, problemsRel
         });
     }
 }
-function setAssetSelected(oldAssetsStats, assetName, problemsRelated, mostFoundWords) {
+export function setAssetSelected(oldAssetsStats, assetName, problemsRelated, mostFoundWords) {
     var mostFoundItems = [];
     var mostFoundProblems = [];
     var mostFoundSolutions = [];

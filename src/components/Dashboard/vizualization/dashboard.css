@@ -1,3 +1,20 @@
 .alert-section{
     align-self: flex-start;
 }
+
+.dashboard-flexbox {
+    display: flex;
+    padding-top:10px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.chart-container {
+    background-color: #fcfcfc;
+    margin-top:20px !important;
+    width:45%;
+}
+
+.tab-content{
+    padding-top:20px;
+}

@@ -4,9 +4,9 @@ import { getAssetSelected, getAssetsStats } from "./dashboardAction";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
 import {
-  BarChart, Bar, Label, XAxis, YAxis, CartesianGrid, Tooltip
+  BarChart, Bar, Label, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Card } from "react-bootstrap";
 import Alert from "../../CommonComponents/Alert/alert";
 
 
@@ -40,7 +40,6 @@ class Dashboard extends Component {
    * It loads the stats of the assets
    */
   componentDidMount() {
-    console.log(this.props.dashboard);
     if (this.props.dashboard.assetsStats.length === 0) {
       this.props.onGetAssetsStats(this.props.dashboard.assetSelected);
     }
@@ -73,88 +72,105 @@ class Dashboard extends Component {
    */
   render() {
     return (
-      <div className="dashboard-container">
+      <div>
         {this.props.dashboard.assetsStats.length > 1 ?
-          <div className="dashboard-container">
-            {this.state.assetsStats &&
-              <div >
-                Asset : {this.state.assetSelected.label}<br />
-            Problems related : {this.state.assetSelected.problemsRelated}<br />
-                <BarChart
-                  width={500}
-                  height={300}
-                  data={this.state.assetsStats}
-                  margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="asset">
-                    <Label value="Assets" offset={0} position="insideBottom" />
-                  </XAxis>
-                  <YAxis width={70}>
-                    <Label angle={-90} value="Number of problems" offset={20} position="insideBottomLeft" />
-                  </YAxis>
-                  <Tooltip />
-                  <Bar onClick={this.onBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
-                    fill="red"
-                  />
-                </BarChart>
-              </div>}
-            <div>
-              <Tabs variant="tabs" >
-                <Tab eventKey="problems" title="problems">
-                  <div>
-                    <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundProblems}>
+          <div>
+            <div>This dashboard was created to show some vizualisations and statistics about the tokens you just tagged on the Tagging Tool section. You can tag other words and then come back to this dashboard.
+            </div>
+            <div className="dashboard-flexbox">
+              <Card className="chart-container">
+                <Card.Header as="h5">Number of related problems by assets</Card.Header>
+                <Card.Body>
+                  <ResponsiveContainer height={400}>
+                    <BarChart
+                      data={this.state.assetsStats}
+                      margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                      }}>
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="token">
+                      <XAxis dataKey="asset">
                       </XAxis>
-                      <YAxis width={70}>
-                        <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
+                      <YAxis>
                       </YAxis>
                       <Tooltip />
-                      <Bar name="scores" dataKey="value"
-                        fill="#00A6FF"
+                      <Bar onClick={this.onAssetBarClick} name="Number of related problems by assets" dataKey="problemsRelated"
+                        fill="red"
                       />
-                      <Tooltip />
                     </BarChart>
-                  </div>
-                </Tab>
-                <Tab eventKey="items" title="items">
+                  </ResponsiveContainer>
+                </Card.Body>
+              </Card>
+              <Card className="chart-container">
+                <Card.Header as="h5">
+                  Most viewed tokens related to asset {this.state.assetSelected.label}
+                </Card.Header>
+                <Card.Body>
                   <div>
-                    <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundItems}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="token">
-                      </XAxis>
-                      <YAxis width={70}>
-                        <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
-                      </YAxis>
-                      <Tooltip />
-                      <Bar name="scores" dataKey="value"
-                        fill="#FFBA5C"
-                      />
-                      <Tooltip />
-                    </BarChart>
+                    <Tabs variant="tabs" >
+                      <Tab eventKey="problems" title="problems">
+                        <div>
+                          <ResponsiveContainer height={300}>
+                            <BarChart data={this.state.assetSelected.mostFoundProblems}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="token">
+                              </XAxis>
+                              <YAxis width={70}>
+                                <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
+                              </YAxis>
+                              <Tooltip />
+                              <Bar onClick={this.onProblemScoreBarClick} name="scores" dataKey="value"
+                                fill="#00A6FF"
+                              />
+                              <Tooltip />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="items" title="items">
+                        <div>
+                          <ResponsiveContainer height={300}>
+                            <BarChart data={this.state.assetSelected.mostFoundItems}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="token">
+                              </XAxis>
+                              <YAxis width={70}>
+                                <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
+                              </YAxis>
+                              <Tooltip />
+                              <Bar onClick={this.onItemScoreBarClick} name="scores" dataKey="value"
+                                fill="#FFBA5C"
+                              />
+                              <Tooltip />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="solutions" title="solutions">
+                        <div>
+                          <ResponsiveContainer height={300}>
+                            <BarChart data={this.state.assetSelected.mostFoundSolutions}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="token">
+                              </XAxis>
+                              <YAxis width={70}>
+                                <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
+                              </YAxis>
+                              <Tooltip />
+                              <Bar onClick={this.onSolutionScoreBarClick} name="scores" dataKey="value"
+                                fill="#77D353"
+                              />
+                              <Tooltip />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </Tab>
+                    </Tabs>
                   </div>
-                </Tab>
-                <Tab eventKey="solutions" title="solutions">
-                  <div>
-                    <BarChart width={500} height={300} data={this.state.assetSelected.mostFoundSolutions}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="token">
-                      </XAxis>
-                      <YAxis width={70}>
-                        <Label angle={-90} value="scores" offset={20} position="insideBottomLeft" />
-                      </YAxis>
-                      <Tooltip />
-                      <Bar name="scores" dataKey="value"
-                        fill="#77D353"
-                      />
-                      <Tooltip />
-                    </BarChart>
-                  </div>
-                </Tab>
-              </Tabs>
+                </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">You can change this chart by clicking on the bars at the left</small>
+                </Card.Footer>
+              </Card>
             </div>
           </div>
           :
@@ -167,7 +183,8 @@ class Dashboard extends Component {
       </div>
     );
   }
-  onBarClick = (event) => {
+
+  onAssetBarClick = (event) => {
     const headers = [...this.props.headers.headers];
     var selectedHeadersLabels = [];
     var selectedHeaders = headers.filter(header => {

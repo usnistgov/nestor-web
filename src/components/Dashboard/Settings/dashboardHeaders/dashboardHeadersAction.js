@@ -3,7 +3,6 @@ export const UPDATE_DASHBOARD_HEADERS = "dashboard:updateDashboardHeaders";
 export const INIT_HEADERS = "dashboard:initHeaders";
 
 export function displayDashboardHeaders(headers) {
-    console.log(headers);
     return {
         type: UPDATE_DASHBOARD_HEADERS,
         payload: {
@@ -18,7 +17,6 @@ export function updateDashboardHeaders(headers) {
         client.connect("tcp://127.0.0.1:4242");
 
         client.invoke("updateDashboardHeaders", headers, (error, res) => {
-            console.log(res);
             if (error) {
                 console.log(error);
             }
@@ -28,7 +26,6 @@ export function updateDashboardHeaders(headers) {
 }
 
 export function initHeaders(headersList, tooltipList) {
-    console.log("initHeaders");
     const dashboardSettings = [];
     headersList.forEach((element, index) => {
         if (element) {
@@ -61,7 +58,6 @@ export function initHeaders(headersList, tooltipList) {
 
 export function getDashboardHeaders() {
     return dispatch => {
-        console.log("getDashboArdeaders");
         const zerorpc = window.zero;
         let client = new zerorpc.Client();
         client.connect("tcp://127.0.0.1:4242");

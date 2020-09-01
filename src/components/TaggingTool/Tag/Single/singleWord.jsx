@@ -364,7 +364,7 @@ class SingleWord extends Component {
    * @function
    */
   handleClickOnMultiToken = multiToken => {
-    window.multiTokensHistory.push(document.location.pathname);
+    window.multiTokensHistory.push("/taggingTool/tag/single/" + this.props.singleTokens[parseInt(this.props.match.params.id)].index);
     this.props.history.push("/taggingTool/tag/multi/" + multiToken.index);
   }
 

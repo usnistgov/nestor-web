@@ -18,13 +18,12 @@ import Button from 'react-bootstrap/Button'
  * 
  * @component
  */
-class MultiWord extends Component
-{
+class MultiWord extends Component {
 
   /** 
    * @constructor
    */
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showModal: false,
@@ -37,21 +36,19 @@ class MultiWord extends Component
    * It inits the multi word tokens with the appropriate alias and also
    * get the completeness of the project to update the progress bar
    */
-  componentDidMount()
-  {
+  componentDidMount() {
     // this.props.onExportOutput();
     this.initTokenWithSynonymAlias(this.props.match.params.id);
     this.props.onGetCompleteness();
   }
 
-    /**
-   * A react lifecycle method to determine whether or not the component should update
-   * @param {props} nextProps the new props of the application
-   * @returns true if multi tokens props changed or if the search modal
-   * display has changed
-   */
-  shouldComponentUpdate(nextProps)
-  {
+  /**
+ * A react lifecycle method to determine whether or not the component should update
+ * @param {props} nextProps the new props of the application
+ * @returns true if multi tokens props changed or if the search modal
+ * display has changed
+ */
+  shouldComponentUpdate(nextProps) {
     return nextProps.multiTokens !== this.props.multiTokens ||
       nextProps.match.params.id !== this.props.match.params.id ||
       nextProps.showModal !== this.state.showModal
@@ -59,20 +56,18 @@ class MultiWord extends Component
       : false;
   }
 
-  
-    /**
-   * A react lifecycle method called when the component did update.
-   * Checks whether the props match.id changed and init tokens 
-   * with appropriate alias, get the completeness of the project,
-   * and update the vocab of multi grams.
-   */
-  componentDidUpdate(prevProps)
-  {
-    if (prevProps.match.params.id !== this.props.match.params.id)
-    {
+
+  /**
+ * A react lifecycle method called when the component did update.
+ * Checks whether the props match.id changed and init tokens 
+ * with appropriate alias, get the completeness of the project,
+ * and update the vocab of multi grams.
+ */
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
       this.props.onUpdateVocab(
-        this.props.multiTokens[ prevProps.match.params.id ]
+        this.props.multiTokens[prevProps.match.params.id]
       );
       this.props.onGetCompleteness();
     }
@@ -81,12 +76,11 @@ class MultiWord extends Component
   /**
    * The render function.
    */
-  render()
-  {
+  render() {
     return (
       <div className="tag-container">
-        { this.state.showNoClassificationModal && (
-          <Alert 
+        {this.state.showNoClassificationModal && (
+          <Alert
             alertHeader={text.taggingTool.alerts.tag.noClassificationHeader}
             alertMessage={text.taggingTool.alerts.tag.noClassificationMessage}
             styleColor="alert alert-danger"
@@ -119,10 +113,10 @@ class MultiWord extends Component
                     100
                   ).toFixed(2) + " % Complete"
               }
-              key={ 1 }
+              key={1}
             />
             <br />
-            <h4>{this.props.multiTokens[ parseInt(this.props.match.params.id) ].label}</h4>
+            <h4>{this.props.multiTokens[parseInt(this.props.match.params.id)].label}</h4>
             <div>Alias</div>
             <div className="alias">
               <div>
@@ -131,53 +125,53 @@ class MultiWord extends Component
                   className="form-control"
                   placeholder="Enter alias"
                   value={
-                    this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+                    this.props.multiTokens[parseInt(this.props.match.params.id)]
                       .alias
                   }
-                  onChange={ this.updateValue }
+                  onChange={this.updateValue}
                 />
               </div>
             </div>
             <br />
             <div>Hybrid Classification</div>
             <div className="classification-tags">
-              <br/>
-              { this.props.classification.rules.map((obj, i) => (
+              <br />
+              {this.props.classification.rules.map((obj, i) => (
                 <TagButton
-                  key={ i }
-                  value={ obj.label }
-                  shortkey={ obj.shortkey }
-                  showTooltipIcon={ false }
-                  tooltip={ "" }
-                  color={ obj.color }
-                  style={ { borderColor: obj.color } }
-                  onClick={ this.handleAddClassification }
+                  key={i}
+                  value={obj.label}
+                  shortkey={obj.shortkey}
+                  showTooltipIcon={false}
+                  tooltip={""}
+                  color={obj.color}
+                  style={{ borderColor: obj.color }}
+                  onClick={this.handleAddClassification}
                 />
-              )) }
+              ))}
             </div>
-            <br/>
+            <br />
             <div>Classification</div>
             <div className="classification-tags">
-              <br/>
-              { this.props.classification.types.map((obj, i) => (
+              <br />
+              {this.props.classification.types.map((obj, i) => (
                 <TagButton
-                  key={ i }
-                  value={ obj.label }
-                  shortkey={ obj.shortkey }
-                  showTooltipIcon={ false }
-                  showCloseIcon={ false }
-                  tooltip={ "" }
-                  color={ obj.color }
-                  style={ { borderColor: obj.color } }
-                  onClick={ this.handleAddClassification }
+                  key={i}
+                  value={obj.label}
+                  shortkey={obj.shortkey}
+                  showTooltipIcon={false}
+                  showCloseIcon={false}
+                  tooltip={""}
+                  color={obj.color}
+                  style={{ borderColor: obj.color }}
+                  onClick={this.handleAddClassification}
                 />
-              )) }
+              ))}
             </div>
             <div className="buttons">
-              {window.multiTokensHistory.length > 0 && 
+              {window.multiTokensHistory.length > 0 &&
                 <Button
                   size="sm"
-                  onClick={this.handleBack }  
+                  onClick={this.handleBack}
                   className="back-button"
                   label="Back to Single Word"
                   variant="outline-primary"
@@ -186,81 +180,81 @@ class MultiWord extends Component
                 </Button>}
               <Button
                 size="sm"
-                onClick={ this.handleContinue }
+                onClick={this.handleContinue}
                 variant="primary"
                 label="Continue"
                 className="btn-continue">
-                  Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
+                Continue&nbsp;&nbsp;<i className="fas fa-arrow-right"></i>
               </Button>
             </div>
           </div>
           <div className="token-view">
-          <h4>Summary</h4>
+            <h4>Summary</h4>
             <input
-                  type="text"
-                  className="form-control"
-                  value={
-                    this.props.multiTokens[
-                      parseInt(this.props.match.params.id)
-                    ].alias
-                  }
-                  readOnly
-                />
-            { this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-              .classification.label ? <div
-              className="badge"
-              style={ {
-                borderColor: this.props.multiTokens[
+              type="text"
+              className="form-control"
+              value={
+                this.props.multiTokens[
                   parseInt(this.props.match.params.id)
-                ].classification.color
-              } }
-            >
-              {
-                this.props.multiTokens[ parseInt(this.props.match.params.id) ]
-                  .classification.value
+                ].alias
               }
-            </div> : <div
-                  className="badge-no-classification"
-                >
-                  No classification
+              readOnly
+            />
+            {this.props.multiTokens[parseInt(this.props.match.params.id)]
+              .classification.label ? <div
+                className="badge"
+                style={{
+                  borderColor: this.props.multiTokens[
+                    parseInt(this.props.match.params.id)
+                  ].classification.color
+                }}
+              >
+                {
+                  this.props.multiTokens[parseInt(this.props.match.params.id)]
+                    .classification.value
+                }
+              </div> : <div
+                className="badge-no-classification"
+              >
+                No classification
                 </div>}
-            <br/>
+            <br />
             <div>Composed by</div>
-            { this.props.multiTokens[ parseInt(this.props.match.params.id)].composedWith.map((obj, i) => (
-                <Button
-                  variant="outline-dark"
-                  className="composedwith-button"
-                  key={ i }
-                  onClick={ () => this.handleClickOnSingleToken(obj) }
-                >{obj.label}</Button>
-              )) }
+            {this.props.multiTokens[parseInt(this.props.match.params.id)].composedWith.map((obj, i) => (
+              <Button
+                variant="outline-dark"
+                className="composedwith-button"
+                key={i}
+                onClick={() => this.handleClickOnSingleToken(obj)}
+              >{obj.label}</Button>
+            ))}
             <Note
               showNote={
-                this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+                this.props.multiTokens[parseInt(this.props.match.params.id)]
                   .note.showNote
               }
               value={
-                this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+                this.props.multiTokens[parseInt(this.props.match.params.id)]
                   .note.value
               }
-              onClick={ this.handleToggle }
-              onAdd={ this.handleAddNote }
-              onChangeNote={ this.handleChangeNote }
-              disabled={ false }
-              onEdit={ this.handleEditNote }
+              onClick={this.handleToggle}
+              onAdd={this.handleAddNote}
+              onChangeNote={this.handleChangeNote}
+              disabled={false}
+              onEdit={this.handleEditNote}
             />
           </div>
           <div className="side-bar">
             <i
               className="far fa-window-maximize"
-              onClick={ this.handleShowModal }
+              onClick={this.handleShowModal}
             />
           </div>
           <List
-            showModal={ this.state.showModal }
-            onDelete={ this.handleDeleteModal }
-            onClick={ this.handleClickList }
-            list={ this.props.multiTokens }
+            showModal={this.state.showModal}
+            onDelete={this.handleDeleteModal}
+            onClick={this.handleClickList}
+            list={this.props.multiTokens}
           />
         </div>
       </div>
@@ -275,7 +269,7 @@ class MultiWord extends Component
    */
   handleBack = () => {
     const backToSingleToken = window.multiTokensHistory[window.multiTokensHistory.length - 1];
-    window.multiTokensHistory= [];
+    window.multiTokensHistory = [];
     this.props.history.push(backToSingleToken);
   }
 
@@ -287,7 +281,7 @@ class MultiWord extends Component
    * @function
    */
   handleClickOnSingleToken = token => {
-    window.singleTokenHistory.push(document.location.pathname);
+    window.singleTokenHistory.push("/taggingTool/tag/multi/" + this.props.multiTokens[parseInt(this.props.match.params.id)].index);
     this.props.history.push("/taggingTool/tag/single/" + token.index);
   }
 
@@ -297,8 +291,7 @@ class MultiWord extends Component
    * @param {token} token the token clicked on in the search modal
    * @function
    */
-  handleClickList = token =>
-  {
+  handleClickList = token => {
     this.handleDeleteModal();
     this.props.history.push("/taggingTool/tag/multi/" + token.index);
   };
@@ -309,22 +302,19 @@ class MultiWord extends Component
    * to the next multi token in the list ranked by tf-idf
    * @function
    */
-  handleContinue = () =>
-  {
-    if(this.props.multiTokens[ parseInt(this.props.match.params.id) ].classification.color === ""){
-      this.setState({showNoClassificationModal:true});
+  handleContinue = () => {
+    if (this.props.multiTokens[parseInt(this.props.match.params.id)].classification.color === "") {
+      this.setState({ showNoClassificationModal: true });
       return null;
-    }else{
-      this.setState({showNoClassificationModal:false});
+    } else {
+      this.setState({ showNoClassificationModal: false });
     }
-    var index = [ ...this.props.multiTokens ].findIndex(
+    var index = [...this.props.multiTokens].findIndex(
       element => element.classification.color === ""
     );
-    if (index === -1)
-    {
+    if (index === -1) {
       this.props.history.push("/taggingTool/report");
-    } else
-    {
+    } else {
       this.props.history.push("/taggingTool/tag/multi/" + index);
     }
   };
@@ -335,15 +325,14 @@ class MultiWord extends Component
    * @function
    */
   handleHideNoClassificationAlert = () => {
-    this.setState({showNoClassificationModal: false});
+    this.setState({ showNoClassificationModal: false });
   }
 
   /**
    * function to hide modal of search among between multi words
    * @function
    */
-  handleDeleteModal = () =>
-  {
+  handleDeleteModal = () => {
     this.setState({ showModal: false });
   };
 
@@ -351,8 +340,7 @@ class MultiWord extends Component
    * function to show the modal of search among all the multi words 
    * @function
    */
-  handleShowModal = () =>
-  {
+  handleShowModal = () => {
     this.setState({ showModal: true });
   };
 
@@ -361,14 +349,13 @@ class MultiWord extends Component
    * @param {event} event the event generated when typing in the alias form field
    * @function
    */
-  updateValue = event =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
+  updateValue = event => {
+    var tokens = [...this.props.multiTokens];
     var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.multiTokens[parseInt(this.props.match.params.id)]
     };
     token.alias = event.target.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateMultiTokens(tokens);
   };
 
@@ -377,16 +364,15 @@ class MultiWord extends Component
    * @param {classificationTag} classificationTag The classification of the multi word
    * @function
    */
-  handleAddClassification = classificationTag =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
+  handleAddClassification = classificationTag => {
+    var tokens = [...this.props.multiTokens];
     var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.multiTokens[parseInt(this.props.match.params.id)]
     };
     token.classification.color = classificationTag.color;
     token.classification.label = classificationTag.shortkey;
     token.classification.value = classificationTag.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateMultiTokens(tokens);
   };
 
@@ -394,14 +380,13 @@ class MultiWord extends Component
    * function to toggle the text area of the note of the current multi word
    * @function
    */
-  handleToggle = () =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
+  handleToggle = () => {
+    var tokens = [...this.props.multiTokens];
     var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.multiTokens[parseInt(this.props.match.params.id)]
     };
     token.note.showNote = !token.note.showNote;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateMultiTokens(tokens);
   };
 
@@ -410,14 +395,13 @@ class MultiWord extends Component
    * @param {event} event event generated automatically when typing in the typing area
    * @function
    */
-  handleChangeNote = event =>
-  {
-    var tokens = [ ...this.props.multiTokens ];
+  handleChangeNote = event => {
+    var tokens = [...this.props.multiTokens];
     var token = {
-      ...this.props.multiTokens[ parseInt(this.props.match.params.id) ]
+      ...this.props.multiTokens[parseInt(this.props.match.params.id)]
     };
     token.note.value = event.target.value;
-    tokens[ parseInt(this.props.match.params.id) ] = token;
+    tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateMultiTokens(tokens);
   };
   handleAddNote = () => { };
@@ -429,23 +413,20 @@ class MultiWord extends Component
    * current multi word  
    * @function
    */
-  initTokenWithSynonymAlias(index)
-  {
-    var tokens = [ ...this.props.multiTokens ];
-    var token = { ...this.props.multiTokens[ index ] };
+  initTokenWithSynonymAlias(index) {
+    var tokens = [...this.props.multiTokens];
+    var token = { ...this.props.multiTokens[index] };
 
-    if (token.synonyms.length < 1)
-    {
+    if (token.synonyms.length < 1) {
       // var synonyms = this.computeSynonyms(token.label);
       // token.synonyms = synonyms;
-      tokens[ index ] = token;
+      tokens[index] = token;
     }
-    if (!token.alias)
-    {
+    if (!token.alias) {
       token.alias = token.label;
       var multiTokenSplitted = token.alias.split(" ");
       this.props.singleTokens.forEach((singleToken) => {
-        if(singleToken.label === multiTokenSplitted[0] || singleToken.label === multiTokenSplitted[1]){
+        if (singleToken.label === multiTokenSplitted[0] || singleToken.label === multiTokenSplitted[1]) {
           token.composedWith.push(JSON.parse(JSON.stringify(singleToken)));
         }
       });

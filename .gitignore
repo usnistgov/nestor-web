@@ -40,3 +40,6 @@ nestor-linux-x64
 
 python/__pycache__/
 /docs
+
+documentation/
+docs/

@@ -7,7 +7,8 @@ import {
   BarChart, Bar, Label, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { Tabs, Tab, Card } from "react-bootstrap";
-import Alert from "../../CommonComponents/Alert/alert";
+import Alert from "react-bootstrap/Alert";
+import { updateAlert } from "../../CommonComponents/Alert/alertAction";
 
 
 /**
@@ -40,7 +41,8 @@ class Dashboard extends Component {
    * It loads the stats of the assets
    */
   componentDidMount() {
-    if (this.props.dashboard.assetsStats.length === 0) {
+    if (this.props.dashboard.assetsStats.length === 0 && this.props.singleTokens.length >= 1) {
+      // TODO : pas faire ce call si jamais ya pas de singleTokens 
       this.props.onGetAssetsStats(this.props.dashboard.assetSelected);
     }
     if (this.props.dashboard.assetsStats) {
@@ -75,11 +77,11 @@ class Dashboard extends Component {
       <div>
         {this.props.dashboard.assetsStats.length > 1 ?
           <div>
-            <div>This dashboard was created to show some vizualisations and statistics about the tokens you just tagged on the Tagging Tool section. You can tag other words and then come back to this dashboard.
+            <div>This dashboard was created to show some visualizations and statistics about the tokens you just tagged on the Tagging Tool section. You can tag other words and then come back to this dashboard.
             </div>
             <div className="dashboard-flexbox">
               <Card className="chart-container">
-                <Card.Header as="h5">Number of related problems by assets</Card.Header>
+                <Card.Header as="h5">Number of work orders by assets</Card.Header>
                 <Card.Body>
                   <ResponsiveContainer height={400}>
                     <BarChart
@@ -168,18 +170,19 @@ class Dashboard extends Component {
                   </div>
                 </Card.Body>
                 <Card.Footer>
-                  <small className="text-muted">You can change this chart by clicking on the bars at the left</small>
+                  <small className="text-muted">You can change this chart by clicking on the bars on the left chart</small>
                 </Card.Footer>
               </Card>
             </div>
           </div>
           :
-          <div className="alert-section"><Alert
-            alertHeader="Dashboard not available"
-            alertMessage="no dashboard available as you did not tagged any tokens"
-            styleColor="alert alert-danger"
-            onDelete={this.handleDelete}
-          /></div>}
+          <Alert
+            variant="danger">
+            <Alert.Heading>
+              Dashboard not available
+            </Alert.Heading>
+            No tokens tagged as a problem, please tag at least one problem from the tokens before you can see the charts.
+          </Alert>}
       </div>
     );
   }
@@ -200,14 +203,17 @@ class Dashboard extends Component {
 const mapStateToProps = createSelector(
   state => state.dashboard,
   state => state.headers,
-  (dashboard, headers) => ({
+  state => state.singleTokens,
+  (dashboard, headers, singleTokens) => ({
     dashboard,
-    headers
+    headers,
+    singleTokens
   })
 );
 const mapActionsToProps = {
   onGetAssetsStats: getAssetsStats,
-  onGetAssetSelected: getAssetSelected
+  onGetAssetSelected: getAssetSelected,
+  onUpdateAlert: updateAlert
 };
 export default connect(
   mapStateToProps,

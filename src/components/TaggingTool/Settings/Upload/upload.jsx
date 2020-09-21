@@ -21,11 +21,6 @@ class Upload extends Component {
    * A react lifecycle method called when the component did mount.
    * It initialize the dragAndDrops props   */
   componentDidMount() {
-    window.ipcRenderer.on("asynchronous-reply", (event, arg) => {
-      console.log(arg);
-    });
-    window.ipcRenderer.send("asynchronous-message", "ping");
-
     if (!this.props.dragAndDrops.length) {
       this.props.onInitFileBox();
     }

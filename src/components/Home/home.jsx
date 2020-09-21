@@ -92,11 +92,11 @@ class HomeComponent extends Component {
               <Accordion defaultActiveKey="0">
                 {this.state.listOfProjects.map((obj, i) =>
                   (
-                    <Card bg="light" className="project-card" key={i}>
-                      <Accordion.Toggle as={Card.Header} eventKey={i}>
+                    <Card bg="light" className="project-card" key={i+1}>
+                      <Accordion.Toggle as={Card.Header} eventKey={i+1}>
                         {obj.name}
                       </Accordion.Toggle>
-                      <Accordion.Collapse eventKey={i}>
+                      <Accordion.Collapse eventKey={i+1}>
                         <Card.Body>
                           <Card.Subtitle className="mb-2 text-muted">Details</Card.Subtitle>
                           <strong>Last opened</strong> : {obj.lastModification}<br />

@@ -33,7 +33,8 @@ class SingleWord extends Component {
       showModal: false,
       showNoClassificationModal: false,
       expanded: false,
-      currentMultiTokens: []
+      currentMultiTokens: [],
+      progressBar: 0
     };
   }
 
@@ -88,6 +89,14 @@ class SingleWord extends Component {
     }
   }
 
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.report.empty < this.props.report.empty) {
+      const newProgressBarValue = 1 - (nextProps.report.empty / nextProps.report.total);
+      this.setState({ progressBar: newProgressBarValue * 100 });
+    }
+  }
+
   /**
    * The render function.
    */
@@ -111,7 +120,7 @@ class SingleWord extends Component {
           />
         )}
         <div className="tag-section">
-          <div className="token-tagging-section">
+          <div className="token-tagging-section" key={this.props.report}>
             <ProgressBar
               animated
               striped
@@ -119,22 +128,12 @@ class SingleWord extends Component {
               now={
                 this.props.report.total === this.props.report.empty
                   ? 0
-                  : ((this.props.report.total -
-                    this.props.report.empty -
-                    this.props.report.complete) /
-                    this.props.report.total) *
-                  100
+                  : this.state.progressBar
               }
               label={
                 this.props.report.total === this.props.report.empty
                   ? 0
-                  : (
-                    ((this.props.report.total -
-                      this.props.report.empty -
-                      this.props.report.complete) /
-                      this.props.report.total) *
-                    100
-                  ).toFixed(2) + " % Complete"
+                  : this.state.progressBar.toFixed(2) + " % Complete"
               }
               key={1}
             />
@@ -532,6 +531,7 @@ class SingleWord extends Component {
     token.selectedSynonyms = selectedSynonyms;
     tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
+    this.refreshSynonyms();
   };
 
   /**
@@ -561,21 +561,33 @@ class SingleWord extends Component {
    * function to get and set all the tooltips of the synonyms of the
    * current single Token
    * @function
+   * TODO : correct if multiple headers selected
    */
   refreshSynonyms = () => {
-    const indexOfHeaderToTag = this.props.headers.headers.findIndex((header) => header.checked);
+    let headers = this.props.headers.headers.filter((header) => header.checked);
     this.props.singleTokens.forEach(element => {
       element.synonyms.forEach((synonym) => {
         synonym.tooltip = [];
-        this.props.ex.output.filter((outputLine) => {
-          var tmpInputDataParsed = outputLine[indexOfHeaderToTag].toLowerCase().split(" ");
-          tmpInputDataParsed.map((token) => {
-            if (token === (synonym.label.toLowerCase()) && synonym.tooltip.length < 3) {
-              synonym.tooltip.push(outputLine[indexOfHeaderToTag]);
-            }
-            return true;
-          });
-          return true;
+        let indexesOfHeaderToTag = [];
+        this.props.ex.output.filter((outputLine, index) => {
+          if (index == 0) {
+            headers.map((header) => {
+              indexesOfHeaderToTag.push(outputLine.findIndex((outputLine) => outputLine === header.label));
+            })
+          } else {
+            indexesOfHeaderToTag.forEach((index) => {
+              console.log(outputLine[index]);
+              if (outputLine[index]) {
+                var tmpInputDataParsed = outputLine[index].toLowerCase().split(" ");
+                tmpInputDataParsed.map((token) => {
+                  if (token === (synonym.label.toLowerCase()) && synonym.tooltip.length < 3) {
+                    synonym.tooltip.push(outputLine[index]);
+                  }
+                  return true;
+                });
+              }
+            });
+          }
         })
       });
     });

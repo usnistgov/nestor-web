@@ -9,7 +9,7 @@ import Button from "../../../CommonComponents/Button/button"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import "./dashboardHeaders.css"
-import Alert from "../../../CommonComponents/Alert/alert";
+import Alert from "react-bootstrap/Alert";
 import { Card } from "react-bootstrap";
 
 class dashboardHeaders extends Component {
@@ -45,7 +45,9 @@ class dashboardHeaders extends Component {
                                 Please map the headers of your data to the following columns below :
                             </Card.Header>
                             <Card.Body>
-                                <div>
+                                <small>The only column that have an impact on the dashboard currently is the Machine name column. Technician name column is under development.</small>
+                                <br />
+                                <div className="table-container">
                                     <Table hover bordered striped responsive>
                                         <thead>
                                             <tr>
@@ -94,13 +96,15 @@ class dashboardHeaders extends Component {
                             onClick={this.handleContinue}
                             class="btn btn-primary ctn"
                             label="Continue"
-                        /></div> : <div className="alert-section"><Alert
-                            alertHeader="Dashboard not available"
-                            alertMessage="there is no data in the current project, please create one before
-                            we can create the dashboard"
-                            styleColor="alert alert-danger"
-                            onDelete={this.handleDelete}
-                        /></div>}
+                        /></div> : <Alert
+                            variant="danger">
+                        <Alert.Heading>
+                            Dashboard not available
+                            </Alert.Heading>
+                            there is no data in the current project, please create one before
+                            we can create the dashboard
+                        </Alert>
+                }
             </React.Fragment>
         );
     }

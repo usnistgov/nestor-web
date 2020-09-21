@@ -1,6 +1,6 @@
 export default {
   home: {
-    header: "The application designed to help manufacturers",
+    header: "The application designed to help manufacturers efficiently annotate their data",
     button: {
       newProject: "New project",
       openProject: "Manage Projects"

@@ -22,7 +22,7 @@ export function openProject(json_string, headers)
     return dispatch =>
     {
         const zerorpc = window.zero;
-        let client = new zerorpc.Client();
+        let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
         client.connect("tcp://127.0.0.1:4242");
         client.invoke("uploadJSON", json_string, headers, (error, res) =>
         {
@@ -40,7 +40,7 @@ export function clearAllAttributes()
     return dispatch =>
     {
         const zerorpc = window.zero;
-        let client = new zerorpc.Client();
+        let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
         client.connect("tcp://127.0.0.1:4242");
         client.invoke("clearAllAttributes", (error, res) =>
         {

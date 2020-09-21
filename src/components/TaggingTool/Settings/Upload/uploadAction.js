@@ -48,7 +48,7 @@ export function uploadFile(file)
   return dispatch =>
   {
     const zerorpc = window.zero;
-    let client = new zerorpc.Client();
+    let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
     client.connect("tcp://127.0.0.1:4242");
 
     client.invoke("upload", file, (error, res) =>

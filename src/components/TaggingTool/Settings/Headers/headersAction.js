@@ -45,7 +45,7 @@ export function getHeaders(headersList, tooltipList, emptyColumns) {
 export function headersRequest() {
   return dispatch => {
     const zerorpc = window.zero;
-    let client = new zerorpc.Client();
+    let client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
     client.connect("tcp://127.0.0.1:4242");
 
     client.invoke("headers", (error, res) => {

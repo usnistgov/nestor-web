@@ -98,8 +98,8 @@ class Api(object):
             tooltips_length = 5 if (length > 5) else (length)
             for index in range(len(list(self.__class__.df.columns))):
                 tooltips.append([])
-                tooltips[index] = (list(self.__class__.df[list(self.__class__.df.columns)[
-                                   index]].iloc[np.arange(tooltips_length)]))
+                tooltips[index] = [x for x in list(self.__class__.df[list(self.__class__.df.columns)[
+                                   index]].iloc[np.arange(tooltips_length)]) if str(x) != 'nan']
             data['tooltip'] = tooltips
             self.__class__.df.replace('', np.nan, inplace=True)
             filtered_data = self.__class__.df.dropna(axis='columns', how='all')
@@ -120,6 +120,7 @@ class Api(object):
             data = json.loads(self.headers())
             self.__class__.output_df = pd.concat(
                 [self.__class__.df[data['headers']], d], axis=1, sort=False)
+            self.__class__.output_df = self.__class__.output_df.fillna(" ") 
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -128,8 +129,6 @@ class Api(object):
     def single_tokens(self, headers):
         try:
             # 1. Create the output dataframe
-            print(headers)
-            sys.stdout.flush()
             self.create_output(headers)
             # 2. Compute single tokens
             nlp_select = kex.NLPSelect(columns=headers)
@@ -182,29 +181,31 @@ class Api(object):
 
     def update_output_file(self, token):
         try:
+            print("update_output_file")
+            sys.stdout.flush()
             d = pd.DataFrame([])
-            d['Column'] = self.__class__.output_df[self.__class__.output_df.columns[0:]].apply(
-                lambda x: ','.join(x), axis=1)
+            d['Column'] = self.__class__.output_df[self.__class__.output_df.columns[0:]].apply(lambda x: ','.join(x), axis=1)
             words = [syn['value'] for syn in token['selectedSynonyms']]
             words.append(token["label"])
             indexes = []
             for word in words:
-                df = self.__class__.output_df[d['Column'].str.contains(
-                    word, case=False)]
+                df = self.__class__.output_df[d['Column'].str.contains(word, case=False)]
                 indexes += list(df.index.values)
             self.__class__.output_df.loc[:, self.__class__.classification_columns] = self.__class__.output_df.loc[:,
                                                                                                                   self.__class__.classification_columns].applymap(lambda x: x.replace(token['alias'], ''))
             for index in indexes:
                 if token['classification']['label']:
                     if self.__class__.output_df.iloc[index][token['classification']['label']] and self.__class__.output_df.iloc[index][token['classification']['label']] != token['alias']:
-                        self.__class__.output_df.set_value(
-                            index, token['classification']['label'], self.__class__.output_df.iloc[index][token['classification']['label']] + "," + token['alias'])
+                        self.__class__.output_df.loc[
+                            index, token['classification']['label']] = self.__class__.output_df.iloc[index][token['classification']['label']] + "," + token['alias']
                     else:
-                        self.__class__.output_df.set_value(
-                            index, token['classification']['label'], token['alias'])
+                        self.__class__.output_df.loc[
+                            index, token['classification']['label']] = token['alias']
                 else:
-                    self.__class__.output_df.set_value(
-                        index, 'NA', '_untagged')
+                    self.__class__.output_df.loc[
+                        index, 'NA'] = '_untagged'
+            print(" fom update_output_file")
+            sys.stdout.flush()
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -230,6 +231,8 @@ class Api(object):
 
     def update_data(self, token):
         try:
+            print("update_data")
+            sys.stdout.flush()
             # 1. Update readable file
             self.update_output_file(token)
             # 2. Update vocab
@@ -239,6 +242,8 @@ class Api(object):
             else:
                 self.__class__.vocab_single_df = self.update_vocab(
                     self.__class__.vocab_single_df, token)
+            print("fin update_data")
+            sys.stdout.flush()
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -246,11 +251,15 @@ class Api(object):
 
     def completeness(self):
         try:
+            print("completeness")
+            sys.stdout.flush()
             tex = kex.TokenExtractor()
             tag_df = kex.tag_extractor(tex, self.__class__.raw_text, vocab_df=self.__class__.vocab_single_df.replace(
                 r'^\s*$', np.nan, regex=True).set_index('tokens').astype({'score': 'float64'}))
             tag_pct, tag_comp, tag_empt = kex.get_tag_completeness(tag_df)
             tag_pct_array = [tag for tag in tag_pct.items()]
+            print("fin completeness ")
+            sys.stdout.flush()
             return tag_comp.item(), tag_empt.item(), tag_pct_array, self.__class__.vocab_single_df.groupby("NE").nunique().alias.sum().item(), self.__class__.vocab_single_df[self.__class__.vocab_single_df.NE != ''].NE.notna().sum().item()
         except Exception as e:
             print(e)
@@ -276,8 +285,8 @@ class Api(object):
                 for index, row in self.__class__.output_df.iterrows():
                     if(row['P'] > ''):
                         d.append(row[key])
-            tmp = Counter(d)
-            return [list(i) for i in tmp.items()]
+            tmp = Counter(d).most_common(5)
+            return tmp
         except Exception as e:
             print(e)
             sys.stdout.flush()

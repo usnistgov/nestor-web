@@ -181,8 +181,6 @@ class Api(object):
 
     def update_output_file(self, token):
         try:
-            print("update_output_file")
-            sys.stdout.flush()
             d = pd.DataFrame([])
             d['Column'] = self.__class__.output_df[self.__class__.output_df.columns[0:]].apply(lambda x: ','.join(x), axis=1)
             words = [syn['value'] for syn in token['selectedSynonyms']]
@@ -204,8 +202,6 @@ class Api(object):
                 else:
                     self.__class__.output_df.loc[
                         index, 'NA'] = '_untagged'
-            print(" fom update_output_file")
-            sys.stdout.flush()
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -231,8 +227,6 @@ class Api(object):
 
     def update_data(self, token):
         try:
-            print("update_data")
-            sys.stdout.flush()
             # 1. Update readable file
             self.update_output_file(token)
             # 2. Update vocab
@@ -242,8 +236,6 @@ class Api(object):
             else:
                 self.__class__.vocab_single_df = self.update_vocab(
                     self.__class__.vocab_single_df, token)
-            print("fin update_data")
-            sys.stdout.flush()
         except Exception as e:
             print(e)
             sys.stdout.flush()
@@ -251,15 +243,11 @@ class Api(object):
 
     def completeness(self):
         try:
-            print("completeness")
-            sys.stdout.flush()
             tex = kex.TokenExtractor()
             tag_df = kex.tag_extractor(tex, self.__class__.raw_text, vocab_df=self.__class__.vocab_single_df.replace(
                 r'^\s*$', np.nan, regex=True).set_index('tokens').astype({'score': 'float64'}))
             tag_pct, tag_comp, tag_empt = kex.get_tag_completeness(tag_df)
             tag_pct_array = [tag for tag in tag_pct.items()]
-            print("fin completeness ")
-            sys.stdout.flush()
             return tag_comp.item(), tag_empt.item(), tag_pct_array, self.__class__.vocab_single_df.groupby("NE").nunique().alias.sum().item(), self.__class__.vocab_single_df[self.__class__.vocab_single_df.NE != ''].NE.notna().sum().item()
         except Exception as e:
             print(e)

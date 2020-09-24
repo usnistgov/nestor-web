@@ -79,7 +79,7 @@ class SingleWord extends Component {
    * for each singleToken
    */
   componentDidUpdate(prevProps) {
-    this.refreshSynonyms();
+    this.refreshSynonyms(this.props.singleTokens[prevProps.match.params.id]);
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.initTokenWithSynonymAlias(this.props.match.params.id);
       this.props.onUpdateVocab(
@@ -467,7 +467,6 @@ class SingleWord extends Component {
    * @function
    */
   handleAddClassification = classificationTag => {
-    //classificationTag.style = { borderColor: "black" };
     var tokens = [...this.props.singleTokens];
     var token = {
       ...this.props.singleTokens[parseInt(this.props.match.params.id)]
@@ -531,7 +530,7 @@ class SingleWord extends Component {
     token.selectedSynonyms = selectedSynonyms;
     tokens[parseInt(this.props.match.params.id)] = token;
     this.props.onUpdateSingleTokens(tokens);
-    this.refreshSynonyms();
+    this.refreshSynonyms(token);
   };
 
   /**
@@ -553,6 +552,17 @@ class SingleWord extends Component {
         return element.label !== synonym.value;
       });
       tokens[parseInt(this.props.match.params.id)] = token;
+
+      var synonymAsToken = tokens.filter((token) => {
+        return token.label === synonym.value;
+      })[0];
+      synonymAsToken.alias = token.alias;
+      synonymAsToken.classification = token.classification;
+      // var synonyms = this.computeSynonyms(synonymAsToken.label);
+      // synonymAsToken.synonyms = synonyms;
+      // TODO : deal with selectedSynonyms of all the synonyms of the current token les synonyms selectionnes
+      // synonymAsToken.selectedSynonyms = token.selectedSynonyms;
+      tokens[synonymAsToken.index] = synonymAsToken;
       this.props.onUpdateSingleTokens(tokens);
     }
   };
@@ -561,35 +571,34 @@ class SingleWord extends Component {
    * function to get and set all the tooltips of the synonyms of the
    * current single Token
    * @function
-   * TODO : correct if multiple headers selected
    */
-  refreshSynonyms = () => {
+  refreshSynonyms = token => {
     let headers = this.props.headers.headers.filter((header) => header.checked);
-    this.props.singleTokens.forEach(element => {
-      element.synonyms.forEach((synonym) => {
-        synonym.tooltip = [];
-        let indexesOfHeaderToTag = [];
-        this.props.ex.output.filter((outputLine, index) => {
-          if (index == 0) {
-            headers.map((header) => {
-              indexesOfHeaderToTag.push(outputLine.findIndex((outputLine) => outputLine === header.label));
-            })
-          } else {
-            indexesOfHeaderToTag.forEach((index) => {
-              console.log(outputLine[index]);
-              if (outputLine[index]) {
-                var tmpInputDataParsed = outputLine[index].toLowerCase().split(" ");
-                tmpInputDataParsed.map((token) => {
-                  if (token === (synonym.label.toLowerCase()) && synonym.tooltip.length < 3) {
-                    synonym.tooltip.push(outputLine[index]);
-                  }
-                  return true;
-                });
-              }
-            });
-          }
-        })
-      });
+    token.synonyms.forEach((synonym) => {
+      synonym.tooltip = [];
+      let indexesOfHeaderToTag = [];
+      this.props.ex.output.filter((outputLine, index) => {
+        if (index === 0) {
+          headers.map((header) => {
+            return indexesOfHeaderToTag.push(outputLine.findIndex((outputLine) => outputLine === header.label));
+          })
+        } else {
+          indexesOfHeaderToTag.forEach((index) => {
+            if (outputLine[index]) {
+              var tmpInputDataParsed = outputLine[index].replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
+              tmpInputDataParsed = tmpInputDataParsed.replace(/\s{2,}/g, " ");
+              tmpInputDataParsed = tmpInputDataParsed.toLowerCase().split(" ");
+              tmpInputDataParsed.map((token) => {
+                if (token === (synonym.label.toLowerCase()) && synonym.tooltip.length < 3) {
+                  synonym.tooltip.push(outputLine[index]);
+                }
+                return true;
+              });
+            }
+          });
+        }
+        return true;
+      })
     });
   }
 
@@ -604,7 +613,7 @@ class SingleWord extends Component {
         fuzz.ratio(label, element.label) > this.props.pattern &&
         element.label !== label
       ) {
-        element.tooltip = ["synonym appeared there"];
+        element.tooltip = ["loading..."];
         synonyms.push(element);
       }
     });

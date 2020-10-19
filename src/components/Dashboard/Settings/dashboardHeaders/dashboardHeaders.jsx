@@ -17,7 +17,7 @@ class dashboardHeaders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableHeaders: ["", "Machine name", "Technician name", "N/A"],
+            tableHeaders: ["", "Machine name", "Technician name"],
             dashboardSettings: [...this.props.dashboardSettings]
         }
     }
@@ -76,7 +76,7 @@ class dashboardHeaders extends Component {
                                                                 setting.checkboxes[j] && <Form.Check
                                                                     name={i}
                                                                     custom
-                                                                    type="radio"
+                                                                    type="checkbox"
                                                                     label=""
                                                                     id={checkbox.label + " " + setting.rowLabel}
                                                                     onChange={() => this.handleChange(i, j)}
@@ -124,9 +124,7 @@ class dashboardHeaders extends Component {
             if (index === line) {
                 element.checkboxes.forEach((checkbox, index2) => {
                     if (index2 === column) {
-                        checkbox.checked = true;
-                    } else {
-                        checkbox.checked = false;
+                        checkbox.checked = !checkbox.checked;
                     }
                 });
             }
@@ -136,7 +134,6 @@ class dashboardHeaders extends Component {
 
     prepareSettingsToUpdate(dashboardSettings) {
         let res = {
-            NA: [],
             machineName: [],
             technicianName: []
         }
@@ -149,9 +146,6 @@ class dashboardHeaders extends Component {
                             break;
                         case "machineName":
                             res.machineName.push(rowSetting.rowLabel);
-                            break;
-                        case "NA":
-                            res.NA.push(rowSetting.rowLabel);
                             break;
                         default:
                             break;

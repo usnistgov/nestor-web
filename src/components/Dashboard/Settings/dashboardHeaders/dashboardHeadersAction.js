@@ -39,10 +39,6 @@ export function initHeaders(headersList, tooltipList) {
                     {
                         label: "technicianName",
                         checked: false
-                    },
-                    {
-                        label: "NA",
-                        checked: false
                     }],
                 tooltip: tooltipList[index]
             });

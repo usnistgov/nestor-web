@@ -32,7 +32,8 @@ class Dashboard extends Component {
         mostFoundSolutions: [],
         mostFoundProblems: []
       },
-      colors: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#d92727']
+      colors: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#d92727'],
+      isMachineNameSelected: false
     }
   }
 
@@ -53,7 +54,10 @@ class Dashboard extends Component {
       const newAssetSelected = this.props.dashboard.assetSelected;
       this.setState({ assetSelected: newAssetSelected });
     }
+    this.isMachineNameSelected();
   }
+
+
 
 
   componentWillReceiveProps(nextProps) {
@@ -69,13 +73,25 @@ class Dashboard extends Component {
     }
   }
 
+  isMachineNameSelected = () => {
+    const newSettings = this.props.dashboardSettings;
+    newSettings.forEach((element) => {
+      element.checkboxes.forEach((checkbox) => {
+        if (checkbox.label === "machineName" && checkbox.checked) {
+          this.setState({ isMachineNameSelected: true });
+          return true;
+        }
+      });
+    });
+  }
+
   /**
    * The render function.
    */
   render() {
     return (
       <div>
-        {this.props.dashboard.assetsStats.length > 1 ?
+        {this.props.dashboard.assetsStats.length > 1 && this.state.isMachineNameSelected ?
           <div>
             <div>This dashboard was created to show some visualizations and statistics about the tokens you just tagged on the Tagging Tool section. You can tag other words and then come back to this dashboard.
             </div>
@@ -181,7 +197,7 @@ class Dashboard extends Component {
             <Alert.Heading>
               Dashboard not available
             </Alert.Heading>
-            No tokens tagged as a problem, please tag at least one problem from the tokens before you can see the charts.
+            No tokens tagged as a problem, please tag at least one problem from the tokens before you can see the charts or no columns selected as Machine names in previous tab.
           </Alert>}
       </div>
     );
@@ -204,10 +220,12 @@ const mapStateToProps = createSelector(
   state => state.dashboard,
   state => state.headers,
   state => state.singleTokens,
-  (dashboard, headers, singleTokens) => ({
+  state => state.dashboardSettings,
+  (dashboard, headers, singleTokens, dashboardSettings) => ({
     dashboard,
     headers,
-    singleTokens
+    singleTokens,
+    dashboardSettings
   })
 );
 const mapActionsToProps = {

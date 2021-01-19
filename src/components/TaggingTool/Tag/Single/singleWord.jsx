@@ -526,11 +526,24 @@ class SingleWord extends Component {
     var synonymToBeAdded = synonyms.filter(element => {
       return element.label === synonym.value;
     })[0];
+
+    if (synonymToBeAdded && synonymToBeAdded.alias === token.alias && token.alias !== token.label) {
+      token.alias = token.label;
+    }
+
+    if (synonymToBeAdded && synonymToBeAdded.alias === token.alias) {
+      synonymToBeAdded.alias = synonymToBeAdded.label;
+    }
+
     token.synonyms.push(synonymToBeAdded);
     token.selectedSynonyms = selectedSynonyms;
+
     tokens[parseInt(this.props.match.params.id)] = token;
+
+    if (synonymToBeAdded) {
+      tokens[synonymToBeAdded.index] = synonymToBeAdded;
+    }
     this.props.onUpdateSingleTokens(tokens);
-    this.refreshSynonyms(token);
   };
 
   /**
@@ -558,12 +571,10 @@ class SingleWord extends Component {
       })[0];
       synonymAsToken.alias = token.alias;
       synonymAsToken.classification = token.classification;
-      // var synonyms = this.computeSynonyms(synonymAsToken.label);
-      // synonymAsToken.synonyms = synonyms;
-      // TODO : deal with selectedSynonyms of all the synonyms of the current token les synonyms selectionnes
-      // synonymAsToken.selectedSynonyms = token.selectedSynonyms;
+
       tokens[synonymAsToken.index] = synonymAsToken;
       this.props.onUpdateSingleTokens(tokens);
+      return tokens;
     }
   };
 
@@ -634,6 +645,25 @@ class SingleWord extends Component {
       var synonyms = this.computeSynonyms(token.label);
       token.synonyms = synonyms;
       tokens[index] = token;
+    } else {
+      var res = [];
+
+      token.synonyms.forEach((synonym) => {
+        tokens.filter((token) => {
+          if (token.label === synonym.label) {
+            res.push(token);
+          }
+        })
+      });
+      // var resSel = [];
+      // token.selectedSynonyms.forEach((synonym) => {
+      //   tokens.filter((token) => {
+      //     if (token.label === synonym.label) {
+      //       resSel.push(token);
+      //     }
+      //   })
+      // });
+      token.synonyms = res;
     }
     if (!token.alias) {
       token.alias = token.label;
@@ -645,7 +675,30 @@ class SingleWord extends Component {
       }
     });
     this.setState({ currentMultiTokens: token.appearsIn.slice(0, 3) });
+
+
+    // Dealing with sinonyms
+    token.synonyms.forEach((synonym) => {
+      if (token.alias === synonym.alias) {
+        synonym.value = synonym.label;
+        tokens = this.handleSelectSynonym(synonym);
+        token.synonyms = token.synonyms.filter((syn) => {
+          return syn !== synonym;
+        })
+        tokens[token.index] = token;
+      }
+    });
+
     this.props.onUpdateSingleTokens(tokens);
+    token.selectedSynonyms.forEach((selectedSynonym) => {
+      var selectedSynonymAsToken = tokens.filter((token) => {
+        return token.label === selectedSynonym.value;
+      })[0];
+      if (selectedSynonymAsToken.alias !== token.alias) {
+        selectedSynonymAsToken.value = selectedSynonymAsToken.label;
+        this.handleDeleteSynonym(selectedSynonymAsToken);
+      }
+    });
   }
 }
 const mapStateToProps = createSelector(

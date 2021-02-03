@@ -4,7 +4,7 @@ pages:
   stage: deploy
   script:
     - mkdir .public
-    - cp -a /docs/. .public
+    - cp -a .docs .public
     - mv .public public
   artifacts:
     paths:

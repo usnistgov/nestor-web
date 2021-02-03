@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Home/navbar.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Home/navbar.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import "./navbar.css";
+import { Navbar, Nav, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import { NavLink } from "react-router-dom";
+import logo from "../.././assets/img/icon.png";
+import text from "../../assets/language/en.js";
+import { createSelector } from "reselect";
+import { connect } from "react-redux";
+import Modal from 'react-bootstrap/Modal';
+import Papa from "papaparse";
+import PouchDB from "pouchdb";
+import FormControl from "react-bootstrap/FormControl"
+import InputGroup from "react-bootstrap/InputGroup"
+
+/**
+ * constant of the links to home, tagging tool and dashboard page
+ */
+const links = [
+  {
+    label: text.home.navbar.home,
+    link: "/",
+    exact: true
+  },
+  {
+    label: text.home.navbar.taggingTool,
+    link: "/taggingTool",
+    exact: false
+  },
+  {
+    label: text.home.navbar.dashboard,
+    link: "/dashboard",
+    exact: false
+  },
+];
+
+/**
+ * Component for home page.
+ * 
+ * @component
+ */
+class NavBar extends Component {
+
+  /** 
+   * @constructor
+   */
+  constructor(props) {
+    super(props);
+    this.handleSaveProject = this.handleSaveProject.bind(this);
+    this.state = { projectName: '', showModal: false, hasStartedTagging: false, showSuccessModal: false, customProjectName: "" };
+  }
+
+  /**
+   * A react lifecycle method called when the component did update.
+   * It checks if the dragAndDrops props changed and set state with right 
+   * project Name and also disable the save button if needed
+   */
+  componentDidUpdate(prevProps) {
+    if (this.props.dragAndDrops[0].projectName !== prevProps.dragAndDrops[0].projectName
+      || this.props.dragAndDrops[0].projectName !== this.state.projectName) {
+      this.setState({ projectName: this.props.dragAndDrops[0].projectName, customProjectName: this.props.dragAndDrops[0].projectName });
+    } else if (this.props.dragAndDrops[0].projectName === "" &amp;&amp; this.props.dragAndDrops[0].projectName !==
+      prevProps.dragAndDrops[0].projectName) {
+      this.setState({ projectName: "" });
+    }
+    if (this.props.singleTokens.length !== prevProps.singleTokens.length &amp;&amp; this.props.singleTokens.length > 0) {
+      this.setState({ hasStartedTagging: true });
+    } else if (this.props.singleTokens.length !== prevProps.singleTokens.length &amp;&amp; this.props.singleTokens.length === 0) {
+      this.setState({ hasStartedTagging: false });
+    }
+  }
+
+  /**
+   * A react lifecycle method to determine whether or not the component should update
+   * It checks if the dragAndDrops changed and return true if it changed 
+   * @param {props} nextProps the new props of the application
+   * @param {props} nextState the next state of the component
+   */
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.dragAndDrops[0] &amp;&amp; nextProps.dragAndDrops[0]) {
+      return this.state.projectName !== nextProps.dragAndDrops[0].projectName
+        || this.props.singleTokens.length !== nextProps.singleTokens.length
+        || nextState.showModal !== this.state.showModal
+        || nextState.showSuccessModal !== this.state.showSuccessModal;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * The render function.
+   */
+  render() {
+    return (&lt;div>
+      &lt;Navbar bg="light" variant="light" className="navbar-shadow">
+        &lt;Navbar.Brand>
+          &lt;img src={logo} width="40" height="40" alt="logo" />
+        &lt;/Navbar.Brand>
+        &lt;Nav className="fullWidth">
+          {links.map((obj, i) => (
+            &lt;NavLink key={i} exact={obj.exact} className="nav-link" to={obj.link}>
+              {obj.label}
+            &lt;/NavLink>
+          ))}
+          &lt;div className="project-title">&lt;h4>{this.handleDisplayProjectName(this.state.projectName)}&lt;/h4>&lt;/div>
+          &lt;Button key={1000} className="nav-link save-button" onClick={this.handleShowModal} disabled={this.checkIfTagged()} >
+            &lt;i className="fas fa-save">&lt;/i>
+            &amp;nbsp; &amp;nbsp;
+            {text.home.navbar.save}
+          &lt;/Button>
+        &lt;/Nav>
+      &lt;/Navbar>
+      &lt;Modal
+        show={this.state.showModal}
+        onHide={this.handleHideModal}>
+        &lt;Modal.Header>
+          &lt;Modal.Title>
+            &lt;i className="fas fa-save">&lt;/i>
+            &amp;nbsp;
+            Save Project&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          You can change the name of your project below or just click on Save to finish the process{'\u00A0'}
+          &lt;InputGroup className="mb-3 input-project-name">
+            &lt;FormControl
+              placeholder={this.state.customProjectName}
+              aria-label={this.state.customProjectName}
+              className="custom-form-control"
+              onChange={this.handleChange}
+            />
+            &lt;InputGroup.Append>
+              &lt;Button variant="outline-success" className="btn" onClick={this.handleSaveProject}>Save&lt;/Button>
+            &lt;/InputGroup.Append>
+          &lt;/InputGroup>
+        &lt;/Modal.Body>
+      &lt;/Modal>
+      &lt;Modal
+        show={this.state.showSuccessModal}
+        onHide={this.handleHideSuccessModal}>
+        &lt;Modal.Header>
+          &lt;Modal.Title>
+            &lt;i className="fas fa-check">&lt;/i>
+            &amp;nbsp;
+            Saved successfully
+          &lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          Your project has been successfully saved. Next time, you can open the project using the dedicated button on the home page.
+        &lt;/Modal.Body>
+      &lt;/Modal>
+      &lt;Modal
+        show={this.state.showErrorModal}
+        onHide={this.handleHideErrorModal}>
+        &lt;Modal.Header>
+          &lt;Modal.Title>
+            &lt;i className="fas fa-exclamation-circle">&lt;/i>
+            &amp;nbsp;
+            Save failed&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          There has been an issue saving your project. You should restart the application. Sorry for the inconvenience.
+        &lt;/Modal.Body>
+      &lt;/Modal>
+    &lt;/div >)
+  }
+
+  /**
+   * function called to set current project name after changing it through saving modal
+   */
+  handleChange = event => {
+    this.setState({ customProjectName: event.target.value });
+  }
+
+  /**
+   * function to determine if save button has to be disabled or not
+   * @returns true if there are singleTokens in props
+   */
+  checkIfTagged = () => {
+    return this.props.singleTokens.length === 0;
+  }
+
+  /**
+   * function checking the length of the name of the project
+   * and reduce it if it's too long
+   * @returns project name displayed format
+   */
+  handleDisplayProjectName = (projectName) => {
+    if (projectName.length >= 15) {
+      return projectName.substring(0, 14).concat("...");
+    } else {
+      return projectName;
+    }
+  }
+
+  /**
+   * function called to hide the successfully save modal
+   */
+  handleHideSuccessModal = () => {
+    this.setState({ showSuccessModal: false });
+  };
+
+  /**
+   * function called to show the successfully save modal
+   */
+  handleShowSuccessModal = () => {
+    this.setState({ showSuccessModal: true });
+  };
+
+  /**
+   * function called to hide the saving modal
+   */
+  handleHideModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  /**
+   * function called to show the saving modal
+   */
+  handleShowModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  /**
+   * function called to hide the error while saving modal
+   */
+  handleHideErrorModal = () => {
+    this.setState({ showErrorModal: false });
+  };
+
+  /**
+   * function called to show the error while saving modal
+   */
+  handleShowErrorModal = () => {
+    this.setState({ showErrorModal: true });
+  };
+
+  /**
+   * function called to save the project currently opened
+   * It creates a project object and store all the current props in it
+   * and then save this object into the database.
+   * Then it displays either the success or the error modal
+   */
+  handleSaveProject = () => {
+    try {
+      window.db = new PouchDB("testdatabase");
+      let jsonToStore;
+      const dragAndDrops = [...this.props.dragAndDrops];
+      const singleTokens = this.props.singleTokens;
+      const multi = this.props.multiTokens;
+      const tokensNumber = this.props.tokensNumber;
+      const headers = [...this.props.headers.headers];
+      const oldProjectName = this.state.projectName;
+      window.db = new PouchDB("testdatabase");
+      const projectId = this.state.customProjectName;
+      const dashboard = this.props.dashboard;
+      const dashboardSettings = this.props.dashboardSettings;
+      if (dragAndDrops[0].file.path) {
+        Papa.parse(dragAndDrops[0].file, {
+          complete: function (results) {
+            jsonToStore = results;
+            window.db.get(projectId).then(function (doc) {
+              doc.dragAndDrops = dragAndDrops[0];
+              doc.multiTokens = JSON.parse(JSON.stringify(multi));
+              doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
+              doc.tokensNumber = tokensNumber;
+              doc.headers = headers;
+              doc.details = {
+                lastModification: new Date().toLocaleString(),
+                originalFile: dragAndDrops[0].file.name,
+                originalLocation: dragAndDrops[0].file.path
+              }
+              doc.dashboard = dashboard;
+              doc.dashboardSettings = dashboardSettings;
+              return window.db.put(doc);
+            }).catch(function (error) {
+              console.log(error);
+              return window.db.put({
+                "_id": projectId,
+                inputData: jsonToStore,
+                multiTokens: JSON.parse(JSON.stringify(multi)),
+                singleTokens: JSON.parse(JSON.stringify(singleTokens)),
+                tokensNumber: tokensNumber,
+                headers: headers,
+                dragAndDrops: dragAndDrops[0],
+                details: {
+                  lastModification: new Date().toLocaleString(),
+                  originalFile: dragAndDrops[0].file.name,
+                  originalLocation: dragAndDrops[0].file.path
+                },
+                dashboard: dashboard,
+                dashboardSettings: dashboardSettings
+              });
+            });
+          }
+        });
+      } else {
+        window.db.get(projectId).then(function (doc) {
+          doc.details = {
+            lastModification: new Date().toLocaleString()
+          }
+          doc.dragAndDrops = dragAndDrops[0];
+          doc.multiTokens = JSON.parse(JSON.stringify(multi));
+          doc.singleTokens = JSON.parse(JSON.stringify(singleTokens));
+          doc.tokensNumber = tokensNumber;
+          doc.headers = headers;
+          doc.dashboard = dashboard;
+          doc.dashboardSettings = dashboardSettings;
+          return window.db.put(doc);
+        }).catch(function (error) {
+          console.log(error);
+          window.db.get(oldProjectName).then(function (doc) {
+            jsonToStore = doc.inputData;
+            return window.db.put({
+              "_id": projectId,
+              inputData: jsonToStore,
+              multiTokens: JSON.parse(JSON.stringify(multi)),
+              singleTokens: JSON.parse(JSON.stringify(singleTokens)),
+              tokensNumber: tokensNumber,
+              headers: headers,
+              dragAndDrops: dragAndDrops[0],
+              details: {
+                lastModification: new Date().toLocaleString(),
+                originalFile: doc.details.originalFile,
+                originalLocation: doc.details.originalLocation
+              },
+              dashboard: dashboard,
+              dashboardSettings: dashboardSettings
+            });
+          });
+        });
+      }
+      if (this.state.customProjectName !== this.state.projectName) {
+        dragAndDrops[0].projectName = this.state.customProjectName;
+      }
+      this.handleHideModal();
+      this.handleShowSuccessModal();
+    } catch (error) {
+      this.handleHideModal();
+      this.handleShowErrorModal();
+    }
+  };
+};
+const mapStateToProps = createSelector(
+  state => state.dragAndDrops,
+  state => state.export,
+  state => state.singleTokens,
+  state => state.tokensNumber,
+  state => state.multiTokens,
+  state => state.headers,
+  state => state.dashboard,
+  state => state.dashboardSettings,
+  (dragAndDrops, ex, singleTokens, tokensNumber, multiTokens, headers, dashboard, dashboardSettings
+  ) => ({
+    dragAndDrops,
+    headers,
+    ex,
+    singleTokens,
+    tokensNumber,
+    multiTokens,
+    dashboard,
+    dashboardSettings
+  })
+);
+const mapActionsToProps = {
+};
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(NavBar);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Alert.html">Alert</a></li><li><a href="Button.html">Button</a></li><li><a href="Classification.html">Classification</a></li><li><a href="ClassificationTag.html">ClassificationTag</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="Dashboard_.html">Dashboard</a></li><li><a href="DashboardRedirect.html">DashboardRedirect</a></li><li><a href="DashboardSidebar.html">DashboardSidebar</a></li><li><a href="DragAndDrop.html">DragAndDrop</a></li><li><a href="DynamicSlider.html">DynamicSlider</a></li><li><a href="Error.html">Error</a></li><li><a href="Export.html">Export</a></li><li><a href="Header.html">Header</a></li><li><a href="Headers.html">Headers</a></li><li><a href="HomeComponent.html">HomeComponent</a></li><li><a href="MultiWord.html">MultiWord</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="OverviewHeader.html">OverviewHeader</a></li><li><a href="Pattern.html">Pattern</a></li><li><a href="Report.html">Report</a></li><li><a href="Router.html">Router</a></li><li><a href="Sidebar.html">Sidebar</a></li><li><a href="Similarity.html">Similarity</a></li><li><a href="SingleRedirect.html">SingleRedirect</a></li><li><a href="SingleWord.html">SingleWord</a></li><li><a href="Slider.html">Slider</a></li><li><a href="TagButton.html">TagButton</a></li><li><a href="TaggingTool.html">TaggingTool</a></li><li><a href="Title.html">Title</a></li><li><a href="TokensNumber.html">TokensNumber</a></li><li><a href="Upload.html">Upload</a></li><li><a href="UploadRedirect.html">UploadRedirect</a></li></ul><h3>Global</h3><ul><li><a href="global.html#routes">routes</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Wed Feb 03 2021 16:06:41 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

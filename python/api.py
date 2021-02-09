@@ -9,9 +9,11 @@ import pandas as pd
 import numpy as np
 import base64
 from collections import Counter
+from functools import wraps
 
 def exception_handler(func):
-    def inner_function(*args, **kwargs):
+    @wraps(func)
+    def func_or_exception(*args, **kwargs):
         try:
             func(*args, **kwargs)
         except Exception as e:
@@ -19,7 +21,7 @@ def exception_handler(func):
             print(e)
             sys.stdout.flush()
             return e 
-    return inner_function
+    return func_or_exception
 
 class Api(object):
     df = pd.DataFrame([])

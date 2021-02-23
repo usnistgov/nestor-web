@@ -1,9 +1,9 @@
 pages:
   stage: deploy
   script:
-    - mkdir tmppublic
-    - mv public tmppublic
-    - ls tmpublic
+    - mkdir tmp-public
+    - mv public tmp-public
+    - ls tmp-public
     - mkdir .public
     - cp -r docs/ .public
     - mv .public public

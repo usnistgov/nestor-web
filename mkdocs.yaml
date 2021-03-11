@@ -1,0 +1,67 @@
+site_name: Nestor Web
+repo_url: "https://github.com/usnistgov/nestor-web"
+site_description: "Quantifying tacit human knowledge for Smart Manufacturing Maintenance, for maintnenance-based investigatory analysis"
+site_author: "Cedric Bell"
+nav: 
+  - Home: "README.md"
+  - License: "LICENSE.md"
+  - Getting Started:
+      - User Guide: "USERGUIDE.md"
+      - Contributing: "CONTRIBUTING.md"
+  - Frontend documentation:
+      - alert: "frontend/alert.md"
+      - button: "frontend/button.md"
+      - classification: "frontend/classification.md"
+      - classificationTag: "frontend/classificationTag.md"
+      - dashboard: "frontend/dashboard.md"
+      - dashboardHeaders: "frontend/dashboardHeaders.md"
+      - dashboardRedirect: "frontend/dashboardRedirect.md"
+      - dashboardRouter: "frontend/dashboardRouter.md"
+      - dashboardSidebar: "frontend/dashboardSidebar.md"
+      - dragAndDrop: "frontend/dragAndDrop.md"
+      - dynamicSlider: "frontend/dynamicSlider.md"
+      - error: "frontend/error.md"
+      - export: "frontend/export.md"
+      - header: "frontend/header.md"
+      - headers: "frontend/headers.md"
+      - home: "frontend/home.md"
+      - list: "frontend/list.md"
+      - multiRedirect: "frontend/multiRedirect.md"
+      - multiWord: "frontend/multiWord.md"
+      - navbar: "frontend/navbar.md"
+      - note: "frontend/note.md"
+      - overview: "frontend/overview.md"
+      - overviewHeader: "frontend/overviewHeader.md"
+      - pattern: "frontend/pattern.md"
+      - report: "frontend/report.md"
+      - sidebar: "frontend/sidebar.md"
+      - similarity: "frontend/similarity.md"
+      - singleRedirect: "frontend/singleRedirect.md"
+      - singleWord: "frontend/singleWord.md"
+      - slider: "frontend/slider"
+      - tagButton: "frontend/tagButton.md"
+      - taggingToolRouter: "frontend/taggingToolRouter.md"
+      - title: "frontend/title.md"
+      - tokensNumber: "frontend/tokensNumber.md"
+      - upload: "frontend/upload.md"
+      - uploadRedirect: "frontend/uploadRedirect.md"
+  - API documentation: "pythonapi.md"
+theme:
+  name: "material"
+  favicon: "media/favicon.png"
+  logo: "media/icon.png"
+  palette:
+    primary: "deep orange"
+    accent : "teal"
+plugins:
+  - search
+  - mkdocstrings:
+      watch:
+        - nestor
+  - mermaid2
+extra_javascript:
+  - "https://unpkg.com/mermaid/dist/mermaid.min.js"
+site_dir: "public"
+markdown_extensions:
+  - footnotes
+  - pymdownx.superfences

@@ -1,11 +1,17 @@
+image: python:3.7
+
+stages:
+  - deploy
+
+before_script:
+  - conda env update --file gldeployenv.yaml
+  - conda activate nestor-dev
+
 pages:
   stage: deploy
   script:
-    - rm -rf public
-    - mkdir .public
-    - cp -r docs/* .public
-    - mv .public public
-    - ls public
+    - pip install mkdocs-material
+    - mkdocs build --site-dir public
   artifacts:
     paths:
       - public

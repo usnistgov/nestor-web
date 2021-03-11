@@ -11,6 +11,7 @@ pages:
   stage: deploy
   script:
     - pip install mkdocs-material
+    - rm -rf public
     - mkdocs build --site-dir public
   artifacts:
     paths:

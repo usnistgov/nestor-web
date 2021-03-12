@@ -6,13 +6,13 @@ stages:
 before_script:
   - conda env update --file gldeployenv.yaml
   - conda activate nestor-web
-  - npm i --no-save jsdoc
-  - npm i --no-save jsdoc-to-markdown@1.3.8 
+  # - npm i --no-save jsdoc
+  # - npm i --no-save jsdoc-to-markdown@1.3.8 
 
 pages:
   stage: deploy
   script:
-    - npm run generatedocs.sh
+    # - npm run generatedocs.sh
     - rm -rf public
     - cp README.md docs/
     - cp src/assets/img/icon.png docs/resources/media/

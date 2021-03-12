@@ -1,8 +1,6 @@
 ![](resources/media/image6.png)
 
-
 # Nestor technical specifications
-
 
 [Introduction](#introduction)
 > [Purpose](#purpose)<br/>

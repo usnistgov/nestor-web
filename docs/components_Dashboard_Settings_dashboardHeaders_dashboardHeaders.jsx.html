@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Dashboard/Settings/dashboardHeaders/dashboardHeaders.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Dashboard/Settings/dashboardHeaders/dashboardHeaders.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { Component } from "react";
+import { connect } from "react-redux";
+import { createSelector } from "reselect";
+import Table from "react-bootstrap/Table"
+import Form from 'react-bootstrap/Form'
+import { updateDashboardHeaders, getDashboardHeaders } from "./dashboardHeadersAction"
+import Button from "../../../CommonComponents/Button/button"
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
+import "./dashboardHeaders.css"
+import Alert from "react-bootstrap/Alert";
+import { Card } from "react-bootstrap";
+
+/**
+ * Component for dashboardHeaders page.
+ * 
+ * @component
+ */
+class dashboardHeaders extends Component {
+
+    /** 
+     * @constructor
+    */
+    constructor(props) {
+        super(props);
+        this.state = {
+            tableHeaders: ["", "Machine name", "Technician name"],
+            dashboardSettings: [...this.props.dashboardSettings]
+        }
+    }
+
+    /**
+   * A react lifecycle method called when the component did mount.
+   * It init the dashboardHeaders props
+   */
+    componentDidMount() {
+        if (this.props.dashboardSettings.length &lt; 2) {
+            this.props.onGetDashboardHeaders();
+        }
+    }
+
+    /**
+    * A react lifecycle method called when the component did update.
+    * It sets the dashboardSettings props/state
+    */
+    componentDidUpdate(prevProps) {
+        if (this.state.dashboardSettings.length !== this.props.dashboardSettings.length) {
+            this.setState({ dashboardSettings: this.props.dashboardSettings });
+        }
+    }
+
+    /**
+    * The render function.
+    */
+    render() {
+        return (
+            &lt;React.Fragment>
+                {this.props.dashboardSettings.length > 1 ?
+                    &lt;div>
+                        &lt;Card className="table-container">
+                            &lt;Card.Header as="h5">
+                                Please map the headers of your data to the following columns below :
+                            &lt;/Card.Header>
+                            &lt;Card.Body>
+                                &lt;small>The only column that have an impact on the dashboard currently is the Machine name column. Technician name column is under development.&lt;/small>
+                                &lt;br />
+                                &lt;div className="table-container">
+                                    &lt;Table hover bordered striped responsive>
+                                        &lt;thead>
+                                            &lt;tr>
+                                                {this.state.tableHeaders.map((header, i) => (
+                                                    &lt;th key={i}>{header}&lt;/th>
+                                                ))}
+                                            &lt;/tr>
+                                        &lt;/thead>
+                                        &lt;tbody>
+                                            {this.props.dashboardSettings.map((setting, i) => (
+                                                &lt;tr key={i}>
+                                                    &lt;td>
+                                                        &lt;OverlayTrigger
+                                                            placement="right"
+                                                            delay={{ show: 250, hide: 400 }}
+                                                            overlay={this.renderTooltip(setting.tooltip)}>
+                                                            &lt;div className="dataHeader">
+                                                                {setting.rowLabel}
+                                                            &lt;/div>
+                                                        &lt;/OverlayTrigger>
+                                                    &lt;/td>
+                                                    {setting.checkboxes &amp;&amp; setting.checkboxes.map((checkbox, j) => (
+                                                        &lt;td key={j}>
+                                                            {this.state.dashboardSettings[i] &amp;&amp;
+                                                                this.state.dashboardSettings[i].checkboxes[j] &amp;&amp;
+                                                                setting.checkboxes[j] &amp;&amp; &lt;Form.Check
+                                                                    name={i}
+                                                                    custom
+                                                                    type="checkbox"
+                                                                    label=""
+                                                                    id={checkbox.label + " " + setting.rowLabel}
+                                                                    onChange={() => this.handleChange(i, j)}
+                                                                    checked={this.state.dashboardSettings[i].checkboxes[j].checked}
+                                                                />}
+                                                        &lt;/td>
+                                                    ))}
+                                                &lt;/tr>
+                                            ))}
+                                        &lt;/tbody>
+                                    &lt;/Table>
+                                &lt;/div>
+                            &lt;/Card.Body>
+                        &lt;/Card>
+
+                        &lt;Button
+                            onClick={this.handleContinue}
+                            class="btn btn-primary ctn"
+                            label="Continue"
+                        />&lt;/div> : &lt;Alert
+                            variant="danger">
+                        &lt;Alert.Heading>
+                            Dashboard not available
+                            &lt;/Alert.Heading>
+                            there is no data in the current project, please create one before
+                            we can create the dashboard
+                        &lt;/Alert>
+                }
+            &lt;/React.Fragment>
+        );
+    }
+
+    /**
+     * @function
+     * function to render the tooltip from the argument
+     * @param {string} tooltipMessage The text you want to write in the tooltip of a title
+     */
+    renderTooltip(tooltipMessage) {
+        return (
+            &lt;Tooltip id="button-tooltip" >
+                {tooltipMessage.map((obj, i) => (
+                    &lt;strong key={i}>{obj}&lt;br />&lt;/strong>
+                ))}
+            &lt;/Tooltip>)
+    }
+
+    /**
+     * @function
+     * function handling the change when a user select a checkbox in the table of the dashboard Headers
+     * @param {number} line the line of the header selected
+     * @param {number} column the column of the header selected
+     */
+    handleChange = (line, column) => {
+        const newSettings = this.state.dashboardSettings;
+        newSettings.forEach((element, index) => {
+            if (index === line) {
+                element.checkboxes.forEach((checkbox, index2) => {
+                    if (index2 === column) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            }
+        });
+        this.setState({ dashboardSettings: newSettings }, this.prepareSettingsToUpdate(this.state.dashboardSettings));
+    }
+
+    /**
+     * @function
+     * function that shaped the dashboard headers to send it to the python api
+     * @param {array} dashboardSettings array containing the dashboard headers
+     */
+    prepareSettingsToUpdate(dashboardSettings) {
+        let res = {
+            machineName: [],
+            technicianName: []
+        }
+        dashboardSettings.forEach(rowSetting => {
+            rowSetting.checkboxes.filter((checkbox) => {
+                if (checkbox.checked) {
+                    switch (checkbox.label) {
+                        case "technicianName":
+                            res.technicianName.push(rowSetting.rowLabel);
+                            break;
+                        case "machineName":
+                            res.machineName.push(rowSetting.rowLabel);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return true;
+            });
+        });
+        this.props.onUpdateDashboardHeaders(res);
+    }
+
+    /**
+     * function called when clicking on the continue button
+     * it redirects to the dashboard tab
+     * @function
+     */
+    handleContinue = () => {
+        this.props.history.push("/dashboard/vizualisation");
+    }
+}
+const mapStateToProps = createSelector(
+    state => state.headers,
+    state => state.dashboardSettings,
+    (headers, dashboardSettings) => ({
+        headers,
+        dashboardSettings
+    })
+);
+const mapActionsToProps = {
+    onUpdateDashboardHeaders: updateDashboardHeaders,
+    onGetDashboardHeaders: getDashboardHeaders
+};
+export default connect(
+    mapStateToProps,
+    mapActionsToProps
+)(dashboardHeaders);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Alert.html">Alert</a></li><li><a href="Button.html">Button</a></li><li><a href="Classification.html">Classification</a></li><li><a href="ClassificationTag.html">ClassificationTag</a></li><li><a href="Dashboard.html">Dashboard</a></li><li><a href="dashboardHeaders.html">dashboardHeaders</a></li><li><a href="DashboardRedirect.html">DashboardRedirect</a></li><li><a href="DragAndDrop.html">DragAndDrop</a></li><li><a href="DynamicSlider.html">DynamicSlider</a></li><li><a href="Export.html">Export</a></li><li><a href="Header.html">Header</a></li><li><a href="Headers.html">Headers</a></li><li><a href="HomeComponent.html">HomeComponent</a></li><li><a href="List.html">List</a></li><li><a href="MultiRedirect.html">MultiRedirect</a></li><li><a href="MultiWord.html">MultiWord</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="Note.html">Note</a></li><li><a href="Overview.html">Overview</a></li><li><a href="OverviewHeader.html">OverviewHeader</a></li><li><a href="Pattern.html">Pattern</a></li><li><a href="Report.html">Report</a></li><li><a href="Router.html">Router</a></li><li><a href="Similarity.html">Similarity</a></li><li><a href="SingleRedirect.html">SingleRedirect</a></li><li><a href="SingleWord.html">SingleWord</a></li><li><a href="Slider.html">Slider</a></li><li><a href="TagButton.html">TagButton</a></li><li><a href="Title.html">Title</a></li><li><a href="TokensNumber.html">TokensNumber</a></li><li><a href="Upload.html">Upload</a></li><li><a href="UploadRedirect.html">UploadRedirect</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DashBoard">DashBoard</a></li><li><a href="global.html#dashboardRoutes">dashboardRoutes</a></li><li><a href="global.html#DashboardSidebar">DashboardSidebar</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#functionhandlingthechangewhenauserselectacheckboxinthetableofthedashboardHeaders">function handling the change when a user select a checkbox in the table of the dashboard Headers</a></li><li><a href="global.html#functionthatchecksifanalertshouldberisedandthenredirecttothenextmultitoken">function that checks if an alert should be rised and then redirect to the next multitoken</a></li><li><a href="global.html#functionthathandlethechangeofthetokensfromalphabeticalorderandreverse.">function that handle the change of the tokens from alphabetical order and reverse.</a></li><li><a href="global.html#functionthathandletheclickonthebarandupdatetheotherscharts">function that handle the click on the bar and update the others charts</a></li><li><a href="global.html#functionthatsetsthelistoftokensfromthesimplelisttothealphabeticalcomponent">function that sets the list of tokens from the simple list to the alphabetical component</a></li><li><a href="global.html#functionthatshapedthedashboardheaderstosendittothepythonapi">function that shaped the dashboard headers to send it to the python api</a></li><li><a href="global.html#functiontorenderthetooltipfromtheargument">function to render the tooltip from the argument</a></li><li><a href="global.html#links">links</a></li><li><a href="global.html#routes">routes</a></li><li><a href="global.html#Sidebar">Sidebar</a></li><li><a href="global.html#TaggingTool">TaggingTool</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Mar 12 2021 12:03:14 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

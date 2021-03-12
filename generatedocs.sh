@@ -1,5 +1,5 @@
 rm -rf docs/
-mkdir docs docs/frontend
+mkdir docs docs/frontend docs/media
 var=""
 for file in `find src -name "*.jsx"`
 do

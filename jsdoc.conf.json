@@ -14,13 +14,11 @@
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "plugins": [
-        "plugins/markdown",
-        "better-docs/component"
+        "plugins/markdown"
     ],
     "opts": {
         "destination": "docs",
         "recurse": true,
-        "readme": "README.md",
-        "template": "node_modules/tui-jsdoc-template"
+        "readme": "README.md"
     }
 }

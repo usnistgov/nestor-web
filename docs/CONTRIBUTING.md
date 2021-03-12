@@ -3,9 +3,6 @@
 
 # Nestor technical specifications
 
-## Table of Contents
-
-
 
 [Introduction](#introduction)
 > [Purpose](#purpose)<br/>

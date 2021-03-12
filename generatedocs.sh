@@ -9,4 +9,3 @@ done
 cp -r documentation/* docs/
 cp README.md docs/
 cp src/assets/img/icon.png docs/media/
-

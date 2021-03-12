@@ -1,36 +1,6 @@
-![](resources/media/image6.png)
-
-
-# Nestor technical specifications
-
-
-[Introduction](#introduction)
-> [Purpose](#purpose)<br/>
-> [Team](#team)<br/>
-> [Project scope](#project-scope)<br/>
-> [References](#references)
-
-[Description](#description)<br/>
-> [Features](#features)<br/>
-> [Phases](#phases)<br/>
-> [General architecture](#general-architecture)<br/>
-> [Operating environment](#operating-environment)<br/>
-> [Content structure](#content-structure)<br/>
-> [Design](#design)<br/>
-> [Software User Interface](#software-user-interfaces)<br/>
-> [Assumptions / Dependencies](#assumptions-dependencies)<br/>
-> [System features](#system-features)<br/>
-> [React application](#react-application)<br/>
-
-> [Additional nonfunctional requirements](#additional-nonfunctional-requirements)<br/>
->> [Accessibility](#accessibility)<br/>
->> [Security](#security)<br/>
->> [Performance](#performance)<br/>
->> [Software quality](#software-quality)<br/>
-
-[Appendices](#appendices)
-> [ Appendix A: Analysis documentation](#appendix-a-analysis-documentation)<br/>
-> [ Appendix B: Issues](#appendix-b-issues)
+---
+title: "Nestor technical specifications"
+---
 
 # Introduction
 
@@ -125,7 +95,7 @@ application.
 
 ## General Architecture
 
-![](resourcesContributing/media/image1.png)
+![](resources/media/contributing/image1.png)
 
 ## Operating environment
 
@@ -152,12 +122,12 @@ prototype of digital products with wireframes.
 
 Screenshots of the application :
 
-  ![](resourcesContributing/media/image2.png)     ![](resourcesContributing/media/image3.png)
-  ![](resourcesContributing/media/image4.png)     ![](resourcesContributing/media/image5.png)
-  ![](resourcesContributing/media/image6.png)     ![](resourcesContributing/media/image7.png)
-  ![](resourcesContributing/media/image8.png)     ![](resourcesContributing/media/image9.png)
-  ![](resourcesContributing/media/image10.png)    ![](resourcesContributing/media/image11.png)
-  ![](resourcesContributing/media/image12.png)   
+  ![](resources/media/contributing/image2.png)     ![](resources/media/contributing/image3.png)
+  ![](resources/media/contributing/image4.png)     ![](resources/media/contributing/image5.png)
+  ![](resources/media/contributing/image6.png)     ![](resources/media/contributing/image7.png)
+  ![](resources/media/contributing/image8.png)     ![](resources/media/contributing/image9.png)
+  ![](resources/media/contributing/image10.png)    ![](resources/media/contributing/image11.png)
+  ![](resources/media/contributing/image12.png)   
 
 ## Software user interfaces
 
@@ -283,7 +253,7 @@ More information available [here](#<https://electronjs.org/docs/tutorial/support
 
 Client-side routing diagram
 
-![](resourcesContributing/media/image13.png)
+![](resources/media/contributing/image13.png)
 
 Currently, the routes to the pattern, similarity, and tokens number page
 are blocked on purpose. The react application file structure is grouped

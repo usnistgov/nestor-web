@@ -7,21 +7,28 @@ import Alert from "../../../CommonComponents/Alert/alert";
 import { updateAlert } from "../../../CommonComponents/Alert/alertAction";
 import text from "../../../../assets/language/en.js";
 
-class MultiRedirect extends Component
-{
-  handleContinue = () =>
-  {
+/**
+ * Component for the Redirect of the multiwords
+ * 
+ * @component
+ */
+class MultiRedirect extends Component {
+
+  /**
+   * @function
+   * 
+   * function that checks if an alert should be rised and then redirect to the next multitoken
+   */
+  handleContinue = () => {
     var alert = {
       showAlert: false,
       alertHeader: text.taggingTool.alerts.tagging.header,
       alertMessage: text.taggingTool.alerts.tagging.message
     };
     this.props.onUpdateAlert(alert);
-    if (this.props.singleTokens.length > 1 && this.props.multiTokens.length === 0)
-    {
+    if (this.props.singleTokens.length > 1 && this.props.multiTokens.length === 0) {
       this.props.onMultiTokensRequest(this.props.headers);
-    } else
-    {
+    } else {
       alert = {
         showAlert: true,
         alertHeader: text.taggingTool.alerts.tagging.header,
@@ -29,45 +36,50 @@ class MultiRedirect extends Component
       };
       this.props.onUpdateAlert(alert);
     }
-    if (this.props.multiTokens.length > 1)
-    {
-      var index = [ ...this.props.multiTokens ].findIndex(
+    if (this.props.multiTokens.length > 1) {
+      var index = [...this.props.multiTokens].findIndex(
         element => element.classification.color === ""
       );
-      if (index === -1)
-      {
+      if (index === -1) {
         index = 0;
       }
       this.props.history.push("/taggingTool/tag/multi/" + index);
     }
   };
-  componentDidUpdate(prevProps)
-  {
-    if (prevProps.multiTokens !== this.props.multiTokens)
-    {
-      var index = [ ...this.props.multiTokens ].findIndex(
+
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.multiTokens !== this.props.multiTokens) {
+      var index = [...this.props.multiTokens].findIndex(
         element => element.classification.color === ""
       );
       this.props.history.push("/taggingTool/tag/multi/" + index);
     }
   }
-  componentDidMount()
-  {
+
+  /**
+   * A react lifecycle method called when the component did mount.
+   * It loads the list of projects from the database
+   */
+  componentDidMount() {
     this.handleContinue();
   }
-  render()
-  {
+
+  /**
+   * The render function.
+   */
+  render() {
     return (
       <div>
         { this.props.alert.showAlert && (
           <Alert
-            alertHeader={ this.props.alert.alertHeader }
-            alertMessage={ this.props.alert.alertMessage }
+            alertHeader={this.props.alert.alertHeader}
+            alertMessage={this.props.alert.alertMessage}
             styleColor="alert alert-warning"
-            onDelete={ this.handleDelete }
+            onDelete={this.handleDelete}
           />
-        ) }
-        { !this.props.alert.showAlert && <div className="loader" /> }
+        )}
+        { !this.props.alert.showAlert && <div className="loader" />}
       </div>
     );
   }

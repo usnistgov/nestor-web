@@ -4,7 +4,7 @@ site_description: "Quantifying tacit human knowledge for Smart Manufacturing Mai
 site_author: "Cedric Bell"
 nav: 
   - Home: "README.md"
-  - License: "LICENSE.md"
+  - License: "LICENSE.rst"
   - Getting Started:
       - User Guide: "USERGUIDE.md"
       - Contributing: "CONTRIBUTING.md"

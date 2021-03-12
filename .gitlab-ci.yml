@@ -6,8 +6,8 @@ stages:
 before_script:
   - conda env update --file gldeployenv.yaml
   - conda activate nestor-web
-  - npm i -g jsdoc
-  - npm i -g jsdoc-to-markdown@1.3.8 
+  - npm i --no-save jsdoc
+  - npm i --no-save jsdoc-to-markdown@1.3.8 
 
 pages:
   stage: deploy

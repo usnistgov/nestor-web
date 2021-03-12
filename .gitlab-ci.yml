@@ -6,14 +6,17 @@ stages:
 before_script:
   - conda env update --file gldeployenv.yaml
   - conda activate nestor-web
-  - npm i jsdoc
-  - npm i jsdoc-to-markdown@1.3.8 
+  # - npm i jsdoc
+  # - npm i jsdoc-to-markdown@1.3.8 
 
 pages:
   stage: deploy
   script:
-    - npm run generatedocs.sh
+    # - npm run generatedocs.sh
     - rm -rf public
+    - cp README.md docs/
+    - cp src/assets/img/icon.png docs/resources/media/
+    - cp src/assets/img/favicon-16x16.png docs/resources/media/
     - mkdocs build --site-dir public
   artifacts:
     paths:

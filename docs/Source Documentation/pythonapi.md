@@ -1,5 +1,3 @@
-![](resources/media/image6.png)
-
 # Python API description
 
 > [classification](#classification)<br/>

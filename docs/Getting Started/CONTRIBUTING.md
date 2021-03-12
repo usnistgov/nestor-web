@@ -1,5 +1,5 @@
 ---
-title: "Nestor technical specifications"
+title: "Nestor Technical Specifications"
 ---
 
 # Introduction
@@ -15,6 +15,7 @@ filled with jargon to analyze.
 
 This application is an overhaul of the previous native application that
 contained :
+
 * Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
 * Unstructured data processing toolkit (sklearn-style)
 * Vizualization tools for tagged MWOs-style data (under development)

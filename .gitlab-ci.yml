@@ -5,7 +5,7 @@ stages:
 
 before_script:
   - conda env update --file gldeployenv.yaml
-  - conda activate nestor-dev
+  - conda activate nestor-web
 
 pages:
   stage: deploy

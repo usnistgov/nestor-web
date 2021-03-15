@@ -150,12 +150,10 @@ Second, the summary page contains a link to the single token page with each word
 
 <div align="center"><strong>Figure 12 : search feature</strong></div><br/>
 
-If you're looking for a specific token you can click on this icon
-![](../resources/media/image1.png), it will display then figure 12's popup.
-This popup is basically composed by a search bar in which you can type
-the token you're looking for or you can choose to classify them by
-alphabetical order to see figure 13 and then select the first letter of
-your token and then, your token.
+To search for a specific token, use this icon
+![](../resources/media/image1.png). This displays the different tokens as shown in figure 12's popup window.
+This popup window allows a user to search for any token within the dataset. 
+The user can also search alphabetically for a specific token as shown in figure 13. 
 
 ![](../resources/media/image14.png)
 
@@ -168,21 +166,14 @@ your token and then, your token.
 
 <div align="center"><strong>Figure 14 : saving action</strong></div><br/>
 
-When you're done choosing the headers settings and that you imported
-data, you are now able to save your project in a local database
-instance. The data you imported in this project will only remain in your
-laptop and will be stored in the AppData directory. On the figure 14,
-you can change the name of the project you are working on, and then
-click on save to add it to your list of projects presented in the home
-page. Default name will be the name of the file you uploaded.
+As a user progresses through the tagging process, they can save the project locally. The data you imported in this project will only remain in the user's laptop in the AppData directory. Figure 14 shows how the user can change the name of the project and resave if needed. 
 
 ## 3. Report
 ![](../resources/media/image5.png)
 
 <div align="center"><strong>Figure 15 : report page</strong></div><br/>
 
-This page is currently a quick summary of the situation of the project
-opened. In this example, the user tagged 1 word with 9 synonyms
+This page provides a quick summary of the project. In this example, the user tagged 1 word with 9 synonyms
 selected, which are located in 24.58% of the lines of the original file.
 There are still 1766 potential tokens to tag.
 
@@ -192,10 +183,9 @@ There are still 1766 potential tokens to tag.
 
 <div align="center"><strong>Figure 16 : export page</strong></div>
 
-In this page, you are able to download some outputs of the application :
+In this page, the user can download some outputs of the application :
 
--   the output file : readable csv of the original data and the tokens
-    > tagged.
+-   the output file : readable csv of the original data and the tokens with their tags.
 
 -   The vocab file single words : list of the single tokens tagged
     > ranked by 'tf-idf' with their tag and their score.
@@ -205,13 +195,6 @@ In this page, you are able to download some outputs of the application :
 
 ## 5. Other information
 
-The Nestor application doesn't need any network connection and any
-softwares already installed. All that is needed for the application is
-already in it.
+The Nestor application saves everything locally, no data is transmitted. 
 
-In a decent laptop with regular performances, the application doesn't
-have any lag.
-
-The storage capacity limit is currently set to the client's laptop
-capacity. If you don't have storage left in your laptop, then you might
-have some troubles saving a project in Nestor.
+The storage capacity limit is based on the user's storage capacity. 

@@ -108,44 +108,29 @@ estimated value of how long it will take to tag a specific number of tokens. Cli
 
 <div align="center"><strong>figure 7 : single tokens page</strong></div><br/>
 
-The tagging tool is separated into two parts : the tagging section and
-the summary one. The summary gets updated automatically when you're
-tagging the current token. On the tagging section, you have the field
-alias that you can use to rename a token at your convenience. You can
-also click on any classification you think suits the best with the
-token. You can also select synonyms which are basically misspellings of
-the token. You can preview a few sentences on where the synonyms
-appeared to get the context of use of these potential synonyms by
-hovering over the icon
-![](../resources/media/image7.png) on every synonym.
+The tagging tool is separated into two parts: the tagging section (on the left) and a summary area which gets updated automatically when a user tags a token. 
+In the tagging section, a user uses the Alias field to rename the token and related concepts (e.g., hyd may get an alias of hydraulic). The user also selects the classification for each token (e.g., hydraulic is an item). During this step, the user will also link any other similar concepts based on misspellings, jargon, or abbreviations. The tool tip icon
+![](../resources/media/image7.png) will show where each of these words occur in the data. This will provide context to help the user make decisions on what concepts should be linked together. 
 
-In figure 8, you can see the synonyms selected by a user. The selected
+Figure 8, shows how synonyms are linked. The selected
 synonyms can be deselected if
 needed.![](../resources/media/image20.png)
 
 <div align="center"><strong>Figure 8 : single tokens with synonyms selected</strong></div><br/>
 
-In figure 9, an alert message has appeared because the user clicked on
-continue before selecting a
-classification.![](../resources/media/image11.png)
+Figure 9 shows an alert message that appears if the user does not select a classification. If a user is not sure about a classification, they can select Unknown.![](../resources/media/image11.png)
 
 <div align="center"><strong>Figure 9 : single tokens with alert message</strong></div><br/>
 
-On the figure 10, you can see that the progress bar updates its value
-right after every click on the continue button. This progress bar shows
-the capacity of knowledge that the algorithms have on the data.
-Basically, if you have a percentage of completeness of 40%, it means
+Figure 10 shows the progress bar that updates as the user progresses through the tagging process. 
+This progress bar shows the percentage of the original file that has some information added by Nestor. As an example, if the progress bar shows 40%, it means
 that on 40% of the rows of the original file you have tagged at least
 one token. ![](../resources/media/image21.png)
 
 <div align="center"><strong>Figure 10 : progress bar updated</strong></div><br/>
 
-On the summary section, you can see a series of 3 multi tokens in which
-the single token you're currently tagging appeared in. This was made to
-enable any user to navigate more easily from single to multi token. If
-you click on the More button right below these three multi tokens, you
-will be able to see a popup containing all the multi words that have the
-single token you're working on.
+The summary section shows a selection of multi-token phrases that contain the single token a user is currently working on. Multi-tokens are pairs of tokens that appear together. 
+This allows a user to navigate from single to multi-token tagging easily. The More button displays more multi-token pairs if a user would like to see all instances of the current token in multi-token pairs. 
 
 ### 2.2 Multi Tokens
 ----------------
@@ -154,13 +139,9 @@ single token you're working on.
 
 <div align="center"><strong>Figure 11 : multi tokenpage</strong></div><br/>
 
-The multi token page is very similar to the single token one. Let's
-explain the two differences between them. First, in this page, you will
-be able to classify the multi words with the hybrid classifications
-explained previously on the classification section. Secondly, in the
-summary, the section composed by is the exact reverse of the "appears
-in" section of the single token page. It is made to make it easier to
-navigate back and forth between single tokens and multi tokens.
+The multi token page is very similar to the single token one with some minor differences. 
+First, this page allows for classification of multi-token phrases, which enables the Object Fault and Object Resolution token classifications. 
+Second, the summary page contains a link to the single token page with each word in the multi-token pair. This allows the user to navigate between both the single token and multi-token pages. 
 
 ### 2.3 Search tokens
 -----------------

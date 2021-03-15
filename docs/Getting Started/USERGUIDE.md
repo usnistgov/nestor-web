@@ -14,7 +14,7 @@ This user guide of the Nestor application addresses how to use the web version o
 The goal of the web version is to present with a more user
 friendly Graphical User Interface (GUI) design with the same features as previous versions of 
 [Nestor](https://nestor.readthedocs.io/en/latest/index.html). 
-The original version of Nestor is still avaiable on [Github](https://github.com/usnistgov/nestor). 
+The original version of Nestor is still available on [Github](https://github.com/usnistgov/nestor). 
 
 ## 1. Settings
 
@@ -26,15 +26,12 @@ The original version of Nestor is still avaiable on [Github](https://github.com/
 in red)</strong></div><br/>
 
   
-When you open the application, you will see a quick loading screen and
-then the [figure 1](#11-home) like above. During your use of the application, the
-header will remain the same and you can navigate to the tagging tool and
-the dashboard through that header. On this header, there is also a save
-button which will remain disabled unless you start a new project. Still
-in the header, you can also see the project's name you're currently
-working on. If you click on the new project button, you will be
-redirected to the upload page ([figure 3](#13-upload-a-file)). If you click on the manage
-projects button you will be prompted [figure 2](#12-manage-projects).
+When the application starts, a loading screen will appear followed by [figure 1](#11-home). 
+A user can navigate to the tagging tool and
+the dashboard through the header at any time. On this header, there is also a save
+button which will remain disabled unless you start a new project. The header also displays the current project's name.
+Clicking on the new project button will redirect to the upload page ([figure 3](#13-upload-a-file)). 
+Clicking on the manage projects button will prompt the following screen [figure 2](#12-manage-projects).
 
  
 
@@ -44,14 +41,13 @@ projects button you will be prompted [figure 2](#12-manage-projects).
 
 <div align="center"><strong>figure 2 : Manage project popup</strong></div><br/>
 
-This popup is opened when you click on the Manage projects button in the
-home page. On this popup, you can select one project from your projects
-list and then either open or delete it. When you delete one project,
-it's not going to be in your project list anymore. When you open a
-project, you will be redirected to the Overview tab ([figure 6](#16-overview)) with all
-the loaded settings and tagged tokens of your previous saving action. If
-you don't have any projects yet, you will be prompted to first create
-one in order to retrieve it in this modal later.
+This popup is opened when a user clicks on the Manage projects button in the
+home page. On this popup, a user can select one project from their projects
+list and then either open or delete it. 
+When a user deletes one project, it will not appear in the project list.
+Opening a project will redirect to the Overview tab ([figure 6](#16-overview)) with all
+the loaded settings and tagged tokens of the previous saved state.
+If no projects are saved, a user will be prompted to create a new project. 
 
  
 
@@ -62,11 +58,8 @@ one in order to retrieve it in this modal later.
 
 <div align="center"><strong>figure 3 : Upload a new file</strong></div><br/>
 
-In this page, you can click on the "select a file" green button which is
-going to ask you to select a csv file from your laptop. When you upload
-a new file successfully, you will see the name of the file you just
-uploaded right below the green button. You can click on the start button
-to go to the [figure 4](#14-select-columns) below.
+The "select a file" green button asks for the csv file for input. Once a file is uploaded successfuly, the name of the file will appear below the green button. 
+Clicking on the start buttong directs the user to [figure 4](#14-select-columns) below.
 
  
 

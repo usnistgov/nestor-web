@@ -10,18 +10,11 @@ Developed by
 ## Introduction
 
 
-This user guide of the nestor application is addressed to all users who
-are going to interact with the application in order to give
-understanding to data sets that previously were too unstructured or filled with
-jargon to analyze. This document's main focus is to explain how to use the application.
-
-The Nestor application provides you the ability to import data from a
-csv file, and to tag the tokens which are the most representative ones,
-to enable you to have a clearer overview of the data you gave us in
-input. The goal of this application is to present with a more user
-friendly design the same features than in another
-[version](https://nestor.readthedocs.io/en/latest/index.html)
-previously released.
+This user guide of the Nestor application addresses how to use the web version of Nestor. 
+The goal of the web version is to present with a more user
+friendly Graphical User Interface (GUI) design with the same features as previous versions of 
+[Nestor](https://nestor.readthedocs.io/en/latest/index.html). 
+The original version of Nestor is still avaiable on [Github](https://github.com/usnistgov/nestor). 
 
 ## 1. Settings
 

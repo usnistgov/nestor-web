@@ -16,25 +16,25 @@ Developed by
 [1. Settings](#1-settings) 
 
 > [1.1 Home](#11-home) 
->
+
 > [1.2 Manage projects](#12-manage-projects) 
->
+
 > [1.3 Upload a file](#13-upload-a-file) 
->
+
 > [1.4 Select columns](#14-select-columns) 
->
-> [1.5 Classification](#15-classification) 
->
+
+> [1.5 Classification](#15-classification)
+
 > [1.6 Overview](#16-overview) 
 
 [2. Tagging tool](#2-tagging-tool) 
 
-> [2.1 SingleTokens](#21-singletokens) 
->
+> [2.1 SingleTokens](#21-singletokens)
+
 > [2.2 Multi Tokens](#22-multi-tokens) 
->
+
 > [2.3 Search tokens](#23-search-tokens)
->
+
 > [2.4 Save a project](#24-save-a-project) 
 
 [3. Report](#3-report) 

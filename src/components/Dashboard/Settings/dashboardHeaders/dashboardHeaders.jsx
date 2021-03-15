@@ -12,8 +12,16 @@ import "./dashboardHeaders.css"
 import Alert from "react-bootstrap/Alert";
 import { Card } from "react-bootstrap";
 
+/**
+ * Component for dashboardHeaders page.
+ * 
+ * @component
+ */
 class dashboardHeaders extends Component {
 
+    /** 
+     * @constructor
+    */
     constructor(props) {
         super(props);
         this.state = {
@@ -22,20 +30,30 @@ class dashboardHeaders extends Component {
         }
     }
 
+    /**
+   * A react lifecycle method called when the component did mount.
+   * It init the dashboardHeaders props
+   */
     componentDidMount() {
         if (this.props.dashboardSettings.length < 2) {
             this.props.onGetDashboardHeaders();
         }
     }
 
+    /**
+    * A react lifecycle method called when the component did update.
+    * It sets the dashboardSettings props/state
+    */
     componentDidUpdate(prevProps) {
         if (this.state.dashboardSettings.length !== this.props.dashboardSettings.length) {
             this.setState({ dashboardSettings: this.props.dashboardSettings });
         }
     }
 
+    /**
+    * The render function.
+    */
     render() {
-
         return (
             <React.Fragment>
                 {this.props.dashboardSettings.length > 1 ?
@@ -109,6 +127,11 @@ class dashboardHeaders extends Component {
         );
     }
 
+    /**
+     * @function
+     * function to render the tooltip from the argument
+     * @param {string} tooltipMessage The text you want to write in the tooltip of a title
+     */
     renderTooltip(tooltipMessage) {
         return (
             <Tooltip id="button-tooltip" >
@@ -118,6 +141,12 @@ class dashboardHeaders extends Component {
             </Tooltip>)
     }
 
+    /**
+     * @function
+     * function handling the change when a user select a checkbox in the table of the dashboard Headers
+     * @param {number} line the line of the header selected
+     * @param {number} column the column of the header selected
+     */
     handleChange = (line, column) => {
         const newSettings = this.state.dashboardSettings;
         newSettings.forEach((element, index) => {
@@ -132,6 +161,11 @@ class dashboardHeaders extends Component {
         this.setState({ dashboardSettings: newSettings }, this.prepareSettingsToUpdate(this.state.dashboardSettings));
     }
 
+    /**
+     * @function
+     * function that shaped the dashboard headers to send it to the python api
+     * @param {array} dashboardSettings array containing the dashboard headers
+     */
     prepareSettingsToUpdate(dashboardSettings) {
         let res = {
             machineName: [],
@@ -157,6 +191,11 @@ class dashboardHeaders extends Component {
         this.props.onUpdateDashboardHeaders(res);
     }
 
+    /**
+     * function called when clicking on the continue button
+     * it redirects to the dashboard tab
+     * @function
+     */
     handleContinue = () => {
         this.props.history.push("/dashboard/vizualisation");
     }

@@ -203,6 +203,12 @@ class Dashboard extends Component {
     );
   }
 
+  /**
+   * @function
+   * function that handle the click on the bar and update the others charts
+   * @param {event} event the event when a user click on a bar in the chart
+   * containing the number of problems
+   */
   onAssetBarClick = (event) => {
     const headers = [...this.props.headers.headers];
     var selectedHeadersLabels = [];

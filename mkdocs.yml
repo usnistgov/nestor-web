@@ -1,0 +1,23 @@
+site_name: Nestor Web
+repo_url: "https://github.com/usnistgov/nestor-web"
+site_description: "Quantifying tacit human knowledge for Smart Manufacturing Maintenance, for maintnenance-based investigatory analysis"
+site_author: "Cedric Bell"
+theme:
+  name: "material"
+  favicon: "resources/media/favicon-16x16.png"
+  logo: "resources/media/icon.png"
+  palette:
+    primary: "blue grey"
+    accent : "orange"
+plugins:
+  - search
+extra_css:
+  - "https://pages.nist.gov/nist-header-footer/css/nist-combined.css"
+extra_javascript:
+  - "https://pages.nist.gov/nist-header-footer/js/jquery-1.9.0.min.js"
+  - "https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+ 
+site_dir: "public"
+markdown_extensions:
+  - footnotes
+  - pymdownx.superfences

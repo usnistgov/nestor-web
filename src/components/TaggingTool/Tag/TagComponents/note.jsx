@@ -2,7 +2,17 @@ import React, { Component } from "react";
 import "./tag.css";
 import text from "../../../../assets/language/en.js";
 
+/**
+ * @component
+ * 
+ * component of the Note 
+ */
 class Note extends Component {
+
+  /**
+   * 
+   * @returns the react component for adding a note to a token
+   */
   render() {
     return (
       <div className="note">

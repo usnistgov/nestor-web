@@ -59,7 +59,7 @@ If no projects are saved, a user will be prompted to create a new project.
 <div align="center"><strong>figure 3 : Upload a new file</strong></div><br/>
 
 The "select a file" green button asks for the csv file for input. Once a file is uploaded successfuly, the name of the file will appear below the green button. 
-Clicking on the start buttong directs the user to [figure 4](#14-select-columns) below.
+Clicking on the start button directs the user to [figure 4](#14-select-columns) below.
 
  
 
@@ -69,15 +69,10 @@ Clicking on the start buttong directs the user to [figure 4](#14-select-columns)
 ![](../resources/media/image13.png)
 <div align="center"><strong>figure 4 : Select columns page</strong></div><br/>
 
-In this tab, you have to select the columns you want to tag by clicking
-on them. The columns are basically the headers of the csv file you
-uploaded before. For now, users are strongly advised to select the
-columns of natural language in it. The algorithms are not yet strong
-enough to deal with only numbers or dates. Some improvements are under
-development to better handle the numbers as tokens. By hovering your
-mouse on the column\'s name, you will see tooltips to preview quickly
-what is in each column. When you're done selecting the columns to tag,
-you can click on Continue to see the [figure 5](#15-classification).
+In this tab, the user selects the columns which will be the tagged. The application will provide the headers of the csv file to aid the user in selecting these columns. 
+The user should select the natural language columns, as of now Nestor cannot tag dates or numbers. 
+Some improvements are under development to better handle these types of columns. 
+Hovering the mouse on the column's name will preview what is in each column. Once the columns that will be tagged are selected, click Continue [figure 5](#15-classification).
 
 ### 1.5 Classification 
 ------------------
@@ -87,15 +82,11 @@ you can click on Continue to see the [figure 5](#15-classification).
 
 <div align="center"><strong>Figure 5 : Classification explanation</strong></div><br/>
 
-This page's role is to explain how you are supposed to tag the tokens
-you will see after the settings section. Basically, all the tokens can
-be regrouped into the concepts of item, solution, problem, unknown and
+This page shows the tag types. As of now, tokens can be classified as item, solution, problem, unknown and
 non entity. Moreover, two hybrid classifications are available for the
-multiTokens : Object Fault which is basically a problem related to an
-item and an object resolution, which is a solution related to an item.
-You will see this explanations if you hover these elements
-(![](../resources/media/image9.png)). You can click on the continue button to
-be redirected to the overview tab ([figure 6](#16-overview)).
+multiTokens : Object Fault which links problem and item pairs and an Object Resolution, which links solution and item pairs.
+Hovering over each will give an explanation. 
+(![](../resources/media/image9.png)). Next, click on the Continue tab ([figure 6](#16-overview)).
 
 ### 1.6 Overview
 ------------
@@ -105,12 +96,8 @@ be redirected to the overview tab ([figure 6](#16-overview)).
 
 <div align="center"><strong>Figure 6 : overview of your settings</strong></div><br/>
 
-This page is making the summary of the settings chosen previously on
-your navigation : the columns or headers, the classification. There is
-also a duration section, whose goal is just to show you an estimated
-time of tagging process for a given number of tokens. After clicking on
-the continue button, you will now go to the tagging tool section.
-([figure 7](#2-tagging-tool))
+This page summarizes previously selected settings: the columns that will be input for tagging and classification types. The page provides a duration time, which is an 
+estimated value of how long it will take to tag a specific number of tokens. Clicking on Continue will bring the user to ([figure 7](#2-tagging-tool))
 
 ## 2. Tagging tool
 

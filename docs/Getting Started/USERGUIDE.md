@@ -193,7 +193,29 @@ In this page, the user can download some outputs of the application :
 -   The vocab file multi words : list of the multi word tokens tagged
     > ranked by 'tf-idf' with their tag and their score.
 
-## 5. Other information
+## 5. Dashboard
+
+### 5.1 Settings
+----------------
+
+![](../resources/media/image23.png)
+
+<div align="center"><strong>Figure 16 : dashboard settings page</strong></div>
+
+The Nestor application has a dashboard section in which you should first map the columns of the data you're working on with the appropriate category. For example, if the machine names in your data are in the column "Assets", you should tick the corresponding checkbox. 
+
+Currently, the machine name is the only column used to create the dashboard.
+
+### 5.2 Vizualisation
+----------------
+
+![](../resources/media/image24.png)
+
+<div align="center"><strong>Figure 16 : dashboard page</strong></div>
+
+The dashboard is composed by two charts. If you only see an error message then you should return to the tagging section and tag a few tokens that you would consider as problems. The left one is representing the number of work orders containing a problem token by assets (only showing the 5 highest assets). Then, if you click on one bar representing one machine of the left chart, it should update the right chart which shows the most viewed tokens (problems, items, and solutions) and their occurences for the machine you clicked on.
+
+## 6. Other information
 
 The Nestor application saves everything locally, no data is transmitted. 
 

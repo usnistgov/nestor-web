@@ -4,56 +4,6 @@ title: "Nestor Technical Specifications"
 
 # Introduction
 
-## Purpose
-
-This application was designed to help manufacturers "tag" their
-maintenance work-order data according to the methods being researched by
-the Knowledge Extraction and Applications project at the NIST
-Engineering Laboratory. The goal of this application is to give
-understanding to data sets that previously were too unstructured or
-filled with jargon to analyze.
-
-This application is an overhaul of the previous native application that
-contained :
-
-* Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
-* Unstructured data processing toolkit (sklearn-style)
-* Vizualization tools for tagged MWOs-style data (under development)
-
-The new application is an electron application that encloses :
-
-* Tagging Tool: Human-in-the-loop Annotation Interface (react application)
-* Unstructured data processing toolkit (sklearn-style) (python package)
-
-## Team
-
-This toolkit is a part of the Knowledge Extraction and Application for
-Smart Manufacturing (KEA) project, within the Systems Integration
-Division at NIST.
-
-**Points of Contact**
-
-*  Michael Brundage Principal Investigator
-*  Thurston Sexton Nestor Technical Lead
-
-**Contributors**
-* Michael Brundage: Principal Investigator
-* Thurston Sexton: Nestor Technical Lead
-* Sakina Laanani: Nestor developer (2018-2019)
-* Cedric Bell: Nestor developer (2019-2020)
-
-## Project scope
-
-The KEA project seeks to better frame data collection and transformation
-systems within smart manufacturing as collaborations between human
-experts and the machines they partner with, to more efficiently utilize
-the digital and human resources available to manufacturers. Kea (nestor
-notabilis) on the other hand, are the world's only alpine parrots,
-finding their home on the southern Island of NZ. Known for their
-intelligence and ability to solve puzzles through the use of tools, they
-will often work together to reach their goals, which is especially
-important in their harsh, mountainous habitat.
-
 ## References
 
 Previous Nestor documentation
@@ -61,16 +11,15 @@ Previous Nestor documentation
 
 # Description
 
-This electron application will be a substitute to the initial native
-application. It will not require any prior installation from the user
+This electron application is an alternative version of the previous Nestor-qt GUI. It will not require any prior Nestor installation from the user
 and will be accessible via an executable file for windows machines.
 
-Nestor-web features are therefore identical to the previous nestor
-application.
+Nestor-web features are identical to the previous nestor
+application, however they are part of a new web-based GUI.
 
 ## Features
 
-*  List of Nestor-web main features.
+### List of Nestor-web main features.
 *  Settings
 *  Upload a file
 *  Extract user selected data
@@ -100,11 +49,11 @@ application.
 
 ## Operating environment
 
-The application has 3 versions : windows, linux, mac. The application is
-stand alone and doesn't any installation, it will function on any
+The application has 3 versions : Windows, Linux, Mac. The application is
+stand alone and doesn't require any installation, it will function on any
 machine (as long as it has been packaged for the machine's
 architecture). Currently, due to zerorpc issues, each packaged
-application has to be packaged on the targeted platform.
+application is packaged on the targeted platform.
 
 # Content structure 
 

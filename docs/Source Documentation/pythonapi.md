@@ -1,18 +1,5 @@
 # Python API description
 
-> [classification](#classification)<br/>
-> [upload](#upload)<br/>
-> [headers](#headers)<br/>
-> [create-output](#create-output)<br/>
-> [single-tokens](#single-tokens)<br/>
-> [multi-tokens](#multi-tokens)<br/>
-> [update-output-file](#update-output-file)<br/>
-> [update-vocab](#update-vocab)<br/>
-> [update-data](#update-data)<br/>
-> [completeness](#completeness)<br/>
-> [export](#export)<br/>
-
-
 ## Classification
 
 **Code** :

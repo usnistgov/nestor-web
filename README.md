@@ -13,7 +13,21 @@ freely provided that any derivative works bear some notice that they are
 derived from it, and any modified versions bear some notice that they
 have been modified.
 
-# Requirements
+## Download
+Nestor web application is available for WIndows 10 and OS X users. The application can be downloaded directly from the github [repository](https://gitlab.nist.gov/gitlab/kea/nestor-suite/nestor/-/releases)
+
+## Purpose
+Nestor web application is one the GUI available for using nestor python package. The goal of the application is to provide a user-friendly and well designed user interface for helping manufacturers annotate their data. For more information or anything you can't find here, please visit [nestor documentation](https://kea.ipages.nist.gov/nestor-suite/nestor/).
+
+
+## Quick Links
+
+- [Nestor documentation](https://kea.ipages.nist.gov/nestor-suite/nestor/)
+- [User Guide](docs/getting-started/USERGUIDE.md)
+- [How to contribute](docs/getting-started/CONTRIBUTING.md)
+
+
+## Development/Contribution Guidelines
 
 Available in command line : pip, node, npm
 
@@ -25,7 +39,7 @@ Run
 3. `npm install`
 
 
-# Useful commands 
+### Useful commands 
 
 To start the application in development mode :
 
@@ -33,16 +47,16 @@ To start the application in development mode :
 
 To package the application for your current host architecture : 
 
-`npm run dist`
+`npm run build`
 
 After this command, you will find an executable of the application in the `dist` folder
 
 To create the documentation of the applciation :
 
-`npm run docs`
+`npm run docs2md`
 
-This last command will create a `doc/` folder on the root folder of the project.
-In this new folder, you will find many `.html` files. You can view the 
-documentation by opening **index.html** in the browser of your choice.
+This last command will create and put the updated frontend documentation into the `docs/Source documentation/frontend` folder on the root folder of the project. 
+The [documentation ](https://kea.ipages.nist.gov/nestor-suite/nestor-web/) is automatically updated nd redeployed on every push on the master branch.
 
-
+## Future of Nestor web
+This is an open source project offered at no cost. It will be maintained for small fixes only. If you want to update the dependencies, we would be happy to accept the changes, and release a new version. 

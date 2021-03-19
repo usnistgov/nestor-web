@@ -1,85 +1,8 @@
-![](resources/media/image6.png)
-
-# Nestor technical specifications
-
-[Introduction](#introduction)
-> [Purpose](#purpose)<br/>
-> [Team](#team)<br/>
-> [Project scope](#project-scope)<br/>
-> [References](#references)
-
-[Description](#description)<br/>
-> [Features](#features)<br/>
-> [Phases](#phases)<br/>
-> [General architecture](#general-architecture)<br/>
-> [Operating environment](#operating-environment)<br/>
-> [Content structure](#content-structure)<br/>
-> [Design](#design)<br/>
-> [Software User Interface](#software-user-interfaces)<br/>
-> [Assumptions / Dependencies](#assumptions-dependencies)<br/>
-> [System features](#system-features)<br/>
-> [React application](#react-application)<br/>
-
-> [Additional nonfunctional requirements](#additional-nonfunctional-requirements)<br/>
->> [Accessibility](#accessibility)<br/>
->> [Security](#security)<br/>
->> [Performance](#performance)<br/>
->> [Software quality](#software-quality)<br/>
-
-[Appendices](#appendices)
-> [ Appendix A: Analysis documentation](#appendix-a-analysis-documentation)<br/>
-> [ Appendix B: Issues](#appendix-b-issues)
+---
+title: "Nestor Technical Specifications"
+---
 
 # Introduction
-
-## Purpose
-
-This application was designed to help manufacturers "tag" their
-maintenance work-order data according to the methods being researched by
-the Knowledge Extraction and Applications project at the NIST
-Engineering Laboratory. The goal of this application is to give
-understanding to data sets that previously were too unstructured or
-filled with jargon to analyze.
-
-This application is an overhaul of the previous native application that
-contained :
-* Tagging Tool: Human-in-the-loop Annotation Interface (pyqt)
-* Unstructured data processing toolkit (sklearn-style)
-* Vizualization tools for tagged MWOs-style data (under development)
-
-The new application is an electron application that encloses :
-
-* Tagging Tool: Human-in-the-loop Annotation Interface (react application)
-* Unstructured data processing toolkit (sklearn-style) (python package)
-
-## Team
-
-This toolkit is a part of the Knowledge Extraction and Application for
-Smart Manufacturing (KEA) project, within the Systems Integration
-Division at NIST.
-
-**Points of Contact**
-
-*  Michael Brundage Principal Investigator
-*  Thurston Sexton Nestor Technical Lead
-
-**Contributors**
-* Michael Brundage: Principal Investigator
-* Thurston Sexton: Nestor Technical Lead
-* Sakina Laanani: Nestor developer (2018-2019)
-* Cedric Bell: Nestor developer (2019-2020)
-
-## Project scope
-
-The KEA project seeks to better frame data collection and transformation
-systems within smart manufacturing as collaborations between human
-experts and the machines they partner with, to more efficiently utilize
-the digital and human resources available to manufacturers. Kea (nestor
-notabilis) on the other hand, are the world's only alpine parrots,
-finding their home on the southern Island of NZ. Known for their
-intelligence and ability to solve puzzles through the use of tools, they
-will often work together to reach their goals, which is especially
-important in their harsh, mountainous habitat.
 
 ## References
 
@@ -88,16 +11,15 @@ Previous Nestor documentation
 
 # Description
 
-This electron application will be a substitute to the initial native
-application. It will not require any prior installation from the user
+This electron application is an alternative version of the previous Nestor-qt GUI. It will not require any prior Nestor installation from the user
 and will be accessible via an executable file for windows machines.
 
-Nestor-web features are therefore identical to the previous nestor
-application.
+Nestor-web features are identical to the previous nestor
+application, however they are part of a new web-based GUI.
 
 ## Features
 
-*  List of Nestor-web main features.
+### List of Nestor-web main features.
 *  Settings
 *  Upload a file
 *  Extract user selected data
@@ -123,15 +45,15 @@ application.
 
 ## General Architecture
 
-![](resourcesContributing/media/image1.png)
+![](resources/media/contributing/image1.png)
 
 ## Operating environment
 
-The application has 3 versions : windows, linux, mac. The application is
-stand alone and doesn't any installation, it will function on any
+The application has 3 versions : Windows, Linux, Mac. The application is
+stand alone and doesn't require any installation, it will function on any
 machine (as long as it has been packaged for the machine's
 architecture). Currently, due to zerorpc issues, each packaged
-application has to be packaged on the targeted platform.
+application is packaged on the targeted platform.
 
 # Content structure 
 
@@ -150,12 +72,12 @@ prototype of digital products with wireframes.
 
 Screenshots of the application :
 
-  ![](resourcesContributing/media/image2.png)     ![](resourcesContributing/media/image3.png)
-  ![](resourcesContributing/media/image4.png)     ![](resourcesContributing/media/image5.png)
-  ![](resourcesContributing/media/image6.png)     ![](resourcesContributing/media/image7.png)
-  ![](resourcesContributing/media/image8.png)     ![](resourcesContributing/media/image9.png)
-  ![](resourcesContributing/media/image10.png)    ![](resourcesContributing/media/image11.png)
-  ![](resourcesContributing/media/image12.png)   
+  ![](resources/media/contributing/image2.png)     ![](resources/media/contributing/image3.png)
+  ![](resources/media/contributing/image4.png)     ![](resources/media/contributing/image5.png)
+  ![](resources/media/contributing/image6.png)     ![](resources/media/contributing/image7.png)
+  ![](resources/media/contributing/image8.png)     ![](resources/media/contributing/image9.png)
+  ![](resources/media/contributing/image10.png)    ![](resources/media/contributing/image11.png)
+  ![](resources/media/contributing/image12.png)   
 
 ## Software user interfaces
 
@@ -281,7 +203,7 @@ More information available [here](#<https://electronjs.org/docs/tutorial/support
 
 Client-side routing diagram
 
-![](resourcesContributing/media/image13.png)
+![](resources/media/contributing/image13.png)
 
 Currently, the routes to the pattern, similarity, and tokens number page
 are blocked on purpose. The react application file structure is grouped
@@ -343,3 +265,4 @@ Updated board of unresolved issues, pending decisions and next features
 to develop :
 
 <https://gitlab.nist.gov/gitlab/kea/nestor-web/-/boards>
+

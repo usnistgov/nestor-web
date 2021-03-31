@@ -1,7 +1,3 @@
----
-title: "Nestor Technical Specifications"
----
-
 # Introduction
 
 ## References
@@ -45,7 +41,7 @@ application, however they are part of a new web-based GUI.
 
 ## General Architecture
 
-![](resources/media/contributing/image1.png)
+![](../resources/media/contributing/image1.png)
 
 ## Operating environment
 
@@ -72,12 +68,12 @@ prototype of digital products with wireframes.
 
 Screenshots of the application :
 
-  ![](resources/media/contributing/image2.png)     ![](resources/media/contributing/image3.png)
-  ![](resources/media/contributing/image4.png)     ![](resources/media/contributing/image5.png)
-  ![](resources/media/contributing/image6.png)     ![](resources/media/contributing/image7.png)
-  ![](resources/media/contributing/image8.png)     ![](resources/media/contributing/image9.png)
-  ![](resources/media/contributing/image10.png)    ![](resources/media/contributing/image11.png)
-  ![](resources/media/contributing/image12.png)   
+  ![](../resources/media/contributing/image2.png)     ![](../resources/media/contributing/image3.png)
+  ![](../resources/media/contributing/image4.png)     ![](../resources/media/contributing/image5.png)
+  ![](../resources/media/contributing/image6.png)     ![](../resources/media/contributing/image7.png)
+  ![](../resources/media/contributing/image8.png)     ![](../resources/media/contributing/image9.png)
+  ![](../resources/media/contributing/image10.png)    ![](../resources/media/contributing/image11.png)
+  ![](../resources/media/contributing/image12.png)   
 
 ## Software user interfaces
 
@@ -203,7 +199,7 @@ More information available [here](#<https://electronjs.org/docs/tutorial/support
 
 Client-side routing diagram
 
-![](resources/media/contributing/image13.png)
+![](../resources/media/contributing/image13.png)
 
 Currently, the routes to the pattern, similarity, and tokens number page
 are blocked on purpose. The react application file structure is grouped

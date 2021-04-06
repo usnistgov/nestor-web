@@ -1,11 +1,13 @@
-# Introduction
+# How We Made It
 
-## References
+## Introduction
+
+### References
 
 Previous Nestor documentation
 <https://buildmedia.readthedocs.org/media/pdf/nestor/latest/nestor.pdf>
 
-# Description
+## Description
 
 This electron application is an alternative version of the previous Nestor-qt GUI. It will not require any prior Nestor installation from the user
 and will be accessible via an executable file for windows machines.
@@ -13,9 +15,9 @@ and will be accessible via an executable file for windows machines.
 Nestor-web features are identical to the previous nestor
 application, however they are part of a new web-based GUI.
 
-## Features
+### Features
 
-### List of Nestor-web main features.
+#### List of Nestor-web main features.
 *  Settings
 *  Upload a file
 *  Extract user selected data
@@ -31,7 +33,7 @@ application, however they are part of a new web-based GUI.
 *  Export to a csv file the progress in the form of two vocabulary files, and 'readable tags' file.
 *  Create, save, open and delete projects from imported csv file
 
-## Phases
+### Phases
 
 1.  Design Marvel App
 2.  Create React Application
@@ -39,11 +41,11 @@ application, however they are part of a new web-based GUI.
 4.  Integrate Front end and Back end with Electron
 5.  Cycle of development : integration of new features 
 
-## General Architecture
+### General Architecture
 
 ![](../resources/media/contributing/image1.png)
 
-## Operating environment
+### Operating environment
 
 The application has 3 versions : Windows, Linux, Mac. The application is
 stand alone and doesn't require any installation, it will function on any
@@ -51,7 +53,7 @@ machine (as long as it has been packaged for the machine's
 architecture). Currently, due to zerorpc issues, each packaged
 application is packaged on the targeted platform.
 
-# Content structure 
+## Content structure 
 
 The main components interacting together in this application are :
 *  Electron main process
@@ -59,7 +61,7 @@ The main components interacting together in this application are :
 *  Python Server
 *  Python Package
 
-## Design
+### Design
 
 Nestor web views were designed using Marvel, an application to create a
 prototype of digital products with wireframes.
@@ -75,7 +77,7 @@ Screenshots of the application :
   ![](../resources/media/contributing/image10.png)    ![](../resources/media/contributing/image11.png)
   ![](../resources/media/contributing/image12.png)   
 
-## Software user interfaces
+### Software user interfaces
 
 This section concerns the technical choices of the nestor web
 application. For reminder, the application is built with React, python,
@@ -153,7 +155,7 @@ the communication between the react frontend server and the python
 server. Basically this technology enables us to open socket between the
 two servers.
 
-## Assumptions / Dependencies
+### Assumptions / Dependencies
 
 Minimum requirements for running an electron application are:
 
@@ -193,9 +195,9 @@ same requirements:
 
 More information available [here](#<https://electronjs.org/docs/tutorial/support>)
 
-# System features
+## System features
 
-## React application
+### React application
 
 Client-side routing diagram
 
@@ -206,16 +208,16 @@ are blocked on purpose. The react application file structure is grouped
 by routes. Each page is grouped with a css sheet, the actual jsx
 component, the store's reducer and the store's action functions.
 
-## Additional nonfunctional requirements
+### Additional nonfunctional requirements
 
-### Accessibility
+#### Accessibility
 
 The application was made to support multi languages.
 
 To add a new language, write a new json translation file under
 src/language.
 
-### Security
+#### Security
 
 Electron applications run as offline application.
 
@@ -227,14 +229,14 @@ machine.
 The data persistence between several sessions ensured by pouchDB, is an
 in-browser database so that the data stays on the client's laptop.
 
-### Performance
+#### Performance
 
 Electron applications tends to be large because they bundle most of
 Chromium. Additionally, there is no sharing of resources meaning
 Electron application take up more space and memory than native
 applications which were developed with a specific platform in mind.
 
-### Software quality
+#### Software quality
 
 The application uses React Redux to manage the store. The store is organized 
 with reducers that corresponds to components. You can find more informations 
@@ -245,16 +247,16 @@ process explained in the `README.md` file of this project.
 
 
 
-# Appendices
+## Appendices
 
-## Appendix A: Analysis Documentation
+### Appendix A: Analysis Documentation
 
 Nestor previous documentation :
 <https://nestor.readthedocs.io/en/latest>
 
 GitHub repository Nestor web : <https://github.com/usnistgov/nestor-web>
 
-## Appendix B: Issues
+### Appendix B: Issues
 ------------------
 
 Updated board of unresolved issues, pending decisions and next features

@@ -1,7 +1,3 @@
----
-title: "How to Contribute"
----
-
 # Introduction
 
 First off, thank you for considering contributing to 

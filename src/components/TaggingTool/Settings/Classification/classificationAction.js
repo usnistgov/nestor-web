@@ -23,16 +23,16 @@ export function updateClassification(types, rules) {
 export function setClassification(t, r) {
   const types = [];
   const rules = [];
-  const typesColors = ["#FFBA5C", "#00A6FF", "#77D353", "#976DD0", "#228B22"];
+  const typesColors = ["#00A6FF", "#FFBA5C", "#77D353", "#976DD0", "#228B22"];
   const rulesColors = ["#8E7F28", "#8E2837"];
-  Object.entries(t).forEach(function(obj, i) {
+  Object.entries(t).forEach(function (obj, i) {
     types.push({
       shortkey: obj[0],
       label: obj[1],
       color: typesColors[i]
     });
   });
-  Object.entries(r).forEach(function(obj, i) {
+  Object.entries(r).forEach(function (obj, i) {
     rules.push({
       shortkey: obj[0],
       label: obj[1],
@@ -51,9 +51,13 @@ export function classificationRequest() {
       if (error) {
         console.log(error);
       } else {
+        let types = {
+          ...res.entities.types.atomic,
+          ...res.entities.types.hole
+        }
         dispatch(
           setClassification(
-            res.entities.types.atomic,
+            types,
             res.entities.types.derived
           )
         );

@@ -17,7 +17,7 @@ def exception_handler(func):
     @wraps(func)
     def func_or_exception(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         except Exception as e:
             print(f"Function '{func.__name__}' threw an exception:\n")
             print(e)

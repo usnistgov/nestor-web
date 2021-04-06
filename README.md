@@ -23,8 +23,8 @@ Nestor web application is one the GUI available for using nestor python package.
 ## Quick Links
 
 - [Nestor documentation](https://kea.ipages.nist.gov/nestor-suite/nestor/)
-- [User Guide](docs/Getting Started/USERGUIDE.md)
-- [How to contribute](docs/Getting Started/CONTRIBUTING.md)
+- [User Guide](docs/Getting%20Started/USERGUIDE.md)
+- [How to contribute](docs/Getting%20Started/CONTRIBUTING.md)
 
 
 ## Development/Contribution Guidelines
